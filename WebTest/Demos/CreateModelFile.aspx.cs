@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebTest.Dao;
-using SqlSugar;
+using OracleSugar;
 namespace WebTest.Demo
 {
     /// <summary>

@@ -45,6 +45,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>App_Lib\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -75,7 +79,6 @@
     <Content Include="App_Lib\SyntacticSugar.dll" />
     <Content Include="App_Lib\SyntacticSugar.XML" />
     <Content Include="Demos\Ado.aspx" />
-    <Content Include="Demos\Cloud.aspx" />
     <Content Include="Demos\CreateModelFile.aspx" />
     <Content Include="Demos\Delete.aspx" />
     <Content Include="Demos\EnumType.aspx" />
@@ -116,13 +119,6 @@
     </Compile>
     <Compile Include="Demos\Ado.aspx.designer.cs">
       <DependentUpon>Ado.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Demos\Cloud.aspx.cs">
-      <DependentUpon>Cloud.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Demos\Cloud.aspx.designer.cs">
-      <DependentUpon>Cloud.aspx</DependentUpon>
     </Compile>
     <Compile Include="Demos\CreateModelFile.aspx.cs">
       <DependentUpon>CreateModelFile.aspx</DependentUpon>
@@ -278,6 +274,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -297,6 +297,7 @@ namespace OracleSugar
             string reval = string.Empty;
             switch (typeName.ToLower())
             {
+                case "int16":
                 case "int":
                     reval = "int";
                     break;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using SqlSugar;
+using OracleSugar;
 using WebTest.Dao;
 using Models;
 namespace WebTest.Demo
@@ -18,13 +18,13 @@ namespace WebTest.Demo
         {
             using (SqlSugarClient db = SugarDao.GetInstance())//开启数据库连接
             {
-               var r1= db.GetDataTable("select * from student");
-               var r2= db.GetSingle<Student>("select top 1 * from student");
-               var r3 = db.GetScalar("select  count(1) from student");
-               var r4 = db.GetReader("select  count(1) from student");
+               var r1= db.GetDataTable("select * from \"Student\" ");
+               var r2 = db.GetSingle<Student>("SELECT * FROM (SELECT * FROM \"Student\"  ORDER BY 'id' DESC ) A where ROWNUM=1");
+               var r3 = db.GetScalar("select  count(1) from \"Student\"");
+               var r4 = db.GetReader("select  count(1) from \"Student\"");
                r4.Dispose();
-               var r5 = db.GetString("select  top 1 name from student");
-               var r6 = db.ExecuteCommand("select 1");
+               var r5 = db.GetString("SELECT \"name\" FROM (SELECT * FROM \"Student\"  ORDER BY 'id' DESC ) A where ROWNUM=1");
+               var r6 = db.ExecuteCommand("delete from \"Student\" where \"id\"=20");
             }
         }
     }

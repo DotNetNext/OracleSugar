@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using SqlSugar;
+using OracleSugar;
 using WebTest.Dao;
-using SqlSugar;
+using OracleSugar;
 using Models;
 namespace WebTest.Demos
 {
