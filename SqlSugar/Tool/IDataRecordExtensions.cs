@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// DataRecord扩展

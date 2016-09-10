@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-namespace SqlSugar
+namespace OracleSugar
 {
     public static class TaskExtensions
     {

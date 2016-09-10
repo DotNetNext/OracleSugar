@@ -6,8 +6,8 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Data;
 using System.Linq.Expressions;
-
-namespace SqlSugar
+using Oracle.ManagedDataAccess.Client;
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：SQL糖 ORM 核心类
@@ -16,7 +16,7 @@ namespace SqlSugar
     /// ** 作者：sunkaixuan
     /// ** 使用说明：http://www.cnblogs.com/sunkaixuan/p/4649904.html
     /// </summary>
-    public class SqlSugarClient : SqlHelper, SqlSugar.IClient
+    public class SqlSugarClient : SqlHelper, IClient
     {
 
         public SqlSugarClient(string connectionString)
@@ -263,9 +263,9 @@ namespace SqlSugar
         /// <param name="reader"></param>
         /// <param name="pars"></param>
         /// <returns></returns>
-        public List<T> SqlQuery<T>(string sql, List<SqlParameter> pars)
+        public List<T> SqlQuery<T>(string sql, List<OracleParameter> pars)
         {
-            SqlDataReader reader = null;
+            OracleDataReader reader = null;
             //全局过滤器
             if (CurrentFilterKey.IsValuable())
             {
@@ -329,7 +329,7 @@ namespace SqlSugar
             typeName = GetTableNameByClassType(typeName);
 
             StringBuilder sbInsertSql = new StringBuilder();
-            List<SqlParameter> pars = new List<SqlParameter>();
+            List<OracleParameter> pars = new List<OracleParameter>();
             var identities = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
             isIdentity = identities != null && identities.Count > 0;
             //sql语句缓存
@@ -430,12 +430,8 @@ namespace SqlSugar
                         val = (int)(val);
                     }
 
-                    var par = new SqlParameter("@" + prop.Name, val);
+                    var par = new OracleParameter("@" + prop.Name, val);
                     SqlSugarTool.SetParSize(par);
-                    if (par.SqlDbType == SqlDbType.Udt)
-                    {
-                        par.UdtTypeName = "HIERARCHYID";
-                    }
                     pars.Add(par);
                 }
             }
@@ -648,17 +644,14 @@ namespace SqlSugar
                 cacheSqlManager.Add(cacheSqlKey, sbSql, cacheSqlManager.Day);
             }
 
-            List<SqlParameter> parsList = new List<SqlParameter>();
+            List<OracleParameter> parsList = new List<OracleParameter>();
             parsList.AddRange(re.Paras);
             var pars = rows;
             if (pars != null)
             {
                 foreach (var par in pars)
                 {
-                    if (par.SqlDbType == SqlDbType.Udt)
-                    {
-                        par.UdtTypeName = "HIERARCHYID";
-                    }
+                 
                     SqlSugarTool.SetParSize(par);
                     parsList.Add(par);
                 }

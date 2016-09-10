@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace SqlSugar
+namespace OracleSugar
 {
     public interface IClient
     {

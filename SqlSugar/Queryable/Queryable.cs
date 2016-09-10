@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
 
     /// <summary>
@@ -51,7 +51,7 @@ namespace SqlSugar
         /// <summary>
         /// SqlParameter临时数据
         /// </summary>
-        public List<SqlParameter> Params = new List<SqlParameter>();
+        public List<OracleParameter> Params = new List<OracleParameter>();
         /// <summary>
         /// 表名
         /// </summary>

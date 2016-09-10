@@ -8,9 +8,10 @@ using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Web;
+using Oracle.ManagedDataAccess.Client;
 
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：SqlSugar工具类
@@ -184,7 +185,7 @@ namespace SqlSugar
             }
         }
 
-        public static void SetParSize(SqlParameter par)
+        public static void SetParSize(OracleParameter par)
         {
             int size = par.Size;
             if (size < 4000)
@@ -198,9 +199,9 @@ namespace SqlSugar
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static SqlParameter[] GetParameters(object obj)
+        public static OracleParameter[] GetParameters(object obj)
         {
-            List<SqlParameter> listParams = new List<SqlParameter>();
+            List<OracleParameter> listParams = new List<OracleParameter>();
             if (obj != null)
             {
                 var type = obj.GetType();
@@ -210,7 +211,7 @@ namespace SqlSugar
                     if (type == SqlSugarTool.DicArraySO)
                     {
                         var newObj = (Dictionary<string, object>)obj;
-                        var pars = newObj.Select(it=>new SqlParameter("@"+it.Key,it.Value));
+                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -220,7 +221,7 @@ namespace SqlSugar
                     else {
 
                         var newObj = (Dictionary<string, string>)obj;
-                        var pars = newObj.Select(it => new SqlParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -242,14 +243,14 @@ namespace SqlSugar
                         if (value == null) value = DBNull.Value;
                         if (r.Name.ToLower().Contains("hierarchyid"))
                         {
-                            var par = new SqlParameter("@" + r.Name, SqlDbType.Udt);
+                            var par = new OracleParameter("@" + r.Name, SqlDbType.Udt);
                             par.UdtTypeName = "HIERARCHYID";
                             par.Value = value;
                             listParams.Add(par);
                         }
                         else
                         {
-                            var par = new SqlParameter("@" + r.Name, value);
+                            var par = new OracleParameter("@" + r.Name, value);
                             SetParSize(par);
                             listParams.Add(par);
                         }
@@ -578,7 +579,7 @@ namespace SqlSugar
             return paraDictionarAll.Select(it => new SqlParameter("@" + it.Key, it.Value)).ToArray();
         }
 
-        internal static StringBuilder GetQueryableSql<T>(SqlSugar.Queryable<T> queryable)
+        internal static StringBuilder GetQueryableSql<T>(Queryable<T> queryable)
         {
             string joinInfo = string.Join(" ", queryable.JoinTable);
             StringBuilder sbSql = new StringBuilder();

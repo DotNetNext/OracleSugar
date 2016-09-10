@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：拉姆达解析类
@@ -25,7 +25,7 @@ namespace SqlSugar
         }
         public string SqlWhere = null;
         public ResolveExpressType Type = ResolveExpressType.oneT;
-        public List<SqlParameter> Paras = new List<SqlParameter>();
+        public List<OracleParameter> Paras = new List<OracleParameter>();
         private int SameIndex = 1;
 
         public string GetExpressionRightField(Expression exp)
@@ -368,11 +368,11 @@ namespace SqlSugar
             }
             if (right == null)
             {
-                this.Paras.Add(new SqlParameter("@" + left, DBNull.Value));
+                this.Paras.Add(new OracleParameter("@" + left, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new SqlParameter("@" + left, right));
+                this.Paras.Add(new OracleParameter("@" + left, right));
             }
             return oldLeft;
         }
@@ -387,11 +387,11 @@ namespace SqlSugar
             }
             if (left == null)
             {
-                this.Paras.Add(new SqlParameter("@" + right, DBNull.Value));
+                this.Paras.Add(new OracleParameter("@" + right, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new SqlParameter("@" + right, left));
+                this.Paras.Add(new OracleParameter("@" + right, left));
             }
             return oldRight;
         }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
 
     /// ** 描述：SqlSugar扩展工具类
@@ -103,12 +103,12 @@ namespace SqlSugar
             return groupByFileds.IsNullOrEmpty() ? "" : " GROUP BY " + groupByFileds;
         }
         /// <summary>
-        /// 将Request里的参数转成SqlParameter[]
+        /// 将Request里的参数转成OracleParameter[]
         /// </summary>
         /// <returns></returns>
-        public static void RequestParasToSqlParameters(SqlParameterCollection  oldParas)
+        public static void RequestParasToSqlParameters(OracleParameterCollection  oldParas)
         {
-            var oldParaList= oldParas.Cast<SqlParameter>().ToList();
+            var oldParaList= oldParas.Cast<OracleParameter>().ToList();
             var paraDictionarAll =SqlSugarTool.GetParameterDictionary();
             if (paraDictionarAll != null && paraDictionarAll.Count() > 0)
             {
@@ -116,7 +116,7 @@ namespace SqlSugar
                 foreach (KeyValuePair<string, string> it in paraDictionarAll)
                 {
                  
-                    var par=new SqlParameter("@" + it.Key, it.Value);
+                    var par=new OracleParameter("@" + it.Key, it.Value);
                     if (!oldParaList.Any(oldPara=>oldPara.ParameterName==("@"+it.Key)))
                     {
                         oldParas.Add(par);

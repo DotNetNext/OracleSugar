@@ -1,0 +1,6 @@
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\bin\Debug\OracleSugar.xml
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\bin\Debug\OracleSugar.dll
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\bin\Debug\OracleSugar.pdb
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\bin\Debug\Oracle.ManagedDataAccess.dll
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\obj\Debug\OracleSugar.dll
+G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\obj\Debug\OracleSugar.pdb

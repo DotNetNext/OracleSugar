@@ -9,7 +9,7 @@ using System.Web.Configuration;
 using System.Configuration;
 using System.Text.RegularExpressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// 作者热心的：dukang

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
 using System.Data;
-
-namespace SqlSugar
+using Oracle.ManagedDataAccess.Client;
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：底层SQL辅助函数
@@ -16,15 +15,15 @@ namespace SqlSugar
     /// </summary>
     public class SqlHelper : IDisposable
     {
-        SqlConnection _sqlConnection;
-        SqlTransaction _tran = null;
+        OracleConnection _sqlConnection;
+        OracleTransaction _tran = null;
         /// <summary>
-        /// 是否清空SqlParameters
+        /// 是否清空OracleParameters
         /// </summary>
         public bool isClearParameters = true;
         public int CommandTimeOut = 30000;
         /// <summary>
-        /// 将页面参数自动填充到SqlParameter []，无需在程序中指定，这种情况需要注意是否有重复参数
+        /// 将页面参数自动填充到OracleParameter []，无需在程序中指定，这种情况需要注意是否有重复参数
         /// 例如：
         ///     var list = db.Queryable《Student》().Where("id=@id").ToList();
         ///     以前写法
@@ -33,10 +32,10 @@ namespace SqlSugar
         public bool IsGetPageParas = false;
         public SqlHelper(string connectionString)
         {
-            _sqlConnection = new SqlConnection(connectionString);
+            _sqlConnection = new OracleConnection(connectionString);
             _sqlConnection.Open();
         }
-        public SqlConnection GetConnection()
+        public OracleConnection GetConnection()
         {
             return _sqlConnection;
         }
@@ -48,16 +47,6 @@ namespace SqlSugar
         public void BeginTran(IsolationLevel iso)
         {
             _tran = _sqlConnection.BeginTransaction(iso);
-        }
-
-        public void BeginTran(string transactionName)
-        {
-            _tran = _sqlConnection.BeginTransaction(transactionName);
-        }
-
-        public void BeginTran(IsolationLevel iso, string transactionName)
-        {
-            _tran = _sqlConnection.BeginTransaction(iso, transactionName);
         }
 
         public void RollbackTran()
@@ -80,7 +69,7 @@ namespace SqlSugar
         {
             return GetString(sql, SqlSugarTool.GetParameters(pars));
         }
-        public string GetString(string sql, params SqlParameter[] pars)
+        public string GetString(string sql, params OracleParameter[] pars)
         {
             return Convert.ToString(GetScalar(sql, pars));
         }
@@ -88,19 +77,19 @@ namespace SqlSugar
         {
             return GetInt(sql, SqlSugarTool.GetParameters(pars));
         }
-        public int GetInt(string sql, params SqlParameter[] pars)
+        public int GetInt(string sql, params OracleParameter[] pars)
         {
             return Convert.ToInt32(GetScalar(sql, pars));
         }
-        public Double GetDouble(string sql, params SqlParameter[] pars)
+        public Double GetDouble(string sql, params OracleParameter[] pars)
         {
             return Convert.ToDouble(GetScalar(sql, pars));
         }
-        public decimal GetDecimal(string sql, params SqlParameter[] pars)
+        public decimal GetDecimal(string sql, params OracleParameter[] pars)
         {
             return Convert.ToDecimal(GetScalar(sql, pars));
         }
-        public DateTime GetDateTime(string sql, params SqlParameter[] pars)
+        public DateTime GetDateTime(string sql, params OracleParameter[] pars)
         {
             return Convert.ToDateTime(GetScalar(sql, pars));
         }
@@ -108,9 +97,9 @@ namespace SqlSugar
         {
             return GetScalar(sql, SqlSugarTool.GetParameters(pars));
         }
-        public object GetScalar(string sql, params SqlParameter[] pars)
+        public object GetScalar(string sql, params OracleParameter[] pars)
         {
-            SqlCommand sqlCommand = new SqlCommand(sql, _sqlConnection);
+            OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
             if (_tran != null)
             {
                 sqlCommand.Transaction = _tran;
@@ -131,9 +120,9 @@ namespace SqlSugar
         {
             return ExecuteCommand(sql, SqlSugarTool.GetParameters(pars));
         }
-        public int ExecuteCommand(string sql, params SqlParameter[] pars)
+        public int ExecuteCommand(string sql, params OracleParameter[] pars)
         {
-            SqlCommand sqlCommand = new SqlCommand(sql, _sqlConnection);
+            OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
             sqlCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
             {
@@ -149,13 +138,13 @@ namespace SqlSugar
             sqlCommand.Parameters.Clear();
             return count;
         }
-        public SqlDataReader GetReader(string sql, object pars)
+        public OracleDataReader GetReader(string sql, object pars)
         {
             return GetReader(sql, SqlSugarTool.GetParameters(pars));
         }
-        public SqlDataReader GetReader(string sql, params SqlParameter[] pars)
+        public OracleDataReader GetReader(string sql, params OracleParameter[] pars)
         {
-            SqlCommand sqlCommand = new SqlCommand(sql, _sqlConnection);
+            OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
             sqlCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
             {
@@ -167,7 +156,7 @@ namespace SqlSugar
             {
                 SqlSugarToolExtensions.RequestParasToSqlParameters(sqlCommand.Parameters);
             }
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            OracleDataReader sqlDataReader = sqlCommand.ExecuteReader();
             if (isClearParameters)
                 sqlCommand.Parameters.Clear();
             return sqlDataReader;
@@ -176,7 +165,7 @@ namespace SqlSugar
         {
             return GetList<T>(sql, SqlSugarTool.GetParameters(pars));
         }
-        public List<T> GetList<T>(string sql, params SqlParameter[] pars)
+        public List<T> GetList<T>(string sql, params OracleParameter[] pars)
         {
             var reval = SqlSugarTool.DataReaderToList<T>(typeof(T), GetReader(sql, pars), null);
             return reval;
@@ -185,7 +174,7 @@ namespace SqlSugar
         {
             return GetSingle<T>(sql, SqlSugarTool.GetParameters(pars));
         }
-        public T GetSingle<T>(string sql, params SqlParameter[] pars)
+        public T GetSingle<T>(string sql, params OracleParameter[] pars)
         {
             var reval = SqlSugarTool.DataReaderToList<T>(typeof(T), GetReader(sql, pars), null).Single();
             return reval;
@@ -194,9 +183,9 @@ namespace SqlSugar
         {
             return GetDataTable(sql, SqlSugarTool.GetParameters(pars));
         }
-        public DataTable GetDataTable(string sql, params SqlParameter[] pars)
+        public DataTable GetDataTable(string sql, params OracleParameter[] pars)
         {
-            SqlDataAdapter _sqlDataAdapter = new SqlDataAdapter(sql, _sqlConnection);
+            OracleDataAdapter _sqlDataAdapter = new OracleDataAdapter(sql, _sqlConnection);
             _sqlDataAdapter.SelectCommand.Parameters.AddRange(pars);
             if (IsGetPageParas)
             {
@@ -216,9 +205,9 @@ namespace SqlSugar
         {
             return GetDataSetAll(sql, SqlSugarTool.GetParameters(pars));
         }
-        public DataSet GetDataSetAll(string sql, params SqlParameter[] pars)
+        public DataSet GetDataSetAll(string sql, params OracleParameter[] pars)
         {
-            SqlDataAdapter _sqlDataAdapter = new SqlDataAdapter(sql, _sqlConnection);
+            OracleDataAdapter _sqlDataAdapter = new OracleDataAdapter(sql, _sqlConnection);
             if (_tran != null)
             {
                 _sqlDataAdapter.SelectCommand.Transaction = _tran;
