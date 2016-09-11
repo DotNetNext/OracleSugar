@@ -302,14 +302,13 @@ namespace OracleSugar
                     throw new Exception("不支持Oracle的Long类型，建议使用C_LOB代替。");
                 case "int16":
                 case "int32":
-                case "int64":
                 case "int":
                     reval = "int";
                     break;
                 case "text":
                     reval = "string";
                     break;
-                case "bigint":
+                case "int64":
                     reval = "long";
                     break;
                 case "binary":
