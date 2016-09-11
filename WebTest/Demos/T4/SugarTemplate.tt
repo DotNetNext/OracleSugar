@@ -21,6 +21,13 @@
 	//解决方案目录
     string solutionDir = Host.ResolveAssemblyReference("$(SolutionDir)");
 
+	//number类型与实体的对照 
+	//{1,"bool"},  number(1,0)等于 bool
+	//{3,"byte"},
+	//{4,"short"},
+	//{9,"int"},
+	//{18,"long"}
+    //{n.0,"int"}
  
 	 using (var db = new SqlSugarClient("server=.;Initial Catalog=SqlSugarTest;Persist Security Info=True;User ID=sa;Password=sasa"))
      {

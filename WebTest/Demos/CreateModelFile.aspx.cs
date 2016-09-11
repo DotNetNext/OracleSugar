@@ -18,6 +18,15 @@ namespace WebTest.Demo
             using (var db = SugarDao.GetInstance())
             {
 
+                //number类型与实体的对照 
+                //{1,"bool"},  number(1,0)等于 bool
+                //{3,"byte"},
+                //{4,"short"},
+                //{9,"int"},
+                //{18,"long"}
+                //{n.0,"int"}
+
+
                 //可以生成别名类和别名表同时使用
                 //List<KeyValue> mappingTableList = new List<KeyValue>(){
                 //new KeyValue(){ Key="s", Value="Student"}
