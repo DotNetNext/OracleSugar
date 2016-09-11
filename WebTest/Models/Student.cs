@@ -17,7 +17,7 @@ namespace Models
      /// <summary>
      /// Desc:- 
      /// Default:- 
-     /// Nullable:True 
+     /// Nullable:False 
      /// </summary>
         public string NAME {get;set;}
 
