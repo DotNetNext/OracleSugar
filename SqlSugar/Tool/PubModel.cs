@@ -26,6 +26,10 @@ namespace OracleSugar
             public object COLUMN_DEFAULT { get; set; }
 
             public object IS_NULLABLE { get; set; }
+
+            public object DATA_PRECISION { get; set; }
+
+            public object DATA_SCALE { get; set; }
         }
 
         #endregion

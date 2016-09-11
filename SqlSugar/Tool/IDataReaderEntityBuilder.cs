@@ -83,7 +83,7 @@ namespace OracleSugar
                     if (propertyInfo != null && propertyInfo.GetSetMethod() != null)
                     {
                         bool isNullable = false;
-                        var underType =SqlSugarTool.GetUnderType(propertyInfo, ref isNullable);
+                        var underType = SqlSugarTool.GetUnderType(propertyInfo, ref isNullable);
 
                         generator.Emit(OpCodes.Ldarg_0);
                         generator.Emit(OpCodes.Ldc_I4, i);
@@ -123,7 +123,7 @@ namespace OracleSugar
         private static void GeneratorCallMethod(ILGenerator generator, Type type, bool isNullable, PropertyInfo pro, string dbTypeName, string fieldName)
         {
             List<string> guidThrow = new List<string>() { "int32", "datetime", "decimal", "double", "byte", "string" };//数据库为GUID有错的实体类形
-            List<string> intThrow = new List<string>() { "datetime", "byte" };//数据库为int有错的实体类形
+            List<string> intThrow = new List<string>() { "datetime" };//数据库为int有错的实体类形
             List<string> stringThrow = new List<string>() { "int32", "datetime", "decimal", "double", "byte", "guid" };//数据库为vachar有错的实体类形
             List<string> decimalThrow = new List<string>() { "datetime", "byte", "guid" };
             List<string> doubleThrow = new List<string>() { "datetime", "byte", "guid" };
@@ -138,12 +138,13 @@ namespace OracleSugar
             {
                 typeName = "ENUMNAME";
             }
-            else if (dbTypeName.Contains("hierarchyid") || typeName == "byte[]"||objTypeName== "object")
+            else if (dbTypeName.Contains("hierarchyid") || typeName == "byte[]" || objTypeName == "object")
             {
                 generator.Emit(OpCodes.Call, getValueMethod);
                 generator.Emit(OpCodes.Unbox_Any, pro.PropertyType);//找不到类型才执行拆箱（类型转换）
                 return;
             }
+
             if (isNullable)
             {
                 switch (typeName)
@@ -297,7 +298,12 @@ namespace OracleSugar
             string reval = string.Empty;
             switch (typeName.ToLower())
             {
+                case "long":
+                    throw new Exception("不支持Oracle的Long类型，建议使用C_LOB代替。");
+                    break;
                 case "int16":
+                case "int32":
+                case "int64":
                 case "int":
                     reval = "int";
                     break;
@@ -317,12 +323,15 @@ namespace OracleSugar
                     reval = "string";
                     break;
                 case "datetime":
+                case "date":
                     reval = "dateTime";
                     break;
                 case "decimal":
                     reval = "decimal";
                     break;
                 case "float":
+                case "binarydouble":
+                case "double":
                     reval = "double";
                     break;
                 case "image":
@@ -365,6 +374,10 @@ namespace OracleSugar
                     reval = "guid";
                     break;
                 case "varbinary":
+                case "blob":
+                case "long raw":
+                case "raw":
+                case "bfile":
                     reval = "byte[]";
                     break;
                 case "varchar":

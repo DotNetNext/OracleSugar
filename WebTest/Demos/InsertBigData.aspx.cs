@@ -19,13 +19,13 @@ namespace WebTest.Demos
         {
             using (SqlSugarClient db = SugarDao.GetInstance())//开启数据库连接
             {
-                var list = new List<Student>()
+                var list = new List<STUDENT>()
                 {
-                    new Student(){ isOk=true, name="张三",  sch_id=1, sex="男"},
-                    new Student(){ isOk=true, name="sun",  sch_id=1, sex="女"},
-                    new Student(){ isOk=true, name="mama",  sch_id=1, sex="gril"}
+                    new STUDENT(){ ISOK=true, NAME="张三",  SCH_ID=1, SEX="男"},
+                    new STUDENT(){ ISOK=false, NAME="sun",  SCH_ID=1, SEX="女"},
+                    new STUDENT(){ ISOK=true, NAME="mama",  SCH_ID=1, SEX="gril"}
                 };
-                db.SqlBulkCopy<Student>(list);
+                db.SqlBulkCopy<STUDENT>(list);
             }
         }
     }

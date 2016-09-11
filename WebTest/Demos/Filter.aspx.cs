@@ -22,16 +22,16 @@ namespace WebTest.Demo
                 db.CurrentFilterKey = "role";
 
                 //queryable
-                var list = db.Queryable<Student>().ToList(); //通过全局过滤器对需要权限验证的数据进行过滤
+                var list = db.Queryable<STUDENT>().ToList(); //通过全局过滤器对需要权限验证的数据进行过滤
                 //相当于db.Queryable<Student>().Where("id=@id",new{id=1})
 
 
                 //sqlable
-                var list2 = db.Sqlable().From<Student>("s").SelectToList<Student>("*");
+                var list2 = db.Sqlable().From<STUDENT>("s").SelectToList<STUDENT>("*");
                 //同上
 
                 //sqlQuery
-                var list3 = db.SqlQuery<Student>("select * from Student WHERE 1=1");
+                var list3 = db.SqlQuery<STUDENT>("select * from Student WHERE 1=1");
                 //同上
             }
         }

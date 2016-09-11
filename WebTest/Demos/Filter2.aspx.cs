@@ -23,7 +23,7 @@ namespace WebTest.Demos
 
 
                 //queryable
-                var list = db.Queryable<Student>().ToJson();
+                var list = db.Queryable<STUDENT>().ToJson();
 
 
                 //设置走哪个过滤器
@@ -31,7 +31,7 @@ namespace WebTest.Demos
 
 
                 //queryable
-                var list2 = db.Queryable<Student>().ToJson();
+                var list2 = db.Queryable<STUDENT>().ToJson();
 
             }
         }

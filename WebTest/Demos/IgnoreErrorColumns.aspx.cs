@@ -24,7 +24,7 @@ namespace WebTest.Demos
                 //数据库并没有appendField和appendField2二个字段，设置该属性后将插入可以正常使用
                 db.IsIgnoreErrorColumns = true;//自动排除非数据库列  update也一样
           
-                db.Insert<MyStudent>(new MyStudent() { name = "张三" });
+                db.Insert<MyStudent>(new MyStudent() { NAME = "张三" });
                 //将实体MyStudent插入Student表
             }
         }
@@ -32,7 +32,7 @@ namespace WebTest.Demos
     /// <summary>
     /// 继承了学生表
     /// </summary>
-    public class MyStudent : Student
+    public class MyStudent : STUDENT
     {
         /// <summary>
         /// 这两个字段Student表并不存在

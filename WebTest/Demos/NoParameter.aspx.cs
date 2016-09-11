@@ -26,7 +26,7 @@ namespace WebTest.Demo
 
                     db.IsGetPageParas = true;//使用无参模式直接将Requst中的ID传给@id无需在代码中写出来
 
-                    var list = db.Queryable<Student>().Where("id=@id").ToList();
+                    var list = db.Queryable<STUDENT>().Where("id=@id").ToList();
 
                     //sqlable queryable sqlquery通用
 

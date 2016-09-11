@@ -35,7 +35,7 @@ namespace WebTest.Demo
                 var dynamicToClassStr = db.ClassGenerating.DynamicToClass(new { id = 1 }, "dyName");
 
                 //根据SQL语句生成class字符串
-                var str2 = db.ClassGenerating.SqlToClass(db, "select top 1 * from Student", "student");
+                var str2 = db.ClassGenerating.SqlToClass(db, "select  * from Student", "student");
 
 
 

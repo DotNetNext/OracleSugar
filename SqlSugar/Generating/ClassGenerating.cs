@@ -48,7 +48,7 @@ namespace OracleSugar
                 if (!type.Namespace.Contains("System.Collections.Generic"))
                 {
                     propertiesValue.AppendLine();
-                    string typeName = ChangeType(type);
+                    string typeName = ChangeType(type, null);
                     propertiesValue.AppendFormat(ClassTemplate.ItemTemplate, typeName, r.Name, "{get;set;}", nullable);
                     propertiesValue.AppendLine();
                 }
@@ -79,7 +79,7 @@ namespace OracleSugar
             foreach (DataColumn r in dt.Columns)
             {
                 propertiesValue.AppendLine();
-                string typeName = ChangeType(r.DataType);
+                string typeName = ChangeType(r.DataType,dataTableMapList==null?null:dataTableMapList.Where(it => it.COLUMN_NAME.ToString() == r.ColumnName).ToList());
                 bool isAny = false;
                 PubModel.DataTableMap columnInfo = new PubModel.DataTableMap();
                 if (dataTableMapList.IsValuable())
@@ -96,13 +96,13 @@ namespace OracleSugar
 ",
    columnInfo.COLUMN_DESCRIPTION.IsValuable() ? columnInfo.COLUMN_DESCRIPTION.ToString() : "-", //{0}
    columnInfo.COLUMN_DEFAULT.IsValuable() ? columnInfo.COLUMN_DEFAULT.ToString() : "-", //{1}
-   Convert.ToBoolean(columnInfo.IS_NULLABLE));//{2}
+   Convert.ToBoolean(columnInfo.IS_NULLABLE.ToColumnTypeNullable()));//{2}
                     }
 
                 }
                 propertiesValue.AppendFormat(
                     ClassTemplate.ItemTemplate,
-                    isAny ? ChangeNullable(typeName, Convert.ToBoolean(columnInfo.IS_NULLABLE)) : typeName,
+                    isAny ? ChangeNullable(typeName, Convert.ToBoolean(columnInfo.IS_NULLABLE.ToColumnTypeNullable())) : typeName,
                     r.ColumnName, "{get;set;}",
                     "");
                 propertiesValue.AppendLine();
@@ -112,6 +112,7 @@ namespace OracleSugar
             template = ClassTemplate.Replace(template, _ns, _foreach, _className);
             return template;
         }
+
 
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace OracleSugar
         /// <returns></returns>
         public string TableNameToClass(SqlSugarClient db, string tableName)
         {
-            var dt = db.GetDataTable(string.Format("select top 1 * from {0}", tableName));
+            var dt = db.GetDataTable(string.Format("select * from {0} where rownum<=1", tableName.ToOracleTableName()));
             var tableColumns = GetTableColumns(db, tableName);
             var reval = DataTableToClass(dt, tableName, null, tableColumns);
             return reval;
@@ -161,7 +162,7 @@ namespace OracleSugar
                 foreach (DataRow dr in tables.Rows)
                 {
                     string tableName = dr["name"].ToString();
-                    var currentTable = db.GetDataTable(string.Format("select top 1 * from {0}", tableName));
+                    var currentTable = db.GetDataTable(string.Format("select  * from {0} where rownum<=1", tableName.ToOracleTableName()));
                     if (callBack != null)
                     {
                         var tableColumns = GetTableColumns(db, tableName);
@@ -200,7 +201,7 @@ namespace OracleSugar
                 foreach (DataRow dr in tables.Rows)
                 {
                     string tableName = dr["name"].ToString();
-                    var currentTable = db.GetDataTable(string.Format("select top 1 * from {0}", tableName));
+                    var currentTable = db.GetDataTable(string.Format("select top 1 * from {0}", tableName.ToOracleTableName()));
                     string className = db.GetClassTypeByTableName(tableName);
                     callBack(tables, className, tableName);
                 }
@@ -216,15 +217,36 @@ namespace OracleSugar
             string sql = null;
             if (tableOrView == null)
             {
-                sql = "select name from sysobjects where xtype in ('U','V') ";
+                sql = @"
+                select  table_name name from user_tables where
+                         table_name!='HELP' 
+                        AND table_name NOT LIKE '%$%'
+                        AND table_name NOT LIKE 'LOGMNRC_%'
+                        AND table_name!='LOGMNRP_CTAS_PART_MAP'
+                        AND table_name!='LOGMNR_LOGMNR_BUILDLOG'
+                        AND table_name!='SQLPLUS_PRODUCT_PROFILE'  
+                        UNION all
+                        select view_name name  from user_views 
+                                                WHERE VIEW_name NOT LIKE '%$%'
+                                                AND VIEW_NAME !='PRODUCT_PRIVS'
+                        AND VIEW_NAME NOT LIKE 'MVIEW_%'  ";
             }
             else if (tableOrView == true)
             {
-                sql = "select name from sysobjects where xtype in ('U') ";
+                sql = @"select  table_name name from user_tables where
+                         table_name!='HELP' 
+                        AND table_name NOT LIKE '%$%'
+                        AND table_name NOT LIKE 'LOGMNRC_%'
+                        AND table_name!='LOGMNRP_CTAS_PART_MAP'
+                        AND table_name!='LOGMNR_LOGMNR_BUILDLOG'
+                        AND table_name!='SQLPLUS_PRODUCT_PROFILE' ";
             }
             else
             {
-                sql = "select name from sysobjects where xtype in ('V') ";
+                sql = @"select view_name name  from user_views 
+                        WHERE VIEW_name NOT LIKE '%$%'
+                        AND VIEW_NAME !='PRODUCT_PRIVS'
+                        AND VIEW_NAME NOT LIKE 'MVIEW_%' ";
             }
             return sql;
         }
@@ -244,7 +266,7 @@ namespace OracleSugar
                     string tableName = dr["name"].ToString().ToLower();
                     if (tableNames.Any(it => it.ToLower() == tableName))
                     {
-                        var currentTable = db.GetDataTable(string.Format("select top 1 * from {0}", tableName));
+                        var currentTable = db.GetDataTable(string.Format("select  * from {0} WHERE rownum<=1", tableName.ToOracleTableName()));
                         var classCode = DataTableToClass(currentTable, tableName, nameSpace);
                         FileSugar.WriteText(fileDirectory.TrimEnd('\\') + "\\" + tableName + ".cs", classCode);
                     }
@@ -274,9 +296,33 @@ namespace OracleSugar
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public string ChangeType(Type type)
+        public string ChangeType(Type type, List<PubModel.DataTableMap> list)
         {
+            var om = OracleTool.OracleDataTypeMapping;
             string typeName = type.Name;
+            if (list.IsValuable() && list.Single().DATA_TYPE.ToString().ToLower() == "number")
+            {
+                var map = list.Single();
+                switch (map.DATA_SCALE.ObjToInt())
+                {
+                    case 0:
+                        if (om.ContainsKey(map.DATA_PRECISION.ObjToInt()))
+                        {
+                            typeName = om[map.DATA_PRECISION.ObjToInt()];
+                        }
+                        else
+                        {
+                            typeName = "int";
+                        }
+                        break;
+                    case 2:
+                        typeName = "double";
+                        break;
+                    default:
+                        break;
+                }
+
+            }
             switch (typeName)
             {
                 case "Int32": typeName = "int"; break;
@@ -296,76 +342,30 @@ namespace OracleSugar
                     case "byte": typeName = "Byte?"; break;
                     case "boolean": typeName = "Boolean?"; break;
                     case "datetime": typeName = "DateTime?"; break;
-
+                    case "decimal": typeName = "decimal?"; break;
+                    case "guid": typeName = "guid?"; break;
                 }
             }
             return typeName;
+
         }
 
-        public string DbTypeToFieldType(string dbtype)
-        {
-            if (string.IsNullOrEmpty(dbtype)) return dbtype;
-            dbtype = dbtype.ToLower();
-            string csharpType = "object";
-            switch (dbtype)
-            {
-                case "bigint": csharpType = "long"; break;
-                case "binary": csharpType = "byte[]"; break;
-                case "bit": csharpType = "bool"; break;
-                case "char": csharpType = "string"; break;
-                case "date": csharpType = "DateTime"; break;
-                case "datetime": csharpType = "DateTime"; break;
-                case "datetime2": csharpType = "DateTime"; break;
-                case "datetimeoffset": csharpType = "DateTimeOffset"; break;
-                case "decimal": csharpType = "decimal"; break;
-                case "float": csharpType = "double"; break;
-                case "image": csharpType = "byte[]"; break;
-                case "int": csharpType = "int"; break;
-                case "money": csharpType = "decimal"; break;
-                case "nchar": csharpType = "string"; break;
-                case "ntext": csharpType = "string"; break;
-                case "numeric": csharpType = "decimal"; break;
-                case "nvarchar": csharpType = "string"; break;
-                case "real": csharpType = "Single"; break;
-                case "smalldatetime": csharpType = "DateTime"; break;
-                case "smallint": csharpType = "short"; break;
-                case "smallmoney": csharpType = "decimal"; break;
-                case "sql_variant": csharpType = "object"; break;
-                case "sysname": csharpType = "object"; break;
-                case "text": csharpType = "string"; break;
-                case "time": csharpType = "TimeSpan"; break;
-                case "timestamp": csharpType = "byte[]"; break;
-                case "tinyint": csharpType = "byte"; break;
-                case "uniqueidentifier": csharpType = "Guid"; break;
-                case "varbinary": csharpType = "byte[]"; break;
-                case "varchar": csharpType = "string"; break;
-                case "xml": csharpType = "string"; break;
-                default: csharpType = "object"; break;
-            }
-            return csharpType;
-        }
         // 获取表结构信息
         public List<PubModel.DataTableMap> GetTableColumns(SqlSugarClient db, string tableName)
         {
-            string sql = @"SELECT  Sysobjects.name AS TABLE_NAME ,
-								syscolumns.Id  AS TABLE_ID,
-								syscolumns.name AS COLUMN_NAME ,
-								systypes.name AS DATA_TYPE ,
-								syscolumns.length AS CHARACTER_MAXIMUM_LENGTH ,
-								sys.extended_properties.[value] AS COLUMN_DESCRIPTION ,
-								syscomments.text AS COLUMN_DEFAULT ,
-								syscolumns.isnullable AS IS_NULLABLE
-								FROM    syscolumns
-								INNER JOIN systypes ON syscolumns.xtype = systypes.xtype
-								LEFT JOIN sysobjects ON syscolumns.id = sysobjects.id
-								LEFT OUTER JOIN sys.extended_properties ON ( sys.extended_properties.minor_id = syscolumns.colid
-																			 AND sys.extended_properties.major_id = syscolumns.id
-																		   )
-								LEFT OUTER JOIN syscomments ON syscolumns.cdefault = syscomments.id
-								WHERE   syscolumns.id IN ( SELECT   id
-												   FROM     SYSOBJECTS
-												   WHERE    xtype in( 'U','V') )
-								AND ( systypes.name <> 'sysname' ) AND Sysobjects.name='" + tableName + "'  AND systypes.name<>'geometry' AND systypes.name<>'geography'  ORDER BY syscolumns.colid";
+            string sql = @" select 
+                              c.TABLE_NAME,
+                              com.COMMENTS COLUMN_DESCRIPTION ,
+                              c.COLUMN_NAME,
+                              UC.NULLABLE   IS_NULLABLE,
+                              c.DATA_PRECISION,
+                              c.DATA_SCALE,
+                              c.DATA_TYPE
+                            from user_tab_columns c  
+                            left  JOIN user_col_comments com on c.Table_Name=com.Table_Name and c.COLUMN_NAME=com.COLUMN_NAME
+                            left   JOIN USER_TAB_COLS  uc on uc.COLUMN_ID=C.COLUMN_ID AND  uc.Table_Name=c.Table_Name
+                            where c.Table_Name='" + tableName + @"' 
+                            order by c.column_name";
 
             return db.SqlQuery<PubModel.DataTableMap>(sql);
         }

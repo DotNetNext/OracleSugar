@@ -18,13 +18,13 @@ namespace WebTest.Demo
         {
             using (SqlSugarClient db = SugarDao.GetInstance())//开启数据库连接
             {
-               var r1= db.GetDataTable("select * from \"Student\" ");
-               var r2 = db.GetSingle<Student>("SELECT * FROM (SELECT * FROM \"Student\"  ORDER BY 'id' DESC ) A where ROWNUM=1");
-               var r3 = db.GetScalar("select  count(1) from \"Student\"");
-               var r4 = db.GetReader("select  count(1) from \"Student\"");
+                var r1 = db.GetDataTable("select * from Student ");
+                var r2 = db.GetSingle<STUDENT>("SELECT * FROM (SELECT * FROM Student  ORDER BY id DESC ) A where ROWNUM=1");
+                var r3 = db.GetScalar("select  count(1) from Student");
+                var r4 = db.GetReader("select  count(1) from Student");
                r4.Dispose();
-               var r5 = db.GetString("SELECT \"name\" FROM (SELECT * FROM \"Student\"  ORDER BY 'id' DESC ) A where ROWNUM=1");
-               var r6 = db.ExecuteCommand("delete from \"Student\" where \"id\"=20");
+               var r5 = db.GetString("SELECT name FROM (SELECT * FROM Student  ORDER BY id DESC ) A where ROWNUM=1");
+               var r6 = db.ExecuteCommand("delete from Student where id=20");
             }
         }
     }

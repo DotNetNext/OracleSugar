@@ -19,8 +19,8 @@ namespace WebTest.Demos
             using (SqlSugarClient db = SugarDao.GetInstance())
             {
                 db.PageModel = PageModel.Offset;
-                var list = db.Queryable<Student>().OrderBy("id").Skip(0).Take(2).ToList();
-                var list1 = db.Sqlable().From<Student>("t").SelectToPageList<Student>("*","id",1,2);
+                var list = db.Queryable<STUDENT>().OrderBy("id").Skip(0).Take(2).ToList();
+                var list1 = db.Sqlable().From<STUDENT>("t").SelectToPageList<STUDENT>("*","id",1,2);
 
 
                 List<School> dataPageList = db.Sqlable()
@@ -31,8 +31,8 @@ namespace WebTest.Demos
                 .SelectToPageList<School>("st.*", "s.id", 1, 10);
 
                 db.PageModel = PageModel.RowNumber;
-                var list2 = db.Queryable<Student>().OrderBy("id").Skip(0).Take(2).ToList();
-                var list22 = db.Sqlable().From<Student>("t").SelectToPageList<Student>("*", "id", 1, 2);
+                var list2 = db.Queryable<STUDENT>().OrderBy("id").Skip(0).Take(2).ToList();
+                var list22 = db.Sqlable().From<STUDENT>("t").SelectToPageList<STUDENT>("*", "id", 1, 2);
             }
         }
     }

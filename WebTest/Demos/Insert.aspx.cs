@@ -16,23 +16,23 @@ namespace WebTest.Demos
         {
             using (SqlSugarClient db = SugarDao.GetInstance())//开启数据库连接
             {
-                Student s = new Student()
+                STUDENT s = new STUDENT()
                 {
-                    name = "张" + new Random().Next(1, int.MaxValue)
+                    NAME = "张" + new Random().Next(1, int.MaxValue)
                 };
 
                 db.Insert(s); //插入一条记录 (有主键也好，没主键也好，有自增列也好都可以插进去)
 
 
-                List<Student> list = new List<Student>()
+                List<STUDENT> list = new List<STUDENT>()
                 {
-                     new Student()
+                     new STUDENT()
                 {
-                     name="张"+new Random().Next(1,int.MaxValue)
+                     NAME="张"+new Random().Next(1,int.MaxValue)
                 },
-                 new Student()
+                 new STUDENT()
                 {
-                     name="张"+new Random().Next(1,int.MaxValue)
+                     NAME="张"+new Random().Next(1,int.MaxValue)
                 }
                 };
 

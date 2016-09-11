@@ -2742,7 +2742,7 @@
             <param name="db"></param>
             <returns></returns>
         </member>
-        <member name="M:OracleSugar.ClassGenerating.ChangeType(System.Type)">
+        <member name="M:OracleSugar.ClassGenerating.ChangeType(System.Type,System.Collections.Generic.List{OracleSugar.PubModel.DataTableMap})">
             <summary>
             匹配类型
             </summary>

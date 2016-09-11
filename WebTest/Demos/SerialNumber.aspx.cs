@@ -19,9 +19,9 @@ namespace WebTest.Demos
             {
                 using (SqlSugarClient db = SugarDaoSerNum.GetInstance())//开启数据库连接
                 {
-                    var obj =Convert.ToInt32( db.Insert<Student>(new Student() { }));
+                    var obj =Convert.ToInt32( db.Insert<STUDENT>(new STUDENT() { }));
 
-                    var name = db.Queryable<Student>().Single(it => it.id == obj).name;
+                    var name = db.Queryable<STUDENT>().Single(it => it.ID == obj).NAME;
    
 
                     var obj2 = Convert.ToInt32( db.Insert<School>(new School() { }));
