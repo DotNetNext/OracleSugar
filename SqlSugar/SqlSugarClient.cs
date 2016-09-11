@@ -487,106 +487,10 @@ namespace OracleSugar
         /// <returns></returns>
         public bool SqlBulkCopy<T>(List<T> entities) where T : class
         {
-            int actionNum = 100;
-            var reval = true;
-            while (entities.Count > 0)
-            {
-                var insertRes = SqlBulkCopy<T>(entities.Take(actionNum));
-                if (reval && insertRes)
-                {
-                    reval = true;
-                }
-                else
-                {
-                    reval = false;
-                }
-                if (actionNum > entities.Count)
-                {
-                    actionNum = entities.Count;
-                }
-                entities.RemoveRange(0, actionNum);
-            }
-            return reval;
+            return InsertRange<T>(entities).Count>0;
         }
 
-        private bool SqlBulkCopy<T>(IEnumerable<T> entities) where T : class
-        {
-            if (entities == null) { return false; };
-
-            Type type = typeof(T);
-            string typeName = type.Name;
-            typeName = GetTableNameByClassType(typeName);
-            string pkName = SqlSugarTool.GetPrimaryKeyByTableName(this, typeName);
-            var identityNames = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
-            var isIdentity = identityNames != null && identityNames.Count > 0;
-            var columnNames = SqlSugarTool.GetColumnsByTableName(this, typeName);
-            if (isIdentity)
-            {
-                columnNames = columnNames.Where(c => !identityNames.Any(it => it.Value == c)).ToList();//去掉自添列
-            }
-            StringBuilder sbSql = new StringBuilder("INSERT INTO ");
-            sbSql.AppendLine(typeName);
-            sbSql.AppendFormat("({0})", string.Join(",", columnNames.Select(it => "[" + it + "]")));
-
-
-            int i = 0;
-            //属性缓存
-            string cachePropertiesKey = "db." + type.FullName + ".GetProperties";
-            var cachePropertiesManager = CacheManager<PropertyInfo[]>.GetInstance();
-            PropertyInfo[] props = null;
-            if (cachePropertiesManager.ContainsKey(cachePropertiesKey))
-            {
-                props = cachePropertiesManager[cachePropertiesKey];
-            }
-            else
-            {
-                props = type.GetProperties();
-                cachePropertiesManager.Add(cachePropertiesKey, props, cachePropertiesManager.Day);
-            }
-            foreach (var entity in entities)
-            {
-                sbSql.AppendLine("SELECT ");
-                foreach (var name in columnNames)
-                {
-                    var isLastName = name == columnNames.Last();
-                    var prop = props.Single(it => it.Name == name);
-                    var objValue = prop.GetValue(entity, null);
-                    bool isNullable = false;
-                    var underType = SqlSugarTool.GetUnderType(prop, ref isNullable);
-                    if (objValue == null)
-                    {
-                        objValue = "NULL";
-                    }
-                    else if (underType == SqlSugarTool.DateType)
-                    {
-                        objValue = "'" + objValue.ToString() + "'";
-                    }
-                    else if (underType == SqlSugarTool.BoolType)
-                    {
-                        objValue = Convert.ToBoolean(objValue) ? 1 : 0;
-                    }
-                    else if (underType == SqlSugarTool.StringType)
-                    {
-                        //string参数需要处理注入 (因为SqlParameter参数上限为2100所以无法使用参数化)
-                        objValue = "'" + objValue.ToString().ToSqlFilter() + "'";
-                    }
-                    else
-                    {
-                        objValue = "'" + objValue.ToString() + "'";
-                    }
-
-                    sbSql.Append(objValue + (isLastName ? "" : ","));
-                }
-                var isLastEntity = entities.Last() == entity;
-                if (!isLastEntity)
-                {
-                    sbSql.AppendLine(" UNION ALL ");
-                }
-            }
-            var reval = base.ExecuteCommand(sbSql.ToString());
-            sbSql = null;
-            return reval > 0;
-        }
+    
 
         /// <summary>
         /// 更新
