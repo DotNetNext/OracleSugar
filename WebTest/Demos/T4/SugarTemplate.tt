@@ -27,11 +27,12 @@
 	//{4,"short"},
 	//{9,"int"},
 	//{18,"long"}
+	//{n.2,"double"}
     //{n.0,"int"}
  
 	 using (var db = new SqlSugarClient("Data Source=localhost/orcl;User ID=system;Password=Ojhl52771;"))
      {
-	      //能够执行成功但是还是有错，T4的问题
+	      //注意:如果只报一个错，说明他已经执行成功了
           db.ClassGenerating.CreateClassFiles(db, projectDir +"/Models","Models");  
 
       };
