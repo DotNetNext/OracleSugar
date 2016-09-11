@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class SCHOOL
+    public class CITY
     {
         
      /// <summary>
@@ -26,7 +26,7 @@ namespace Models
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public int? AREAID {get;set;}
+        public int? PROVINCEID {get;set;}
 
     }
 }

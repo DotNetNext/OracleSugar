@@ -20,10 +20,10 @@ namespace WebTest.Demo
             using (var db = SugarDao.GetInstance())
             {
                 //指定列更新
-                db.Update<School>(new { name = "蓝翔14" }, it => it.id == 14);
-                db.Update<School, int>(new { name = "蓝翔11 23 12", areaId=2 }, 11, 23, 12);
-                db.Update<School, string>(new { name = "蓝翔2" }, new string[] { "11", "21" });
-                db.Update<School>(new { name = "蓝翔2" }, it => it.id == id);
+                db.Update<SCHOOL>(new { name = "蓝翔14" }, it => it.ID == 14);
+                db.Update<SCHOOL, int>(new { name = "蓝翔11 23 12", areaId=2 }, 11, 23, 12);
+                db.Update<SCHOOL, string>(new { name = "蓝翔2" }, new string[] { "11", "21" });
+                db.Update<SCHOOL>(new { name = "蓝翔2" }, it => it.ID == id);
 
    
 
@@ -31,15 +31,15 @@ namespace WebTest.Demo
                 var dic =new Dictionary<string, string>();
                 dic.Add("name","第十三条");
                 dic.Add("areaId", "1");
-                db.Update<School,int>(dic, 13);
-                db.Update<School>(dic, it => it.id == 13);
+                db.Update<SCHOOL,int>(dic, 13);
+                db.Update<SCHOOL>(dic, it => it.ID == 13);
 
 
 
                 //整个实体更新
-                db.Update(new School { id = 16, name = "蓝翔16", AreaId=1 });
-                db.Update<School>(new School { id = id, name = "蓝翔18", AreaId=2 }, it => it.id == 18);
-                db.Update<School>(new School() { id = 11, name = "xx" });
+                db.Update(new SCHOOL { ID = 16, NAME = "蓝翔16", AREAID=1 });
+                db.Update<SCHOOL>(new SCHOOL { ID = id, NAME = "蓝翔18", AREAID=2 }, it => it.ID == 18);
+                db.Update<SCHOOL>(new SCHOOL() { ID = 11, NAME = "xx" });
 
                 //设置不更新列
                 db.DisableUpdateColumns = new string[] { "CreateTime" };//设置CreateTime不更新

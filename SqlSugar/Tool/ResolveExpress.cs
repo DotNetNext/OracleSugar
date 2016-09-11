@@ -160,7 +160,7 @@ namespace OracleSugar
                         parValue = right;
                     }
                     var oldLeft = AddParas(ref left, parValue);
-                    return string.Format(" ({0} {1} @{2}) ", oldLeft, oper, left);
+                    return string.Format(" ({0} {1} :{2}) ", oldLeft, oper, left);
                 }
                 else if (isValueOperKey)
                 {
@@ -174,7 +174,7 @@ namespace OracleSugar
                         parValue = left;
                     }
                     var oldRight = AddParasReturnRight(parValue, ref  right);
-                    return string.Format("( @{0} {1} {2} )", right, oper, oldRight);
+                    return string.Format("( :{0} {1} {2} )", right, oper, oldRight);
                 }
                 else if (leftType == MemberType.Value && rightType == MemberType.Value)
                 {
@@ -368,11 +368,11 @@ namespace OracleSugar
             }
             if (right == null)
             {
-                this.Paras.Add(new OracleParameter("@" + left, DBNull.Value));
+                this.Paras.Add(new OracleParameter(":" + left, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new OracleParameter("@" + left, right));
+                this.Paras.Add(new OracleParameter(":" + left, right));
             }
             return oldLeft;
         }
@@ -387,11 +387,11 @@ namespace OracleSugar
             }
             if (left == null)
             {
-                this.Paras.Add(new OracleParameter("@" + right, DBNull.Value));
+                this.Paras.Add(new OracleParameter(":" + right, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new OracleParameter("@" + right, left));
+                this.Paras.Add(new OracleParameter(":" + right, left));
             }
             return oldRight;
         }
@@ -403,7 +403,7 @@ namespace OracleSugar
             var left = CreateSqlElements(mce.Object, ref leftType);
             var right = CreateSqlElements(mce.Arguments[0], ref rightType);
             var oldLeft = AddParas(ref left, right);
-            return string.Format("({0} {1} LIKE @{2}+'%')", oldLeft, isTure == false ? "  NOT " : null, left);
+            return string.Format("({0} {1} LIKE :{2}+'%')", oldLeft, isTure == false ? "  NOT " : null, left);
         }
         private string EndWith(string methodName, MethodCallExpression mce, bool isTure)
         {
@@ -412,7 +412,7 @@ namespace OracleSugar
             var left = CreateSqlElements(mce.Object, ref leftType);
             var right = CreateSqlElements(mce.Arguments[0], ref rightType);
             var oldLeft = AddParas(ref left, right);
-            return string.Format("({0} {1} LIKE '%'+@{2})", oldLeft, isTure == false ? "  NOT " : null, left);
+            return string.Format("({0} {1} LIKE '%'+:{2})", oldLeft, isTure == false ? "  NOT " : null, left);
         }
 
         private string Contains(string methodName, MethodCallExpression mce, bool isTure)
@@ -422,7 +422,7 @@ namespace OracleSugar
             var left = CreateSqlElements(mce.Object, ref leftType);
             var right = CreateSqlElements(mce.Arguments[0], ref rightType);
             var oldLeft = AddParas(ref left, right);
-            return string.Format("({0} {1} LIKE '%'+@{2}+'%')", oldLeft, isTure == false ? "  NOT " : null, left);
+            return string.Format("({0} {1} LIKE '%'+:{2}+'%')", oldLeft, isTure == false ? "  NOT " : null, left);
         }
 
 

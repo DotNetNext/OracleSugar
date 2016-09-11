@@ -393,7 +393,7 @@ namespace OracleSugar
         internal static string GetPrimaryKeyByTableName(SqlSugarClient db, string tableName)
         {
             string key = "GetPrimaryKeyByTableName" + tableName;
-            tableName = tableName.ToLower();
+            tableName = tableName.ToOracleTableName();
             var cm = CacheManager<List<KeyValue>>.GetInstance();
             List<KeyValue> primaryInfo = null;
 
@@ -402,16 +402,16 @@ namespace OracleSugar
                 primaryInfo = cm[key];
             else
             {
-                string sql = @"  				select cu.TABLE_NAME table_name,cu.COLUMN_name keyName   from user_cons_columns cu, user_constraints au 
+                string sql = @"  				select cu.TABLE_NAME  ,cu.COLUMN_name KEYNAME  from user_cons_columns cu, user_constraints au 
    where cu.constraint_name = au.constraint_name
-    and au.constraint_type = 'P' and au.table_name = '"+tableName.ToOracleTableName()+@"';";
+    and au.constraint_type = 'P' and au.table_name = '" +tableName.ToOracleTableName()+@"'";
                 var dt = db.GetDataTable(sql);
                 primaryInfo = new List<KeyValue>();
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
-                        primaryInfo.Add(new KeyValue() { Key = dr["tableName"].ToString().ToLower(), Value = dr["keyName"].ToString() });
+                        primaryInfo.Add(new KeyValue() { Key = dr["TABLE_NAME"].ToString().ToOracleTableName(), Value = dr["KEYNAME"].ToString() });
                     }
                 }
                 cm.Add(key, primaryInfo, cm.Day);

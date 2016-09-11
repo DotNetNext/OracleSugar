@@ -24,9 +24,9 @@ namespace WebTest.Demos
                     var name = db.Queryable<STUDENT>().Single(it => it.ID == obj).NAME;
    
 
-                    var obj2 = Convert.ToInt32( db.Insert<School>(new School() { }));
+                    var obj2 = Convert.ToInt32( db.Insert<SCHOOL>(new SCHOOL() { }));
 
-                    var name2=db.Queryable<School>().Single(it => it.id == obj2).name;
+                    var name2=db.Queryable<SCHOOL>().Single(it => it.ID == obj2).NAME;
                 }
             }
   

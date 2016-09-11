@@ -538,7 +538,7 @@ namespace OracleSugar
                 sbSql = new StringBuilder(string.Format(" UPDATE [{0}] SET ", typeName));
                 foreach (var r in rows)
                 {
-                    var name = r.ParameterName.TrimStart('@');
+                    var name = r.ParameterName.TrimStart(':');
                     var isPk = pkName != null && pkName.ToLower() == name.ToLower();
                     var isIdentity = identityNames.Any(it => it.Value.ToLower() == name.ToLower());
                     var isDisableUpdateColumns = DisableUpdateColumns != null && DisableUpdateColumns.Any(it => it.ToLower() == name.ToLower());
@@ -558,7 +558,7 @@ namespace OracleSugar
                             continue;
                         }
                     }
-                    sbSql.Append(string.Format(" [{0}] =@{0}  ,", name));
+                    sbSql.Append(string.Format(" [{0}] =:{0}  ,", name));
                 }
                 sbSql.Remove(sbSql.Length - 1, 1);
                 sbSql.Append(" WHERE  1=1  ");
@@ -641,7 +641,7 @@ namespace OracleSugar
                         continue;
                     }
                 }
-                sbSql.Append(string.Format(" [{0}] =@{0}  ,", r.Key));
+                sbSql.Append(string.Format(" [{0}] =:{0}  ,", r.Key));
             }
             sbSql.Remove(sbSql.Length - 1, 1);
             if (whereIn.Count() == 0)
@@ -654,12 +654,12 @@ namespace OracleSugar
                 sbSql.AppendFormat("WHERE {1} IN ({2})", typeName, pkName, whereIn.ToJoinSqlInVal());
             }
             List<SqlParameter> parsList = new List<SqlParameter>();
-            var pars = rows.Select(c => new SqlParameter("@" + c.Key, c.Value));
+            var pars = rows.Select(c => new SqlParameter(":" + c.Key, c.Value));
             if (pars != null)
             {
                 foreach (var par in pars)
                 {
-                    var isDisableUpdateColumns = DisableUpdateColumns != null && DisableUpdateColumns.Any(it => it.ToLower() == par.ParameterName.TrimStart('@').ToLower());
+                    var isDisableUpdateColumns = DisableUpdateColumns != null && DisableUpdateColumns.Any(it => it.ToLower() == par.ParameterName.TrimStart(':').ToLower());
                     if (par.SqlDbType == SqlDbType.Udt || par.ParameterName.ToLower().Contains("hierarchyid"))
                     {
                         par.UdtTypeName = "HIERARCHYID";
@@ -694,7 +694,7 @@ namespace OracleSugar
             typeName = GetTableNameByClassType(typeName);
             ResolveExpress re = new ResolveExpress();
             re.ResolveExpression(re, expression);
-            string sql = string.Format("DELETE FROM [{0}] WHERE 1=1 {1}", typeName, re.SqlWhere);
+            string sql = string.Format("DELETE FROM {0} WHERE 1=1 {1}", typeName, re.SqlWhere);
             bool isSuccess = ExecuteCommand(sql, re.Paras.ToArray()) > 0;
             return isSuccess;
         }
@@ -717,7 +717,7 @@ namespace OracleSugar
             bool isSuccess = false;
             if (whereIn != null && whereIn.Length > 0)
             {
-                string sql = string.Format("DELETE FROM [{0}] WHERE {1} IN ({2})", typeName, SqlSugarTool.GetPrimaryKeyByTableName(this, typeName), whereIn.ToJoinSqlInVal());
+                string sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})", typeName, SqlSugarTool.GetPrimaryKeyByTableName(this, typeName), whereIn.ToJoinSqlInVal());
                 int deleteRowCount = ExecuteCommand(sql);
                 isSuccess = deleteRowCount > 0;
             }
@@ -760,7 +760,7 @@ namespace OracleSugar
             bool isSuccess = false;
             if (whereIn != null && whereIn.Length > 0)
             {
-                string sql = string.Format("DELETE FROM [{0}] WHERE {1} IN ({2})", typeName, fieldName, whereIn.ToJoinSqlInVal());
+                string sql = string.Format("DELETE FROM {0} WHERE {1} IN ({2})", typeName, fieldName, whereIn.ToJoinSqlInVal());
                 int deleteRowCount = ExecuteCommand(sql);
                 isSuccess = deleteRowCount > 0;
             }
@@ -786,7 +786,7 @@ namespace OracleSugar
             bool isSuccess = false;
             if (whereIn != null && whereIn.Length > 0)
             {
-                string sql = string.Format("UPDATE  [{0}] SET {3}=1 WHERE {1} IN ({2})", typeName, SqlSugarTool.GetPrimaryKeyByTableName(this, typeName), whereIn.ToJoinSqlInVal(), field);
+                string sql = string.Format("UPDATE  {0} SET {3}=1 WHERE {1} IN ({2})", typeName, SqlSugarTool.GetPrimaryKeyByTableName(this, typeName), whereIn.ToJoinSqlInVal(), field);
                 int deleteRowCount = ExecuteCommand(sql);
                 isSuccess = deleteRowCount > 0;
             }
@@ -821,7 +821,7 @@ namespace OracleSugar
             bool isSuccess = false;
             ResolveExpress re = new ResolveExpress();
             re.ResolveExpression(re, expression);
-            string sql = string.Format("UPDATE  [{0}] SET {1}=1 WHERE  1=1 {2}", typeName, field, re.SqlWhere);
+            string sql = string.Format("UPDATE  {0} SET {1}=1 WHERE  1=1 {2}", typeName, field, re.SqlWhere);
             int deleteRowCount = ExecuteCommand(sql, re.Paras.ToArray());
             isSuccess = deleteRowCount > 0;
             return isSuccess;
