@@ -298,7 +298,7 @@ namespace OracleSugar
         /// <returns></returns>
         public string ChangeType(Type type, List<PubModel.DataTableMap> list)
         {
-            var om = OracleTool.OracleDataTypeMapping;
+            var om = OracleConfig.OracleNumberTypeMapping;
             string typeName = type.Name;
             if (list.IsValuable() && list.Single().DATA_TYPE.ToString().ToLower() == "number")
             {

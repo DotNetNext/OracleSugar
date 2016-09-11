@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\OracleTool.cs" />
+    <Compile Include="Base\OracleConfig.cs" />
     <Compile Include="CloudClient.cs" />
     <Compile Include="Cloud\CloudModels.cs" />
     <Compile Include="Cloud\CloudPubMethod.cs" />

@@ -48,7 +48,7 @@ namespace OracleSugar
             /// <summary>
             /// 获取流水号函数(解决事务中死锁BUG)
             /// </summary>
-            public Func<SqlSugarClient,string> GetNumFuncWithDb { get; set; }
+            public Func<SqlSugarClient, string> GetNumFuncWithDb { get; set; }
         }
 
         /// <summary>
@@ -73,6 +73,24 @@ namespace OracleSugar
             /// </summary>
             public string ReplaceViewStringValue = "LanguageId = {0}";
 
+        }
+        /// <summary>
+        /// 序列
+        /// </summary>
+        public class SequenceModel
+        {
+            /// <summary>
+            /// 表名
+            /// </summary>
+            public string TableName { get; set; }
+            /// <summary>
+            /// 列名
+            /// </summary>
+            public string ColumnName { get; set; }
+            /// <summary>
+            /// 序列的值
+            /// </summary>
+            public string Value { get; set; }
         }
     }
 }

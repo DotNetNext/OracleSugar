@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OracleSugar
 {
-    public static class OracleTool
+    public static class OracleConfig
     {
 
 
@@ -18,8 +18,10 @@ namespace OracleSugar
         {
             return value.ToString() == "Y" ? true : false;
         }
-
-        public static Dictionary<int,string> OracleDataTypeMapping =new Dictionary<int,string>()
+        /// <summary>
+        /// 设置Number与实体的类型映射
+        /// </summary>
+        public static Dictionary<int,string> OracleNumberTypeMapping =new Dictionary<int,string>()
         {
             {1,"bool"},
             {3,"byte"},
@@ -27,5 +29,9 @@ namespace OracleSugar
             {9,"int"},
             {18,"long"}
         };
+        /// <summary>
+        /// 设置序列
+        /// </summary>
+        public static List<PubModel.SequenceModel> SequenceMapping = new List<PubModel.SequenceModel>();
     }
 }
