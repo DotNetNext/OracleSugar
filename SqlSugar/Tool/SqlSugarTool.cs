@@ -211,7 +211,7 @@ namespace OracleSugar
                     if (type == SqlSugarTool.DicArraySO)
                     {
                         var newObj = (Dictionary<string, object>)obj;
-                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter(":" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -222,7 +222,7 @@ namespace OracleSugar
                     {
 
                         var newObj = (Dictionary<string, string>)obj;
-                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter(":" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -251,7 +251,7 @@ namespace OracleSugar
                         }
                         else
                         {
-                            var par = new OracleParameter("@" + r.Name, value);
+                            var par = new OracleParameter(":" + r.Name, value);
                             SetParSize(par);
                             listParams.Add(par);
                         }

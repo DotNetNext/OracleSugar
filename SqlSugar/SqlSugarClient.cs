@@ -535,7 +535,7 @@ namespace OracleSugar
             }
             else
             {
-                sbSql = new StringBuilder(string.Format(" UPDATE [{0}] SET ", typeName));
+                sbSql = new StringBuilder(string.Format(" UPDATE {0} SET ", typeName));
                 foreach (var r in rows)
                 {
                     var name = r.ParameterName.TrimStart(':');
@@ -558,7 +558,7 @@ namespace OracleSugar
                             continue;
                         }
                     }
-                    sbSql.Append(string.Format(" [{0}] =:{0}  ,", name));
+                    sbSql.Append(string.Format(" {0} =:{0}  ,", name));
                 }
                 sbSql.Remove(sbSql.Length - 1, 1);
                 sbSql.Append(" WHERE  1=1  ");
@@ -616,7 +616,7 @@ namespace OracleSugar
             Type type = typeof(T);
             string typeName = type.Name;
             typeName = GetTableNameByClassType(typeName);
-            StringBuilder sbSql = new StringBuilder(string.Format(" UPDATE [{0}] SET ", typeName));
+            StringBuilder sbSql = new StringBuilder(string.Format(" UPDATE {0} SET ", typeName));
             Dictionary<string, object> rows = SqlSugarTool.GetObjectToDictionary(rowObj);
             string pkName = SqlSugarTool.GetPrimaryKeyByTableName(this, typeName);
             var identityNames = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
@@ -641,7 +641,7 @@ namespace OracleSugar
                         continue;
                     }
                 }
-                sbSql.Append(string.Format(" [{0}] =:{0}  ,", r.Key));
+                sbSql.Append(string.Format(" {0} =:{0}  ,", r.Key));
             }
             sbSql.Remove(sbSql.Length - 1, 1);
             if (whereIn.Count() == 0)
