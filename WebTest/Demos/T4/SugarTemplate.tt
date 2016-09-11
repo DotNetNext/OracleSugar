@@ -7,11 +7,11 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="SqlSugar" #>
+<#@ import namespace="OracleSugar" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Web" #>
-<#@ assembly name="$(SolutionDir)\WebTest\App_Lib\SqlSugar.dll" #>
-
+<#@ assembly name="$(SolutionDir)\WebTest\App_Lib\Oracle.ManagedDataAccess.dll" #>
+<#@ assembly name="$(SolutionDir)\WebTest\App_Lib\OracleSugar.dll" #>
 <# 
      
 	//CTRL+S将会执行该文件的代码，自动作生实体
@@ -29,8 +29,9 @@
 	//{18,"long"}
     //{n.0,"int"}
  
-	 using (var db = new SqlSugarClient("server=.;Initial Catalog=SqlSugarTest;Persist Security Info=True;User ID=sa;Password=sasa"))
+	 using (var db = new SqlSugarClient("Data Source=localhost/orcl;User ID=system;Password=Ojhl52771;"))
      {
+	      //能够执行成功但是还是有错，T4的问题
           db.ClassGenerating.CreateClassFiles(db, projectDir +"/Models","Models");  
 
       };

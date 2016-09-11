@@ -74,6 +74,7 @@
     <Content Include="App_Data\单库模式DEMO脚本.sql" />
     <Content Include="App_Data\多库模式数据库结构脚本cloudDB %281%29.sql" />
     <Content Include="App_Lib\Oracle.ManagedDataAccess.dll" />
+    <Content Include="App_Lib\OracleSugar.dll" />
     <Content Include="App_Lib\SqlSugar.dll" />
     <Content Include="App_Lib\SqlSugar.XML" />
     <Content Include="App_Lib\SyntacticSugar.dll" />
