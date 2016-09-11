@@ -20,8 +20,14 @@ namespace OracleSugar
         }
         /// <summary>
         /// 设置Number与实体的类型映射
+        /// 默认:
+        ///   {1,"bool"},
+        ///   {3,"byte"},
+        ///   {4,"short"},
+        ///   {9,"int"},
+        ///   {18,"long"}
         /// </summary>
-        public static Dictionary<int,string> OracleNumberTypeMapping =new Dictionary<int,string>()
+        public static Dictionary<int, string> OracleNumberTypeMapping = new Dictionary<int, string>()
         {
             {1,"bool"},
             {3,"byte"},
