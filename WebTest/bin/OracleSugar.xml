@@ -962,6 +962,26 @@
             数据库语言的VALUE
             </summary>
         </member>
+        <member name="T:OracleSugar.PubModel.SequenceModel">
+            <summary>
+            序列
+            </summary>
+        </member>
+        <member name="P:OracleSugar.PubModel.SequenceModel.TableName">
+            <summary>
+            表名
+            </summary>
+        </member>
+        <member name="P:OracleSugar.PubModel.SequenceModel.ColumnName">
+            <summary>
+            列名
+            </summary>
+        </member>
+        <member name="P:OracleSugar.PubModel.SequenceModel.Value">
+            <summary>
+            序列的值
+            </summary>
+        </member>
         <member name="T:OracleSugar.SqlSugarTool">
             <summary>
             ** 描述：SqlSugar工具类
@@ -2854,6 +2874,22 @@
         <member name="P:OracleSugar.TaskableWithCount`1.WhereObj">
             <summary>
             数据库参数(例如:new{id=1,name="张三"})
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OracleConfig.OracleNumberTypeMapping">
+            <summary>
+            设置Number与实体的类型映射
+            默认:
+              {1,"bool"},
+              {3,"byte"},
+              {4,"short"},
+              {9,"int"},
+              {18,"long"}
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OracleConfig.SequenceMapping">
+            <summary>
+            设置序列
             </summary>
         </member>
     </members>

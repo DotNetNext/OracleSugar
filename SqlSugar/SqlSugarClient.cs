@@ -190,7 +190,8 @@ namespace OracleSugar
                     if (filterValue.Value != null)
                         queryable.Params.AddRange(SqlSugarTool.GetParameters(filterValue.Value));
                 }
-                if (_filterColumns.IsValuable() && _filterColumns.ContainsKey(CurrentFilterKey)) {
+                if (_filterColumns.IsValuable() && _filterColumns.ContainsKey(CurrentFilterKey))
+                {
                     var columns = _filterColumns[CurrentFilterKey];
                     queryable.Select = string.Join(",", columns);
                 }
@@ -327,6 +328,7 @@ namespace OracleSugar
             Type type = entity.GetType();
             string typeName = type.Name;
             typeName = GetTableNameByClassType(typeName);
+            var seqMap = OracleConfig.SequenceMapping;
 
             StringBuilder sbInsertSql = new StringBuilder();
             List<OracleParameter> pars = new List<OracleParameter>();
@@ -366,7 +368,7 @@ namespace OracleSugar
                 //实例化一个StringBuilder做字符串的拼接 
 
 
-                sbInsertSql.Append("insert into [" + typeName + "] (");
+                sbInsertSql.Append("insert into " + typeName + " (");
 
                 //3.遍历实体的属性集合 
                 foreach (PropertyInfo prop in props)
@@ -378,12 +380,8 @@ namespace OracleSugar
                             continue;
                         }
                     }
-                    //EntityState,@EntityKey
-                    if (!isIdentity || identities.Any(it => it.Value.ToLower() != prop.Name.ToLower()))
-                    {
-                        //4.将属性的名字加入到字符串中 
-                        sbInsertSql.Append("[" + prop.Name + "],");
-                    }
+                    //4.将属性的名字加入到字符串中 
+                    sbInsertSql.Append("" + prop.Name + ",");
                 }
                 //**去掉最后一个逗号 
                 sbInsertSql.Remove(sbInsertSql.Length - 1, 1);
@@ -405,7 +403,7 @@ namespace OracleSugar
                         }
                     }
                     if (!cacheSqlManager.ContainsKey(cacheSqlKey))
-                        sbInsertSql.Append("@" + prop.Name + ",");
+                        sbInsertSql.Append(":" + prop.Name + ",");
                     object val = prop.GetValue(entity, null);
                     if (val == null)
                         val = DBNull.Value;
@@ -415,7 +413,8 @@ namespace OracleSugar
                         var isAnyNum = _serialNumber.Any(serEexp);
                         if (isAnyNum && (val == DBNull.Value || val.IsNullOrEmpty()))
                         {
-                            if (_serialNumber.First(serEexp).GetNumFunc != null) {
+                            if (_serialNumber.First(serEexp).GetNumFunc != null)
+                            {
                                 val = _serialNumber.First(serEexp).GetNumFunc();
                             }
                             if (_serialNumber.First(serEexp).GetNumFuncWithDb != null)
@@ -429,30 +428,49 @@ namespace OracleSugar
                     {
                         val = (int)(val);
                     }
+                    if (val.GetType() == SqlSugarTool.BoolType)
+                    {
+                        val = Convert.ToBoolean(val) ? 1 : 0;
+                    }
 
-                    var par = new OracleParameter("@" + prop.Name, val);
-                    SqlSugarTool.SetParSize(par);
+                    var par = new OracleParameter(":" + prop.Name, val);
+                    //SqlSugarTool.SetParSize(par);
                     pars.Add(par);
+                }
+                else
+                {
+                    if (!cacheSqlManager.ContainsKey(cacheSqlKey))
+                    {
+                        var seqName = seqMap.Single(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower()).Value;
+                        sbInsertSql.Append(seqName + ".Nextval,");
+                    }
                 }
             }
             if (!isContainCacheSqlKey)
             {
                 //**去掉最后一个逗号 
                 sbInsertSql.Remove(sbInsertSql.Length - 1, 1);
-                if (isIdentity == false)
-                {
-                    sbInsertSql.Append(");select 'true';");
-                }
-                else
-                {
-                    sbInsertSql.Append(");select SCOPE_IDENTITY();");
-                }
+                sbInsertSql.Append(")");
+
                 cacheSqlManager.Add(cacheSqlKey, sbInsertSql, cacheSqlManager.Day);
             }
             var sql = sbInsertSql.ToString();
             try
             {
-                var lastInsertRowId = GetScalar(sql, pars.ToArray());
+                var lastInsertRowId = ExecuteCommand(sql, pars.ToArray());
+                if (lastInsertRowId > 0)
+                {
+                    if (isIdentity)
+                    {
+                        var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
+                        var eqValue =GetInt("SELECT " + seqName + ".currval from dual");
+                        lastInsertRowId = eqValue;
+                    }
+                    else {
+                        lastInsertRowId = 1;
+                    }
+
+                }
                 return lastInsertRowId;
             }
             catch (Exception ex)
@@ -651,7 +669,7 @@ namespace OracleSugar
             {
                 foreach (var par in pars)
                 {
-                 
+
                     SqlSugarTool.SetParSize(par);
                     parsList.Add(par);
                 }

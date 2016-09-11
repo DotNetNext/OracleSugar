@@ -14,8 +14,15 @@ namespace WebTest.Demos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //设置序列
+            OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
+            {
+                  new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"} 
+            };
             using (SqlSugarClient db = SugarDao.GetInstance())//开启数据库连接
             {
+
+
                 STUDENT s = new STUDENT()
                 {
                     NAME = "张" + new Random().Next(1, int.MaxValue)

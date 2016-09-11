@@ -39,5 +39,6 @@ namespace OracleSugar
         /// 设置序列
         /// </summary>
         public static List<PubModel.SequenceModel> SequenceMapping = new List<PubModel.SequenceModel>();
+
     }
 }

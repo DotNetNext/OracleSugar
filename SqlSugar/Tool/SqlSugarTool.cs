@@ -218,7 +218,8 @@ namespace OracleSugar
                         }
                         listParams.AddRange(pars);
                     }
-                    else {
+                    else
+                    {
 
                         var newObj = (Dictionary<string, string>)obj;
                         var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
@@ -348,45 +349,13 @@ namespace OracleSugar
         /// <returns></returns>
         internal static List<KeyValue> GetIdentitiesKeyByTableName(SqlSugarClient db, string tableName)
         {
-            string key = "GetIdentityKeyByTableName" + tableName;
-            var cm = CacheManager<List<KeyValue>>.GetInstance();
-            List<KeyValue> identityInfo = null;
-            string sql = string.Format(@"
-                            declare @Table_name varchar(60)
-                            set @Table_name = '{0}';
-
-
-                            Select so.name tableName,                   --表名字
-                                   sc.name keyName,             --自增字段名字
-                                   ident_current(so.name) curr_value,    --自增字段当前值
-                                   ident_incr(so.name) incr_value,       --自增字段增长值
-                                   ident_seed(so.name) seed_value        --自增字段种子值
-                              from sysobjects so 
-                            Inner Join syscolumns sc
-                                on so.id = sc.id
-
-                                   and columnproperty(sc.id, sc.name, 'IsIdentity') = 1
-
-                            Where upper(so.name) = upper(@Table_name)
-         ", tableName);
-            if (cm.ContainsKey(key))
+            if (OracleConfig.SequenceMapping.IsValuable())
             {
-                identityInfo = cm[key];
-                return identityInfo;
+                return OracleConfig.SequenceMapping.Select(it => new KeyValue() { Key = it.TableName, Value = it.ColumnName }).ToList();
             }
             else
             {
-                var dt = db.GetDataTable(sql);
-                identityInfo = new List<KeyValue>();
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        identityInfo.Add(new KeyValue() { Key = dr["tableName"].ToString().ToLower(), Value = dr["keyName"].ToString() });
-                    }
-                }
-                cm.Add(key, identityInfo, cm.Day);
-                return identityInfo;
+                return new List<KeyValue>();
             }
         }
         /// <summary>
@@ -405,7 +374,10 @@ namespace OracleSugar
             }
             else
             {
-                string sql = " SELECT Name FROM SysColumns WHERE id=Object_Id('" + tableName + "')";
+                string sql = @" select  COLUMN_name 
+                            from user_tab_columns c  
+                            where c.Table_Name='"+tableName.ToOracleTableName()+@"' 
+                            order by c.column_name";
                 var reval = db.SqlQuery<string>(sql);
                 cm.Add(key, reval, cm.Day);
                 return reval;
@@ -430,13 +402,9 @@ namespace OracleSugar
                 primaryInfo = cm[key];
             else
             {
-                string sql = @"  				SELECT a.name as keyName ,d.name as tableName
-  FROM   syscolumns a 
-  inner  join sysobjects d on a.id=d.id       
-  where  exists(SELECT 1 FROM sysobjects where xtype='PK' and  parent_obj=a.id and name in (  
-  SELECT name  FROM sysindexes   WHERE indid in(  
-  SELECT indid FROM sysindexkeys WHERE id = a.id AND colid=a.colid  
-)))";
+                string sql = @"  				select cu.TABLE_NAME table_name,cu.COLUMN_name keyName   from user_cons_columns cu, user_constraints au 
+   where cu.constraint_name = au.constraint_name
+    and au.constraint_type = 'P' and au.table_name = '"+tableName.ToOracleTableName()+@"';";
                 var dt = db.GetDataTable(sql);
                 primaryInfo = new List<KeyValue>();
                 if (dt != null && dt.Rows.Count > 0)
