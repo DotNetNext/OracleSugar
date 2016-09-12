@@ -100,6 +100,7 @@ namespace OracleSugar
         public object GetScalar(string sql, params OracleParameter[] pars)
         {
             OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
+            sqlCommand.BindByName = true; 
             if (_tran != null)
             {
                 sqlCommand.Transaction = _tran;
@@ -123,6 +124,7 @@ namespace OracleSugar
         public int ExecuteCommand(string sql, params OracleParameter[] pars)
         {
             OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
+            sqlCommand.BindByName = true; 
             sqlCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
             {
@@ -145,6 +147,7 @@ namespace OracleSugar
         public OracleDataReader GetReader(string sql, params OracleParameter[] pars)
         {
             OracleCommand sqlCommand = new OracleCommand(sql, _sqlConnection);
+            sqlCommand.BindByName = true; 
             sqlCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
             {
@@ -187,6 +190,7 @@ namespace OracleSugar
         {
             OracleDataAdapter _sqlDataAdapter = new OracleDataAdapter(sql, _sqlConnection);
             _sqlDataAdapter.SelectCommand.Parameters.AddRange(pars);
+            _sqlDataAdapter.SelectCommand.BindByName = true; 
             if (IsGetPageParas)
             {
                 SqlSugarToolExtensions.RequestParasToSqlParameters(_sqlDataAdapter.SelectCommand.Parameters);
@@ -217,6 +221,7 @@ namespace OracleSugar
                 SqlSugarToolExtensions.RequestParasToSqlParameters(_sqlDataAdapter.SelectCommand.Parameters);
             }
             _sqlDataAdapter.SelectCommand.CommandTimeout = this.CommandTimeOut;
+            _sqlDataAdapter.SelectCommand.BindByName = true; 
             _sqlDataAdapter.SelectCommand.Parameters.AddRange(pars);
             DataSet ds = new DataSet();
             _sqlDataAdapter.Fill(ds);
