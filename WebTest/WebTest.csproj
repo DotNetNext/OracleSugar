@@ -71,8 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="api_en.htm" />
-    <Content Include="App_Data\单库模式DEMO脚本.sql" />
-    <Content Include="App_Data\多库模式数据库结构脚本cloudDB %281%29.sql" />
+    <Content Include="App_Data\AREA.sql" />
+    <Content Include="App_Data\INSERTTEST.sql" />
+    <Content Include="App_Data\SCHOOL.sql" />
+    <Content Include="App_Data\STUDENT.sql" />
+    <Content Include="App_Data\TESTUPDATECOLUMNS.sql" />
     <Content Include="App_Lib\Oracle.ManagedDataAccess.dll" />
     <Content Include="App_Lib\OracleSugar.dll" />
     <Content Include="App_Lib\SqlSugar.dll" />
@@ -260,6 +263,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
