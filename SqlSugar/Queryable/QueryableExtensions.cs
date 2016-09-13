@@ -737,7 +737,7 @@ namespace OracleSugar
         {
             StringBuilder sbSql = new StringBuilder();
             string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
-            sbSql.AppendFormat("SELECT MAX({3})  FROM [{0}] {1} WHERE 1=1 {2} {4} ", queryable.TName, withNoLock, string.Join("", queryable.Where), maxField, queryable.GroupBy.GetGroupBy());
+            sbSql.AppendFormat("SELECT MAX({3})  FROM {0} {1} WHERE 1=1 {2} {4} ", queryable.TName, withNoLock, string.Join("", queryable.Where), maxField, queryable.GroupBy.GetGroupBy());
             var objValue = queryable.DB.GetScalar(sbSql.ToString(), queryable.Params.ToArray());
             var reval = Convert.ChangeType(objValue, typeof(TResult));
             return (TResult)reval;
@@ -771,7 +771,7 @@ namespace OracleSugar
         {
             StringBuilder sbSql = new StringBuilder();
             string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
-            sbSql.AppendFormat("SELECT MIN({3})  FROM [{0}] {1} WHERE 1=1 {2} {4} ", queryable.TName, withNoLock, string.Join("", queryable.Where), minField, queryable.GroupBy.GetGroupBy());
+            sbSql.AppendFormat("SELECT MIN({3})  FROM {0} {1} WHERE 1=1 {2} {4} ", queryable.TName, withNoLock, string.Join("", queryable.Where), minField, queryable.GroupBy.GetGroupBy());
             var objValue = queryable.DB.GetScalar(sbSql.ToString(), queryable.Params.ToArray());
             var reval = Convert.ChangeType(objValue, typeof(TResult));
             return (TResult)reval;

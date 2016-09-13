@@ -234,8 +234,8 @@ namespace WebTest.Demo
                 var like = db.Queryable<STUDENT>().Where(c => c.NAME.Contains(conval)).ToList();
 
                 //支持字符串Where 让你解决，更复杂的查询
-                var student12 = db.Queryable<STUDENT>().Where(c => "a" == "a").Where("id>@id", new { id = 1 }).ToList();
-                var student13 = db.Queryable<STUDENT>().Where(c => "a" == "a").Where("id>100 and id in( select 1)").ToList();
+                var student12 = db.Queryable<STUDENT>().Where(c => "a" == "a").Where("id>:id", new { id = 1 }).ToList();
+                var student13 = db.Queryable<STUDENT>().Where(c => "a" == "a").Where("id>100 ").ToList();
 
 
                 //存在记录反回true，则否返回false
