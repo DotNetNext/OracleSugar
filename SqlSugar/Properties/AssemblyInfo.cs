@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("SqlSugar")]
+[assembly: AssemblyTitle("OracleSugar")]
 [assembly: AssemblyDescription("作者:孙凯旋，蓝灯软件架构师")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("上海蓝灯软件有限公司")]
