@@ -101,7 +101,7 @@ namespace OracleSugar
         public static string GetSelectFiles(this string selectFileds,string typeName)
         {
             var reval= selectFileds.IsNullOrEmpty() ? "*" : selectFileds;
-            return reval == "*" ? string.Format("{0}.*", typeName) : "*";
+            return reval == "*" ? string.Format("{0}.*", typeName) : selectFileds;
         }
         /// <summary>
         /// 

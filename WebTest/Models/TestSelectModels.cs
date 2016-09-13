@@ -7,8 +7,8 @@ namespace  Models
 {
     public class SexTotal
     {
-        public string Sex { get; set; }
-        public int Count { get; set; }
+        public string SEX { get; set; }
+        public int COUNT { get; set; }
     }
     public class classNew
     {

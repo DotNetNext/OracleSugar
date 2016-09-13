@@ -97,7 +97,7 @@ namespace WebTest.Demo
                 //反回List<string[]>
                 var list7 = db.SqlQuery<string[]>("select top 1 id,name from Student").SingleOrDefault();
                 //存储过程
-                var spResult = db.SqlQuery<SCHOOL>("exec sp_school @p1,@p2", new { p1 = 1, p2 = 2 });
+                var spResult = db.SqlQuery<SCHOOL>("exec sp_school :p1,:p2", new { p1 = 1, p2 = 2 });
 
                 //获取第一行第一列的值
                 string v1 = db.GetString("select '张三' as name");
@@ -268,10 +268,10 @@ namespace WebTest.Demo
                 var list4 = db.Queryable<STUDENT>().In("id", intList).ToList();
 
                 //分组查询
-                var list7 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).Select("sex,Count=count(*)").ToDynamic();
-                var list8 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).GroupBy(it => it.ID).Select("id,sex,Count=count(*)").ToDynamic();
-                List<SexTotal> list9 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).Select<STUDENT, SexTotal>("Sex,Count=count(*)").ToList();
-                List<SexTotal> list10 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy("sex").Select<STUDENT, SexTotal>("Sex,Count=count(*)").ToList();
+                var list7 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).Select("sex,count(*) count").ToDynamic();
+                var list8 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).GroupBy(it => it.ID).Select("id,sex,count(*) count").ToDynamic();
+                List<SexTotal> list9 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy(it => it.SEX).Select<STUDENT, SexTotal>("SEX,count(*) COUNT").ToList();
+                List<SexTotal> list10 = db.Queryable<STUDENT>().Where(c => c.ID < 20).GroupBy("sex").Select<STUDENT, SexTotal>("SEX,count(*) COUNT").ToList();
                 //SELECT Sex,Count=count(*)  FROM Student  WHERE 1=1  AND  (id < 20)    GROUP BY Sex --生成结果
 
 

@@ -83,7 +83,7 @@ namespace OracleSugar
         /// <summary>
         /// 查询是否允许脏读，（默认为:true）
         /// </summary>
-        public bool IsNoLock { get; set; }
+        internal bool IsNoLock { get; set; }
 
         /// <summary>
         /// 忽略非数据库列，如果非特殊需求不建议启用
