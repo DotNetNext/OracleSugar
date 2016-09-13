@@ -14,17 +14,22 @@ namespace WebTest.Demos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //设置序列,程序起动时设置一次便可
+            OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
+            {
+                  new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"} 
+            };
             using (SqlSugarClient db = SugarDao.GetInstance())
             {
-                var stuList= db.Queryable<Student>().ToList();
-                db.Insert<Student>(new Student() { sch_id = SchoolEnum.北大青鸟 });
-                db.Update<Student>(new Student() { sch_id = SchoolEnum.it清华, id = 11 });
-                var stuList2 = db.Queryable<Student>().Where(it => it.sch_id == SchoolEnum.全智).ToList();
+                var stuList= db.Queryable<STUDENT>().ToList();
+                db.Insert<STUDENT>(new STUDENT() {  NAME="哈哈",SCH_ID = SchoolEnum.北大青鸟 });
+                db.Update<STUDENT>(new STUDENT() { SCH_ID = SchoolEnum.it清华, ID = 11 });
+                var stuList2 = db.Queryable<STUDENT>().Where(it => it.SCH_ID == SchoolEnum.全智).ToList();
             }
         }
 
 
-        public class Student
+        public class STUDENT
         {
 
             /// <summary>
@@ -32,35 +37,35 @@ namespace WebTest.Demos
             /// 默认:- 
             /// 可空:False 
             /// </summary>
-              public int id { get; set; }
+              public int ID { get; set; }
 
             /// <summary>
             /// 说明:- 
             /// 默认:- 
             /// 可空:True 
             /// </summary>
-            public string name { get; set; }
+            public string NAME { get; set; }
 
             /// <summary>
             /// 说明:- 
             /// 默认:- 
             /// 可空:False 
             /// </summary>
-            public SchoolEnum sch_id { get; set; }
+            public SchoolEnum SCH_ID { get; set; }
 
             /// <summary>
             /// 说明:- 
             /// 默认:- 
             /// 可空:True 
             /// </summary>
-            public string sex { get; set; }
+            public string SEX { get; set; }
 
             /// <summary>
             /// 说明:- 
             /// 默认:- 
             /// 可空:False 
             /// </summary>
-            public bool isOk { get; set; }
+            public bool ISOK { get; set; }
 
         }
 
