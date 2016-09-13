@@ -570,9 +570,9 @@ namespace OracleSugar
             {
                 #region  rowNumber
                 string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
-                var order = queryable.OrderBy.IsValuable() ? (",row_index=ROW_NUMBER() OVER(ORDER BY " + queryable.OrderBy + " )") : null;
-
-                sbSql.AppendFormat("SELECT " + queryable.Select.GetSelectFiles() + " {1} FROM {0} {5} {2} WHERE 1=1 {3} {4} ", tableName, order, withNoLock, string.Join("", queryable.Where), queryable.GroupBy.GetGroupBy(), joinInfo);
+                var row = queryable.OrderBy.IsValuable() ? (",ROWNUM row_index") : null;
+                string orderBy=queryable.OrderBy.IsValuable() ?("ORDER BY " + queryable.OrderBy ):null;
+                sbSql.AppendFormat("SELECT " + queryable.Select.GetSelectFiles(tableName) + " {1} FROM {0} {5} {2} WHERE 1=1 {3} {4} {6} ", tableName, row, withNoLock, string.Join("", queryable.Where), queryable.GroupBy.GetGroupBy(), joinInfo, orderBy);
                 if (queryable.Skip == null && queryable.Take != null)
                 {
                     if (joinInfo.IsValuable())
@@ -614,16 +614,7 @@ namespace OracleSugar
             else
             {
 
-                #region offset
-                string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
-                var order = queryable.OrderBy.IsValuable() ? ("ORDER BY " + queryable.OrderBy + " ") : null;
-                sbSql.AppendFormat("SELECT " + queryable.Select.GetSelectFiles() + " {1} FROM [{0}] {5} {2} WHERE 1=1 {3} {4} ", tableName, "", withNoLock, string.Join("", queryable.Where), queryable.GroupBy.GetGroupBy(), joinInfo);
-                sbSql.Append(order);
-                if (queryable.Skip != null || queryable.Take != null)
-                {
-                    sbSql.AppendFormat("OFFSET {0} ROW FETCH NEXT {1} ROWS ONLY", Convert.ToInt32(queryable.Skip), Convert.ToInt32(queryable.Take));
-                }
-                #endregion
+               
             }
             return sbSql;
         }

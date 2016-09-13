@@ -36,8 +36,7 @@ namespace OracleSugar
     /// </summary>
     public enum PageModel
     {
-        RowNumber = 0,
-        Offset = 1
+        RowNumber = 0
     }
     /// <summary>
     /// 解析类型

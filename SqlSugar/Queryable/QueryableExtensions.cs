@@ -316,7 +316,7 @@ namespace OracleSugar
         {
             if (queryable.OrderBy.IsNullOrEmpty())
             {
-                queryable.OrderBy = "GETDATE()";
+                queryable.OrderBy = "ROWNUM";
             }
             queryable.Skip(0);
             queryable.Take(1);
@@ -333,7 +333,7 @@ namespace OracleSugar
         {
             if (queryable.OrderBy.IsNullOrEmpty())
             {
-                queryable.OrderBy = "GETDATE()";
+                queryable.OrderBy = "ROWNUM";
             }
             queryable.Skip(0);
             queryable.Take(1);
@@ -391,7 +391,7 @@ namespace OracleSugar
         {
             if (queryable.OrderBy.IsNullOrEmpty())
             {
-                queryable.OrderBy = "GETDATE()";
+                queryable.OrderBy = "ROWNUM";
             }
             queryable.Skip(0);
             queryable.Take(1);
@@ -409,7 +409,7 @@ namespace OracleSugar
         {
             if (queryable.OrderBy.IsNullOrEmpty())
             {
-                queryable.OrderBy = "GETDATE()";
+                queryable.OrderBy = "ROWNUM";
             }
             queryable.Skip(0);
             queryable.Take(1);
@@ -712,13 +712,14 @@ namespace OracleSugar
         public static int Count<T>(this Queryable<T> queryable)
         {
             StringBuilder sbSql = new StringBuilder();
+            string joinInfo = string.Join(" ", queryable.JoinTable);
             string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
             var tableName = queryable.TName;
             if (queryable.TableName.IsValuable())
             {
                 tableName = queryable.TableName;
             }
-            sbSql.AppendFormat("SELECT COUNT({3})  FROM [{0}] {1} WHERE 1=1 {2} {4} ", tableName, withNoLock, string.Join("", queryable.Where), queryable.Select.GetSelectFiles(), queryable.GroupBy.GetGroupBy());
+            sbSql.AppendFormat("SELECT COUNT({3})  FROM {0} {1} " + joinInfo + " WHERE 1=1 {2} {4} ", tableName, withNoLock, string.Join("", queryable.Where), "1", queryable.GroupBy.GetGroupBy());
             var count = queryable.DB.GetInt(sbSql.ToString(), queryable.Params.ToArray());
             return count;
         }
