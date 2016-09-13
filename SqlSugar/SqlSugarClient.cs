@@ -428,12 +428,8 @@ namespace OracleSugar
                     {
                         val = (int)(val);
                     }
-                    if (val.GetType() == SqlSugarTool.BoolType)
-                    {
-                        val = Convert.ToBoolean(val) ? 1 : 0;
-                    }
-
-                    var par = new OracleParameter(":" + prop.Name, val);
+ 
+                    var par = new OracleParameter(":" + prop.Name, val.ToOracleParValue());
                     //SqlSugarTool.SetParSize(par);
                     pars.Add(par);
                 }

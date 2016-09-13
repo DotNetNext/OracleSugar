@@ -14,22 +14,28 @@ namespace WebTest.Demos
     /// </summary>
     public partial class SerialNumber : System.Web.UI.Page
     {
-     
-            protected void Page_Load(object sender, EventArgs e)
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            //设置序列
+            OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
             {
-                using (SqlSugarClient db = SugarDaoSerNum.GetInstance())//开启数据库连接
-                {
-                    var obj =Convert.ToInt32( db.Insert<STUDENT>(new STUDENT() { }));
+                  new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"} 
+            };
 
-                    var name = db.Queryable<STUDENT>().Single(it => it.ID == obj).NAME;
-   
+            using (SqlSugarClient db = SugarDaoSerNum.GetInstance())//开启数据库连接
+            {
+                var obj = Convert.ToInt32(db.Insert<STUDENT>(new STUDENT() { }));
 
-                    var obj2 = Convert.ToInt32( db.Insert<SCHOOL>(new SCHOOL() { }));
+                var name = db.Queryable<STUDENT>().Single(it => it.ID == obj).NAME;
 
-                    var name2=db.Queryable<SCHOOL>().Single(it => it.ID == obj2).NAME;
-                }
+
+                var obj2 = Convert.ToInt32(db.Insert<SCHOOL>(new SCHOOL() { }));
+
+                var name2 = db.Queryable<SCHOOL>().Single(it => it.ID == obj2).NAME;
             }
-  
+        }
+
         /// <summary>
         /// 扩展SqlSugarClient
         /// </summary>

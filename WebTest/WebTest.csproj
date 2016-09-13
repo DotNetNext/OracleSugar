@@ -95,7 +95,6 @@
     <Content Include="Demos\Select.aspx" />
     <Content Include="Demos\SerializerDateFormat.aspx" />
     <Content Include="Demos\SerialNumber.aspx" />
-    <Content Include="Demos\SqlPageModel.aspx" />
     <Content Include="Demos\Tran.aspx" />
     <Content Include="Demos\Update.aspx" />
     <Content Include="Global.asax" />
@@ -225,13 +224,6 @@
     </Compile>
     <Compile Include="Demos\SerialNumber.aspx.designer.cs">
       <DependentUpon>SerialNumber.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Demos\SqlPageModel.aspx.cs">
-      <DependentUpon>SqlPageModel.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Demos\SqlPageModel.aspx.designer.cs">
-      <DependentUpon>SqlPageModel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Demos\Tran.aspx.cs">
       <DependentUpon>Tran.aspx</DependentUpon>
