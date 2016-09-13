@@ -12,14 +12,14 @@ namespace Models
      /// Default:- 
      /// Nullable:False 
      /// </summary>
-        public Guid VGUID {get;set;}
+        public string VGUID {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
-     /// Nullable:False 
+     /// Nullable:True 
      /// </summary>
-        public int IDENTITYFIELD {get;set;}
+        public int? IDENTITYFIELD {get;set;}
 
      /// <summary>
      /// Desc:- 

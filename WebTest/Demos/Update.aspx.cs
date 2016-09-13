@@ -51,7 +51,7 @@ namespace WebTest.Demo
 
                 TESTUPDATECOLUMNS updObj = new TESTUPDATECOLUMNS()
                 {
-                    VGUID = Guid.Parse("542b5a27-6984-47c7-a8ee-359e483c8470"),
+                    VGUID = "542b5a27-6984-47c7-a8ee-359e483c8470",
                     NAME = "xx",
                     NAME2 = "xx2",
                     IDENTITYFIELD = 1,

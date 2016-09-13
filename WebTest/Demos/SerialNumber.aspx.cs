@@ -20,7 +20,8 @@ namespace WebTest.Demos
             //设置序列
             OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
             {
-                  new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"} 
+                  new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"},
+                   new PubModel.SequenceModel(){ ColumnName="ID", TableName="SCHOOL", Value="SEQ_D"} 
             };
 
             using (SqlSugarClient db = SugarDaoSerNum.GetInstance())//开启数据库连接

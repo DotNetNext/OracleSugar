@@ -79,7 +79,7 @@ namespace OracleSugar
             foreach (DataColumn r in dt.Columns)
             {
                 propertiesValue.AppendLine();
-                string typeName = ChangeType(r.DataType,dataTableMapList==null?null:dataTableMapList.Where(it => it.COLUMN_NAME.ToString() == r.ColumnName).ToList());
+                string typeName = ChangeType(r.DataType, dataTableMapList == null ? null : dataTableMapList.Where(it => it.COLUMN_NAME.ToString() == r.ColumnName).ToList());
                 bool isAny = false;
                 PubModel.DataTableMap columnInfo = new PubModel.DataTableMap();
                 if (dataTableMapList.IsValuable())
@@ -353,7 +353,12 @@ namespace OracleSugar
         // 获取表结构信息
         public List<PubModel.DataTableMap> GetTableColumns(SqlSugarClient db, string tableName)
         {
-            string sql = @" select 
+            string cacheKey = "ClassGenerating.GetTableColumns" + tableName;
+            var cm = CacheManager<List<PubModel.DataTableMap>>.GetInstance();
+            if (cm.ContainsKey(cacheKey)) return cm[cacheKey];
+            else
+            {
+                string sql = @" select 
                               c.TABLE_NAME,
                               com.COMMENTS COLUMN_DESCRIPTION ,
                               c.COLUMN_NAME,
@@ -366,8 +371,10 @@ namespace OracleSugar
                             left   JOIN USER_TAB_COLS  uc on uc.COLUMN_ID=C.COLUMN_ID AND  uc.Table_Name=c.Table_Name
                             where c.Table_Name='" + tableName + @"' 
                             order by c.column_name";
-
-            return db.SqlQuery<PubModel.DataTableMap>(sql);
+                var reval = db.SqlQuery<PubModel.DataTableMap>(sql);
+                cm.Add(cacheKey, reval, cm.Day);
+                return reval;
+            }
         }
     }
 

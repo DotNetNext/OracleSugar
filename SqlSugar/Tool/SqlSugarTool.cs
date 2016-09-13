@@ -28,6 +28,7 @@ namespace OracleSugar
         internal static Type GuidType = typeof(Guid);
         internal static Type DateType = typeof(DateTime);
         internal static Type ByteType = typeof(Byte);
+        internal static Type ByteArrayType = typeof(Byte[]);
         internal static Type BoolType = typeof(bool);
         internal static Type ObjType = typeof(object);
         internal static Type Dob = typeof(double);
@@ -571,7 +572,7 @@ namespace OracleSugar
                 string withNoLock = queryable.DB.IsNoLock ? "WITH(NOLOCK)" : null;
                 var order = queryable.OrderBy.IsValuable() ? (",row_index=ROW_NUMBER() OVER(ORDER BY " + queryable.OrderBy + " )") : null;
 
-                sbSql.AppendFormat("SELECT " + queryable.Select.GetSelectFiles() + " {1} FROM [{0}] {5} {2} WHERE 1=1 {3} {4} ", tableName, order, withNoLock, string.Join("", queryable.Where), queryable.GroupBy.GetGroupBy(), joinInfo);
+                sbSql.AppendFormat("SELECT " + queryable.Select.GetSelectFiles() + " {1} FROM {0} {5} {2} WHERE 1=1 {3} {4} ", tableName, order, withNoLock, string.Join("", queryable.Where), queryable.GroupBy.GetGroupBy(), joinInfo);
                 if (queryable.Skip == null && queryable.Take != null)
                 {
                     if (joinInfo.IsValuable())

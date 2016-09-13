@@ -333,7 +333,7 @@ namespace OracleSugar
             StringBuilder sbInsertSql = new StringBuilder();
             List<OracleParameter> pars = new List<OracleParameter>();
             var identities = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
-            isIdentity = identities != null && identities.Count > 0;
+            isIdentity = identities != null && identities.Where(it => it.Key.ToLower() == typeName.ToLower()).Count() > 0;
             //sql语句缓存
             string cacheSqlKey = "db.Insert." + type.FullName;
             var cacheSqlManager = CacheManager<StringBuilder>.GetInstance();
@@ -428,17 +428,26 @@ namespace OracleSugar
                     {
                         val = (int)(val);
                     }
- 
+
                     var par = new OracleParameter(":" + prop.Name, val.ToOracleParValue());
-                    //SqlSugarTool.SetParSize(par);
+                    OracleConfig.SetParType(typeName, prop, par, this);
+                    SqlSugarTool.SetParSize(par);
                     pars.Add(par);
                 }
                 else
                 {
                     if (!cacheSqlManager.ContainsKey(cacheSqlKey))
                     {
-                        var seqName = seqMap.Single(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower()).Value;
-                        sbInsertSql.Append(seqName + ".Nextval,");
+                        var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower());
+                        if (seqList.Any())
+                        {
+                            var seqName = seqList.First().Value;
+                            sbInsertSql.Append(seqName + ".Nextval,");
+                        }
+                        else
+                        {
+                            sbInsertSql.Append("null,");
+                        }
                     }
                 }
             }
@@ -459,10 +468,11 @@ namespace OracleSugar
                     if (isIdentity)
                     {
                         var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
-                        var eqValue =GetInt("SELECT " + seqName + ".currval from dual");
+                        var eqValue = GetInt("SELECT " + seqName + ".currval from dual");
                         lastInsertRowId = eqValue;
                     }
-                    else {
+                    else
+                    {
                         lastInsertRowId = 1;
                     }
 
@@ -476,6 +486,7 @@ namespace OracleSugar
 
         }
 
+
         /// <summary>
         /// 大数据插入(结构体必须和数据库一致)
         /// </summary>
@@ -483,10 +494,10 @@ namespace OracleSugar
         /// <returns></returns>
         public bool SqlBulkCopy<T>(List<T> entities) where T : class
         {
-            return InsertRange<T>(entities).Count>0;
+            return InsertRange<T>(entities).Count > 0;
         }
 
-    
+
 
         /// <summary>
         /// 更新
