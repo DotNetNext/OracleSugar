@@ -52,11 +52,11 @@ namespace WebTest.Demo
         private static Dictionary<string, Func<KeyValueObj>> _filterParas = new Dictionary<string, Func<KeyValueObj>>()
         {
           { "role",()=>{
-                    return new KeyValueObj(){ Key=" id=@id" , Value=new{ id=1}};
+                    return new KeyValueObj(){ Key=" id=:id" , Value=new{ id=1}};
                }
           },
           { "org",()=>{ 
-                    return new KeyValueObj(){ Key=" orgId=@orgId" , Value=new{ orgId=1}};
+                    return new KeyValueObj(){ Key=" orgId=:orgId" , Value=new{ orgId=1}};
               }
           },
         };
