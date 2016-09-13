@@ -513,10 +513,25 @@ namespace OracleSugar
                 GroupBy = queryable.GroupBy,
                 JoinTable=queryable.JoinTable
             };
-            reval.Select = Regex.Match(expStr, @"(?<=\{).*?(?=\})").Value;
-            if (reval.Select.IsNullOrEmpty())
+            var selectStr = Regex.Match(expStr, @"(?<=\{).*?(?=\})").Value;
+            var items = selectStr.Split(',');
+            var newItems = new List<string>();
+            if (selectStr.IsNullOrEmpty())
             {
-                reval.Select = Regex.Match(expStr, @"c =>.*?\((.+)\)").Groups[1].Value;
+                items = Regex.Match(expStr, @"c =>.*?\((.+)\)").Groups[1].Value.Split(',');
+            }
+            if (items.IsValuable())
+            {
+                foreach (var item in items)
+                {
+                    var itemArray = item.Trim().Split('=');
+                    newItems.Add(itemArray.Last() + " AS " + itemArray.First());
+                }
+            }
+            reval.Select = "*";
+            if (newItems.IsValuable())
+            {
+                reval.Select = string.Join(",", newItems);
             }
             //reval.Select = Regex.Replace(reval.Select, @"(?<=\=).*?\.", "");
             return reval;
@@ -606,7 +621,7 @@ namespace OracleSugar
                 foreach (var item in items)
                 {
                     var itemArray = item.Trim().Split('=');
-                    newItems.Add(itemArray.Last().Split('.').Last() + " AS " + itemArray.First());
+                    newItems.Add(itemArray.Last().Last() + " AS " + itemArray.First());
                 }
             }
             reval.Select = "*";
@@ -654,7 +669,7 @@ namespace OracleSugar
                 foreach (var item in items)
                 {
                     var itemArray = item.Trim().Split('=');
-                    newItems.Add(itemArray.Last().Split('.').Last() + " AS " + itemArray.First());
+                    newItems.Add(itemArray.Last() + " AS " + itemArray.First());
                 }
             }
             reval.Select = "*";
@@ -702,7 +717,14 @@ namespace OracleSugar
                 foreach (var item in items)
                 {
                     var itemArray = item.Trim().Split('=');
-                    newItems.Add(itemArray.Last().Split('.').Last() + " AS " + itemArray.First());
+                    if (reval.JoinTable.IsValuable())
+                    {
+                        newItems.Add(itemArray.Last()+ " AS " + itemArray.First());
+                    }
+                    else
+                    {
+                        newItems.Add(itemArray.Last().Split('.').Last() + " AS " + itemArray.First());
+                    }
                 }
             }
             reval.Select = "*";
