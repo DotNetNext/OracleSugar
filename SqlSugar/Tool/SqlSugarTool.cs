@@ -508,7 +508,7 @@ namespace OracleSugar
         {
             if (sqlable.DB.PageModel == PageModel.RowNumber)
             {
-                sbSql.Insert(0, string.Format("SELECT {0},row_index=ROW_NUMBER() OVER(ORDER BY {1} )", fileds, orderByFiled));
+                sbSql.Insert(0, string.Format("SELECT {0},ROWNUM row_index", fileds, orderByFiled));
                 sbSql.Append(" WHERE 1=1 ").Append(string.Join(" ", sqlable.Where));
                 sbSql.Append(sqlable.OrderBy);
                 sbSql.Append(sqlable.GroupBy);
@@ -516,16 +516,6 @@ namespace OracleSugar
                 int take = pageSize;
                 sbSql.Insert(0, "SELECT * FROM ( ");
                 sbSql.AppendFormat(") t WHERE  t.row_index BETWEEN {0}  AND {1}   ", skip, skip + take - 1);
-            }
-            else
-            {
-                sbSql.Insert(0, string.Format("SELECT {0}", fileds));
-                sbSql.Append(" WHERE 1=1 ").Append(string.Join(" ", sqlable.Where));
-                sbSql.Append(sqlable.GroupBy);
-                sbSql.AppendFormat(" ORDER BY {0} ", orderByFiled);
-                int skip = (pageIndex - 1) * pageSize;
-                int take = pageSize;
-                sbSql.AppendFormat("OFFSET {0} ROW FETCH NEXT {1} ROWS ONLY", skip, take);
             }
         }
         /// <summary>

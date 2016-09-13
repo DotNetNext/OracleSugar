@@ -12,11 +12,11 @@ namespace  Models
     }
     public class classNew
     {
-        public string newname { get; set; }
-        public int newid { get; set; }
-        public string xx_name { get; set; }
-        public string areaName { get; set; }
-        public string schoolName { get; set; }
-        public string studentName { get; set; }
+        public string NEWNAME { get; set; }
+        public int NEWID { get; set; }
+        public string XX_NAME { get; set; }
+        public string AREANAME { get; set; }
+        public string SCHOOLNAME { get; set; }
+        public string STUDENTNAME { get; set; }
     }
 }

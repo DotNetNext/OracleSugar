@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class Area
+    public class AREA
     {
         
      /// <summary>
@@ -12,14 +12,14 @@ namespace Models
      /// Default:- 
      /// Nullable:False 
      /// </summary>
-        public int id {get;set;}
+        public int ID {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string name {get;set;}
+        public string NAME {get;set;}
 
     }
 }
