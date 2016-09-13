@@ -654,7 +654,7 @@ namespace OracleSugar
                 sbSql.AppendFormat("WHERE {1} IN ({2})", typeName, pkName, whereIn.ToJoinSqlInVal());
             }
             List<OracleParameter> parsList = new List<OracleParameter>();
-            var pars = rows.Select(c => new OracleParameter(":" + c.Key, c.Value));
+            var pars = rows.Select(c => new OracleParameter(":" + c.Key, c.Value.ToOracleParValue()));
             if (pars != null)
             {
                 foreach (var par in pars)

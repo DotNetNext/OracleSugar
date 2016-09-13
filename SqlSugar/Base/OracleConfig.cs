@@ -14,6 +14,25 @@ namespace OracleSugar
             return value;
         }
 
+        public static object ToOracleParValue(this object value)
+        {
+            if (value == null)
+            {
+                return DBNull.Value;
+            }
+            var type = value.GetType();
+            if (type == SqlSugarTool.BoolType)
+            {
+                return Convert.ToBoolean(value) ? 1 : 0;
+            }
+            else if (type == SqlSugarTool.GuidType)
+            {
+                return value.ToString();
+            }
+            return value;
+
+        }
+
         internal static bool ToColumnTypeNullable(this object value)
         {
             return value.ToString() == "Y" ? true : false;

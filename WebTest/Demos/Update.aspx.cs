@@ -17,6 +17,11 @@ namespace WebTest.Demo
         protected void Page_Load(object sender, EventArgs e)
         {
             int id = 11;
+            //设置序列
+            OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
+            {
+                  new PubModel.SequenceModel(){ ColumnName="IDENTITYFIELD", TableName="TESTUPDATECOLUMNS", Value="SEQ_D"} 
+            };
             using (var db = SugarDao.GetInstance())
             {
                 //指定列更新
@@ -44,13 +49,13 @@ namespace WebTest.Demo
                 //设置不更新列
                 db.DisableUpdateColumns = new string[] { "CreateTime" };//设置CreateTime不更新
 
-                TestUpdateColumns updObj = new TestUpdateColumns()
+                TESTUPDATECOLUMNS updObj = new TESTUPDATECOLUMNS()
                 {
                     VGUID = Guid.Parse("542b5a27-6984-47c7-a8ee-359e483c8470"),
-                    Name = "xx",
-                    Name2 = "xx2",
-                    IdentityField = 0,
-                    CreateTime = null
+                    NAME = "xx",
+                    NAME2 = "xx2",
+                    IDENTITYFIELD = 1,
+                    CREATETIME = null
                 };
 
                 //CreateTime将不会被更新

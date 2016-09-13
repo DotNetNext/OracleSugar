@@ -20,8 +20,8 @@ namespace WebTest.Demos
             using (SqlSugarClient db = SugarDao.GetInstance())
             {
                 db.SerializerDateFormat = "yyyy-mm/dd";
-                var jsonStr = db.Queryable<InsertTest>().OrderBy("id").Take(1).ToJson();
-                var jsonStr2 = db.Sqlable().From<InsertTest>("t").SelectToJson(" top 1 *");
+                var jsonStr = db.Queryable<INSERTTEST>().OrderBy("id").Take(1).ToJson();
+                var jsonStr2 = db.Sqlable().From<INSERTTEST>("t").SelectToJson(" top 1 *");
                 var jsonStr3 = db.SqlQueryJson("select top 1 * from InsertTest");
             }
         }

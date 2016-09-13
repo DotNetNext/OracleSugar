@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class TestUpdateColumns
+    public class TESTUPDATECOLUMNS
     {
         
      /// <summary>
@@ -19,28 +19,28 @@ namespace Models
      /// Default:- 
      /// Nullable:False 
      /// </summary>
-        public int IdentityField {get;set;}
+        public int IDENTITYFIELD {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string Name {get;set;}
+        public string NAME {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string Name2 {get;set;}
+        public string NAME2 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public DateTime? CreateTime {get;set;}
+        public DateTime? CREATETIME {get;set;}
 
     }
 }

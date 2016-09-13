@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class InsertTest
+    public class INSERTTEST
     {
         
      /// <summary>
@@ -12,49 +12,49 @@ namespace Models
      /// Default:- 
      /// Nullable:False 
      /// </summary>
-        public int id {get;set;}
+        public int ID {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string v1 {get;set;}
+        public string V1 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string v2 {get;set;}
+        public string V2 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string v3 {get;set;}
+        public string V3 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public int? int1 {get;set;}
+        public int? INT1 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public DateTime? d1 {get;set;}
+        public DateTime? D1 {get;set;}
 
      /// <summary>
      /// Desc:- 
      /// Default:- 
      /// Nullable:True 
      /// </summary>
-        public string txt {get;set;}
+        public string TXT {get;set;}
 
     }
 }

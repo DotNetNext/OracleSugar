@@ -357,11 +357,11 @@ namespace WebTest.Demo
                 //函数的支持(字段暂不支持函数,只有参数支持) 目前只支持这么多
                 var par1 = "2015-1-1"; var par2 = "   我 有空格, ";
                 var r1 = db.Queryable<STUDENT>().Where(it => it.NAME == par1.ObjToString()).ToSql(); //ObjToString会将null转转成""
-                var r2 = db.Queryable<InsertTest>().Where(it => it.d1 == par1.ObjToDate()).ToSql();
-                var r3 = db.Queryable<InsertTest>().Where(it => it.id == 1.ObjToInt()).ToSql();//ObjToInt会将null转转成0
-                var r4 = db.Queryable<InsertTest>().Where(it => it.id == 2.ObjToDecimal()).ToSql();
-                var r5 = db.Queryable<InsertTest>().Where(it => it.id == 3.ObjToMoney()).ToSql();
-                var r6 = db.Queryable<InsertTest>().Where(it => it.v1 == par2.Trim()).ToSql();
+                var r2 = db.Queryable<INSERTTEST>().Where(it => it.D1 == par1.ObjToDate()).ToSql();
+                var r3 = db.Queryable<INSERTTEST>().Where(it => it.ID == 1.ObjToInt()).ToSql();//ObjToInt会将null转转成0
+                var r4 = db.Queryable<INSERTTEST>().Where(it => it.ID == 2.ObjToDecimal()).ToSql();
+                var r5 = db.Queryable<INSERTTEST>().Where(it => it.ID == 3.ObjToMoney()).ToSql();
+                var r6 = db.Queryable<INSERTTEST>().Where(it => it.V1 == par2.Trim()).ToSql();
                 var convert1 = db.Queryable<STUDENT>().Where(c => c.NAME == "a".ToString()).ToList();
                 var convert2 = db.Queryable<STUDENT>().Where(c => c.ID == Convert.ToInt32("1")).ToList();// 
                 var convert3 = db.Queryable<STUDENT>().Where(c => DateTime.Now > Convert.ToDateTime("2015-1-1")).ToList();
