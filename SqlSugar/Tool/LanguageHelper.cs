@@ -14,6 +14,7 @@ namespace OracleSugar
 
         internal static List<string> GetLanguageViewNameList(SqlSugarClient db)
         {
+            throw new Exception("功能开发中，敬请期待");
             string key = "LanguageHelper.GetViewNameList";
             var cm = CacheManager<List<string>>.GetInstance();
             if (cm.ContainsKey(key))
@@ -42,6 +43,7 @@ namespace OracleSugar
         /// <returns></returns>
         public static void UpdateView(PubModel.Language lan, SqlSugarClient db)
         {
+            throw new Exception("功能开发中，敬请期待");
             if (lan == null) return;
             if (lan.Suffix.IsNullOrEmpty())
             {

@@ -116,8 +116,8 @@ namespace OracleSugar
                 foreach (KeyValuePair<string, string> it in paraDictionarAll)
                 {
                  
-                    var par=new OracleParameter("@" + it.Key, it.Value);
-                    if (!oldParaList.Any(oldPara=>oldPara.ParameterName==("@"+it.Key)))
+                    var par=new OracleParameter(":" + it.Key, it.Value);
+                    if (!oldParaList.Any(oldPara=>oldPara.ParameterName==(":"+it.Key)))
                     {
                         oldParas.Add(par);
                     }

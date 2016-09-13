@@ -14,7 +14,7 @@ namespace WebTest.Demos
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //设置序列
+            //设置序列,程序起动时设置一次便可
             OracleConfig.SequenceMapping = new List<PubModel.SequenceModel>()
             {
                   new PubModel.SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ_D"} 
