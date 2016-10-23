@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// SqlSugarTool局部类存放具有拼接SQL的函数(方便工具移植到其它数据库版本)
@@ -21,7 +21,7 @@ namespace SqlSugar
             return string.Format("({0})", sql);
         }
 
-        internal static StringBuilder GetQueryableSql<T>(SqlSugar.Queryable<T> queryable)
+        internal static StringBuilder GetQueryableSql<T>(Queryable<T> queryable)
         {
             string joinInfo = string.Join(" ", queryable.JoinTableValue);
             StringBuilder sbSql = new StringBuilder();
@@ -451,7 +451,7 @@ namespace SqlSugar
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal static string GetSqlParameterName(string name)
+        internal static string GetOracleParameterName(string name)
         {
             return ParSymbol + name;
         }
@@ -461,7 +461,7 @@ namespace SqlSugar
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal static string GetSqlParameterNameNoParSymbol(string name)
+        internal static string GetOracleParameterNameNoParSymbol(string name)
         {
             return name.TrimStart(ParSymbol);
         }

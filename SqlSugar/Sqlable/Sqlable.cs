@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：Queryable是多表查询基类，基于拥有大量查询扩展函数
@@ -38,6 +38,6 @@ namespace SqlSugar
         /// <summary>
         /// 参数
         /// </summary>
-        public List<SqlParameter> Params = new List<SqlParameter>();
+        public List<OracleParameter> Params = new List<OracleParameter>();
     }
 }

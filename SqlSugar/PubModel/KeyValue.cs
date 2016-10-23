@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// 自定义键值类 key is string, value is string

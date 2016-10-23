@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="Base\OracleConfig.cs" />
     <Compile Include="Base\SqlHelper.cs" />
+    <Compile Include="Cloud\CloudModels.cs" />
+    <Compile Include="Cloud\CloudPubMethod.cs" />
+    <Compile Include="Cloud\TaskExtensions.cs" />
     <Compile Include="Core\IDataReaderEntityBuilder.cs" />
     <Compile Include="Core\IDataRecordExtensions.cs" />
     <Compile Include="Core\ResolveExpress\Constant.cs" />

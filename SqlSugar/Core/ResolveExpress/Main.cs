@@ -7,7 +7,7 @@ using System.Text;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：拉姆达解析类
@@ -30,7 +30,7 @@ namespace SqlSugar
 
         public string SqlWhere = null;
         public ResolveExpressType Type = ResolveExpressType.oneT;
-        public List<SqlParameter> Paras = new List<SqlParameter>();
+        public List<OracleParameter> Paras = new List<OracleParameter>();
         private int SameIndex = 1;
         private SqlSugarClient DB;
 
@@ -249,11 +249,11 @@ namespace SqlSugar
             }
             if (right == null)
             {
-                this.Paras.Add(new SqlParameter(SqlSugarTool.ParSymbol + left, DBNull.Value));
+                this.Paras.Add(new OracleParameter(SqlSugarTool.ParSymbol + left, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new SqlParameter(SqlSugarTool.ParSymbol + left, right));
+                this.Paras.Add(new OracleParameter(SqlSugarTool.ParSymbol + left, right));
             }
             return oldLeft;
         }
@@ -275,11 +275,11 @@ namespace SqlSugar
             }
             if (left == null)
             {
-                this.Paras.Add(new SqlParameter(SqlSugarTool.ParSymbol + right, DBNull.Value));
+                this.Paras.Add(new OracleParameter(SqlSugarTool.ParSymbol + right, DBNull.Value));
             }
             else
             {
-                this.Paras.Add(new SqlParameter(SqlSugarTool.ParSymbol + right, left));
+                this.Paras.Add(new OracleParameter(SqlSugarTool.ParSymbol + right, left));
             }
             return oldRight;
         }

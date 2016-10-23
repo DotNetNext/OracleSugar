@@ -7,7 +7,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：实体生成类

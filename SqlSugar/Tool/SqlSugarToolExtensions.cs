@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     ///<summary>
     /// ** 描述：SqlSugar扩展工具类
@@ -102,12 +102,12 @@ namespace SqlSugar
             return groupByFileds.IsNullOrEmpty() ? "" : " GROUP BY " + groupByFileds;
         }
         /// <summary>
-        /// 将Request里的参数转成SqlParameter[]
+        /// 将Request里的参数转成OracleParameter[]
         /// </summary>
         /// <returns></returns>
-        internal static void RequestParasToSqlParameters(SqlParameterCollection oldParas)
+        internal static void RequestParasToOracleParameters(OracleParameterCollection oldParas)
         {
-            var oldParaList = oldParas.Cast<SqlParameter>().ToList();
+            var oldParaList = oldParas.Cast<OracleParameter>().ToList();
             var paraDictionarAll = SqlSugarTool.GetParameterDictionary();
             if (paraDictionarAll != null && paraDictionarAll.Count() > 0)
             {
@@ -115,7 +115,7 @@ namespace SqlSugar
                 foreach (KeyValuePair<string, string> it in paraDictionarAll)
                 {
 
-                    var par = new SqlParameter("@" + it.Key, it.Value);
+                    var par = new OracleParameter("@" + it.Key, it.Value);
                     if (!oldParaList.Any(oldPara => oldPara.ParameterName == ("@" + it.Key)))
                     {
                         oldParas.Add(par);
@@ -137,9 +137,9 @@ namespace SqlSugar
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal static string GetSqlParameterName(this string name)
+        internal static string GetOracleParameterName(this string name)
         {
-            return SqlSugarTool.GetSqlParameterName(name);
+            return SqlSugarTool.GetOracleParameterName(name);
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace SqlSugar
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal static string GetSqlParameterNameNoParSymbol(this string name)
+        internal static string GetOracleParameterNameNoParSymbol(this string name)
         {
-            return SqlSugarTool.GetSqlParameterNameNoParSymbol(name);
+            return SqlSugarTool.GetOracleParameterNameNoParSymbol(name);
         }
     }
 }

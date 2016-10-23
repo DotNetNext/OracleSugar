@@ -8,7 +8,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：SqlSugar工具类
@@ -36,7 +36,7 @@ namespace SqlSugar
         internal static Type DicIS = typeof(KeyValuePair<int, string>);
         internal static Type DicArraySS = typeof(Dictionary<string, string>);
         internal static Type DicArraySO = typeof(Dictionary<string, object>);
-
+        internal static Type ByteArrayType = typeof(Byte[]);
         /// <summary>
         ///  Reader转成T的集合
         /// </summary>
@@ -117,7 +117,7 @@ namespace SqlSugar
         /// 设置参数Size
         /// </summary>
         /// <param name="par"></param>
-        public static void SetParSize(SqlParameter par)
+        public static void SetParSize(OracleParameter par)
         {
             int size = par.Size;
             if (size < 4000)
@@ -127,14 +127,14 @@ namespace SqlSugar
         }
 
         /// <summary>
-        /// 将实体对象转换成SqlParameter[] 
+        /// 将实体对象转换成OracleParameter[] 
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="pis"></param>
         /// <returns></returns>
-        public static SqlParameter[] GetParameters(object obj,PropertyInfo [] pis=null)
+        public static OracleParameter[] GetParameters(object obj,PropertyInfo [] pis=null)
         {
-            List<SqlParameter> listParams = new List<SqlParameter>();
+            List<OracleParameter> listParams = new List<OracleParameter>();
             if (obj != null)
             {
                 var type = obj.GetType();
@@ -144,7 +144,7 @@ namespace SqlSugar
                     if (type == SqlSugarTool.DicArraySO)
                     {
                         var newObj = (Dictionary<string, object>)obj;
-                        var pars = newObj.Select(it => new SqlParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -155,7 +155,7 @@ namespace SqlSugar
                     {
 
                         var newObj = (Dictionary<string, string>)obj;
-                        var pars = newObj.Select(it => new SqlParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -184,14 +184,14 @@ namespace SqlSugar
                         if (value == null) value = DBNull.Value;
                         if (r.Name.ToLower().Contains("hierarchyid"))
                         {
-                            var par = new SqlParameter("@" + r.Name, SqlDbType.Udt);
+                            var par = new OracleParameter("@" + r.Name, SqlDbType.Udt);
                             par.UdtTypeName = "HIERARCHYID";
                             par.Value = value;
                             listParams.Add(par);
                         }
                         else
                         {
-                            var par = new SqlParameter("@" + r.Name, value);
+                            var par = new OracleParameter("@" + r.Name, value);
                             SetParSize(par);
                             listParams.Add(par);
                         }
@@ -306,7 +306,7 @@ namespace SqlSugar
         }
   
         /// <summary>
-        /// 使用页面自动填充sqlParameter时 Request.Form出现特殊字符时可以重写Request.Form方法，使用时注意加锁并且用到将该值设为null
+        /// 使用页面自动填充OracleParameter时 Request.Form出现特殊字符时可以重写Request.Form方法，使用时注意加锁并且用到将该值设为null
         /// </summary>
         public static Func<string, string> SpecialRequestForm = null;
 

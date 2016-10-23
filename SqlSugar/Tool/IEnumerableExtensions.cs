@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Data;
 using System.Data.SqlTypes;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：IEnumerable扩展类

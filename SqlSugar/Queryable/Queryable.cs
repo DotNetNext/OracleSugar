@@ -5,7 +5,7 @@ using System.Text;
 using Oracle.ManagedDataAccess.Client;
 using System.Linq.Expressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
 
     /// <summary>
@@ -51,9 +51,9 @@ namespace SqlSugar
         /// </summary>
         internal string SelectValue { get; set; }
         /// <summary>
-        /// SqlParameter临时数据
+        /// OracleParameter临时数据
         /// </summary>
-        internal List<SqlParameter> Params = new List<SqlParameter>();
+        internal List<OracleParameter> Params = new List<OracleParameter>();
         /// <summary>
         /// 表名临时数据
         /// </summary>

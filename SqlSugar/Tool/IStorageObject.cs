@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：存储对象接口

@@ -6,7 +6,7 @@ using System.Data;
 using System.Web;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// SqlSugarTool局部类与Core有差异的部分(方便工具移植到.NetCore版本)
@@ -126,7 +126,7 @@ namespace SqlSugar
         /// 获取参数到键值集合根据页面Request参数
         /// </summary>
         /// <returns></returns>
-        public static SqlParameter[] GetParameterArray(bool isNotNullAndEmpty = false)
+        public static OracleParameter[] GetParameterArray(bool isNotNullAndEmpty = false)
         {
             Dictionary<string, string> paraDictionaryByGet = HttpContext.Current.Request.QueryString.Keys.Cast<string>()
                    .ToDictionary(k => k, v => HttpContext.Current.Request.QueryString[v]);
@@ -139,7 +139,7 @@ namespace SqlSugar
             {
                 paraDictionarAll = paraDictionarAll.Where(it => !string.IsNullOrEmpty(it.Value));
             }
-            return paraDictionarAll.Select(it => new SqlParameter(SqlSugarTool.ParSymbol + it.Key, it.Value)).ToArray();
+            return paraDictionarAll.Select(it => new OracleParameter(SqlSugarTool.ParSymbol + it.Key, it.Value)).ToArray();
         }
     }
 }

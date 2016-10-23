@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：Sqlable扩展函数
@@ -178,9 +178,9 @@ namespace SqlSugar
         /// <param name="sqlable"></param>
         /// <param name="whereObj"></param>
         /// <returns></returns>
-        private static SqlParameter[] GetAllParas(Sqlable sqlable, object whereObj)
+        private static OracleParameter[] GetAllParas(Sqlable sqlable, object whereObj)
         {
-            List<SqlParameter> allParams = new List<SqlParameter>();
+            List<OracleParameter> allParams = new List<OracleParameter>();
             var selectParas = SqlSugarTool.GetParameters(whereObj).ToList();
             if (selectParas.IsValuable())
             {

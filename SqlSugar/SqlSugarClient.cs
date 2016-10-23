@@ -8,7 +8,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：SQL糖 ORM 核心类
@@ -132,7 +132,7 @@ namespace SqlSugar
             }
             return name;
         }
-        private void AddFilter<T>(SqlSugar.Queryable<T> queryable, string key) where T : new()
+        private void AddFilter<T>(Queryable<T> queryable, string key) where T : new()
         {
             if (_filterRows.ContainsKey(key))
             {
@@ -456,9 +456,9 @@ namespace SqlSugar
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="sql">sql语句</param>
-        /// <param name="pars">SqlParameter的集合</param>
+        /// <param name="pars">OracleParameter的集合</param>
         /// <returns>T的集合</returns>
-        public List<T> SqlQuery<T>(string sql, SqlParameter[] pars)
+        public List<T> SqlQuery<T>(string sql, OracleParameter[] pars)
         {
             return SqlQuery<T>(sql, pars.ToList());
         }
@@ -468,11 +468,11 @@ namespace SqlSugar
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="sql">sql语句</param>
-        /// <param name="pars">SqlParameter集合</param>
+        /// <param name="pars">OracleParameter集合</param>
         /// <returns>T的集合</returns>
-        public List<T> SqlQuery<T>(string sql, List<SqlParameter> pars)
+        public List<T> SqlQuery<T>(string sql, List<OracleParameter> pars)
         {
-            SqlDataReader reader = null;
+            OracleDataReader reader = null;
             //全局过滤器
             if (CurrentFilterKey.IsValuable())
             {
@@ -546,7 +546,7 @@ namespace SqlSugar
             typeName = GetTableNameByClassType(typeName);
 
             StringBuilder sbInsertSql = new StringBuilder();
-            List<SqlParameter> pars = new List<SqlParameter>();
+            List<OracleParameter> pars = new List<OracleParameter>();
             var identities = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
             isIdentity = identities != null && identities.Count > 0;
             //sql语句缓存
@@ -646,7 +646,7 @@ namespace SqlSugar
                         }
                     }
                     if (!cacheSqlManager.ContainsKey(cacheSqlKey))
-                        sbInsertSql.Append(propName.GetSqlParameterName() + ",");
+                        sbInsertSql.Append(propName.GetOracleParameterName() + ",");
                     object val = prop.GetValue(entity, null);
                     if (val == null)
                         val = DBNull.Value;
@@ -672,12 +672,8 @@ namespace SqlSugar
                         val = (int)(val);
                     }
 
-                    var par = new SqlParameter(SqlSugarTool.ParSymbol + propName, val);
+                    var par = new OracleParameter(SqlSugarTool.ParSymbol + propName, val);
                     SqlSugarTool.SetParSize(par);
-                    if (par.SqlDbType == SqlDbType.Udt)
-                    {
-                        par.UdtTypeName = "HIERARCHYID";
-                    }
                     pars.Add(par);
                 }
             }
@@ -836,7 +832,7 @@ namespace SqlSugar
                     }
                     else if (underType == SqlSugarTool.StringType)
                     {
-                        //string参数需要处理注入 (因为SqlParameter参数上限为2100所以无法使用参数化)
+                        //string参数需要处理注入 (因为OracleParameter参数上限为2100所以无法使用参数化)
                         objValue = "'" + objValue.ToString().ToSqlFilter() + "'";
                     }
                     else
@@ -927,7 +923,7 @@ namespace SqlSugar
                             continue;
                         }
                     }
-                    sbSql.Append(string.Format(" {0}={1},", name.GetTranslationSqlName(), name.GetSqlParameterName()));
+                    sbSql.Append(string.Format(" {0}={1},", name.GetTranslationSqlName(), name.GetOracleParameterName()));
                 }
                 sbSql.Remove(sbSql.Length - 1, 1);
                 sbSql.Append(" WHERE  1=1  ");
@@ -935,17 +931,13 @@ namespace SqlSugar
                 cacheSqlManager.Add(cacheSqlKey, sbSql, cacheSqlManager.Day);
             }
 
-            List<SqlParameter> parsList = new List<SqlParameter>();
+            List<OracleParameter> parsList = new List<OracleParameter>();
             parsList.AddRange(re.Paras);
             var pars = rows;
             if (pars != null)
             {
                 foreach (var par in pars)
                 {
-                    if (par.SqlDbType == SqlDbType.Udt)
-                    {
-                        par.UdtTypeName = "HIERARCHYID";
-                    }
                     par.ParameterName = SqlSugarTool.ParSymbol + GetMappingColumnDbName(par.ParameterName.TrimStart(SqlSugarTool.ParSymbol));
                     SqlSugarTool.SetParSize(par);
                     parsList.Add(par);
@@ -1055,7 +1047,7 @@ namespace SqlSugar
                 sbSql.Append(string.Format(" UPDATE {0} SET ", typeName.GetTranslationSqlName()));
                 foreach (var r in pars)
                 {
-                    string name = GetMappingColumnDbName(r.ParameterName.GetSqlParameterNameNoParSymbol());
+                    string name = GetMappingColumnDbName(r.ParameterName.GetOracleParameterNameNoParSymbol());
                     var isPk = pkName != null && pkName.ToLower() == name.ToLower();
                     var isIdentity = identityNames.Any(it => it.Value.ToLower() == name.ToLower());
                     var isDisableUpdateColumns = DisableUpdateColumns != null && DisableUpdateColumns.Any(it => it.ToLower() == name.ToLower());
@@ -1072,7 +1064,7 @@ namespace SqlSugar
                     {
                             continue;
                     }
-                    sbSql.Append(string.Format(" {0}={1}  ,", name.GetTranslationSqlName(), name.GetSqlParameterName()));
+                    sbSql.Append(string.Format(" {0}={1}  ,", name.GetTranslationSqlName(), name.GetOracleParameterName()));
                 }
                 sbSql.Remove(sbSql.Length - 1, 1);
                 cm.Add(cacheKey, sbSql.ToString(), cm.Day);
@@ -1093,10 +1085,6 @@ namespace SqlSugar
                     if (par.Value != null && par.Value.GetType().IsClass && par.Value.GetType() != SqlSugarTool.StringType)
                     {
                         par.Value = DBNull.Value;
-                    }
-                    if (par.SqlDbType == SqlDbType.Udt || par.ParameterName.ToLower().Contains("hierarchyid"))
-                    {
-                        par.UdtTypeName = "HIERARCHYID";
                     }
                     par.ParameterName = name;
                     return par;
@@ -1245,7 +1233,7 @@ namespace SqlSugar
                     }
                     else if (underType == SqlSugarTool.StringType)
                     {
-                        //string参数需要处理注入 (因为SqlParameter参数上限为2100所以无法使用参数化)
+                        //string参数需要处理注入 (因为OracleParameter参数上限为2100所以无法使用参数化)
                         objValue = "'" + objValue.ToString().ToSqlFilter() + "'";
                     }
                     else
@@ -1297,8 +1285,8 @@ namespace SqlSugar
             string pkClassPropName = pkClassPropName = GetMappingColumnClassName(pkName);
             var pkValue=type.GetProperty(pkClassPropName).GetValue(deleteObj,null);
             Check.Exception(pkValue == DBNull.Value, typeName + "主键的值不能为DBNull.Value。");
-            string sql = string.Format("DELETE FROM {0} WHERE {1}={2}", typeName.GetTranslationSqlName(),pkName.GetTranslationSqlName(), pkName.GetSqlParameterName());
-            var par = new SqlParameter(pkName.GetSqlParameterName(), pkValue);
+            string sql = string.Format("DELETE FROM {0} WHERE {1}={2}", typeName.GetTranslationSqlName(),pkName.GetTranslationSqlName(), pkName.GetOracleParameterName());
+            var par = new OracleParameter(pkName.GetOracleParameterName(), pkValue);
             SqlSugarTool.SetParSize(par);
             bool isSuccess = ExecuteCommand(sql,par) > 0;
             return isSuccess;

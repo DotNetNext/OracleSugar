@@ -7,33 +7,53 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace OracleSugar
 {
+    /// <summary>
+    /// 序列
+    /// </summary>
+    public class SequenceModel
+    {
+        /// <summary>
+        /// 表名
+        /// </summary>
+        public string TableName { get; set; }
+        /// <summary>
+        /// 列名
+        /// </summary>
+        public string ColumnName { get; set; }
+        /// <summary>
+        /// 序列的值
+        /// </summary>
+        public string Value { get; set; }
+    }
+
+    /// <summary>
+    /// Oracle参数配置
+    /// </summary>
     public static class OracleConfig
     {
+        //public static string ToOracleTableName(this string value)
+        //{
+        //    return value;
+        //}
 
+        //public static object ToOracleParValue(this object value)
+        //{
+        //    if (value == null)
+        //    {
+        //        return DBNull.Value;
+        //    }
+        //    var type = value.GetType();
+        //    if (type == SqlSugarTool.BoolType)
+        //    {
+        //        return Convert.ToBoolean(value) ? 1 : 0;
+        //    }
+        //    else if (type == SqlSugarTool.GuidType)
+        //    {
+        //        return value.ToString();
+        //    }
+        //    return value;
 
-        public static string ToOracleTableName(this string value)
-        {
-            return value;
-        }
-
-        public static object ToOracleParValue(this object value)
-        {
-            if (value == null)
-            {
-                return DBNull.Value;
-            }
-            var type = value.GetType();
-            if (type == SqlSugarTool.BoolType)
-            {
-                return Convert.ToBoolean(value) ? 1 : 0;
-            }
-            else if (type == SqlSugarTool.GuidType)
-            {
-                return value.ToString();
-            }
-            return value;
-
-        }
+        //}
         internal static void SetParType(string typeName, PropertyInfo prop, OracleParameter par,SqlSugarClient db)
         {
             var isBinary = prop.PropertyType == SqlSugarTool.ByteArrayType;
@@ -82,7 +102,7 @@ namespace OracleSugar
         /// <summary>
         /// 设置序列
         /// </summary>
-        public static List<PubModel.SequenceModel> SequenceMapping = new List<PubModel.SequenceModel>();
+        public static List<SequenceModel> SequenceMapping = new List<SequenceModel>();
 
     }
 }

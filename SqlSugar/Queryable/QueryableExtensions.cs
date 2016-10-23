@@ -8,7 +8,7 @@ using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     /// <summary>
     /// ** 描述：Queryable扩展函数

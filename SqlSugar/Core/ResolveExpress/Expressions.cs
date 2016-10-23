@@ -5,7 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-namespace SqlSugar
+namespace OracleSugar
 {
     //局部类：拉姆达解析分类处理
     internal partial class ResolveExpress
