@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
-using Oracle.ManagedDataAccess.Client;
+using System.Data.SqlClient;
 
-namespace OracleSugar
+namespace SqlSugar
 {
-
+    ///<summary>
     /// ** 描述：SqlSugar扩展工具类
     /// ** 创始时间：2015-7-19
     /// ** 修改时间：-
@@ -19,7 +18,7 @@ namespace OracleSugar
     {
 
         /// <summary>
-        /// 数组字串转换成SQL参数格式，例如: 参数 new int{1,2,3} 反回 "'1','2','3'"
+        /// 将数组转换成Where In 需要的格式(例如:参数 new int{1,2,3} 反回 "'1','2','3'")
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
@@ -35,7 +34,7 @@ namespace OracleSugar
             }
         }
         /// <summary>
-        /// 将字符串转换成SQL参数格式，例如: 参数value返回'value'
+        /// 将字符串转换成SQL参数所需要的格式(例如: 参数value返回'value')
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -44,7 +43,7 @@ namespace OracleSugar
             return string.Format("'{0}'", value.ToSqlFilter());
         }
         /// <summary>
-        /// SQL关键字过滤,过滤拉姆达式中的特殊字符，出现特殊字符则引发异常
+        ///SQL注入过滤
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -80,7 +79,7 @@ namespace OracleSugar
         /// </summary>
         /// <param name="isNoLock"></param>
         /// <returns></returns>
-        public static string GetLockString(this bool isNoLock)
+        internal static string GetLockString(this bool isNoLock)
         {
             return isNoLock ? "WITH(NOLOCK)" : null; ;
         }
@@ -89,51 +88,68 @@ namespace OracleSugar
         /// </summary>
         /// <param name="selectFileds"></param>
         /// <returns></returns>
-        public static string GetSelectFiles(this string selectFileds)
+        internal static string GetSelectFiles(this string selectFileds)
         {
             return selectFileds.IsNullOrEmpty() ? "*" : selectFileds;
-        }
-        /// <summary>
-        /// 获取Select需要的字段
-        /// </summary>
-        /// <param name="selectFileds"></param>
-        /// <returns></returns>
-        public static string GetSelectFiles(this string selectFileds,string typeName)
-        {
-            var reval= selectFileds.IsNullOrEmpty() ? "*" : selectFileds;
-            return reval == "*" ? string.Format("{0}.*", typeName) : selectFileds;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="groupByFileds"></param>
         /// <returns></returns>
-        public static string GetGroupBy(this string groupByFileds)
+        internal static string GetGroupBy(this string groupByFileds)
         {
             return groupByFileds.IsNullOrEmpty() ? "" : " GROUP BY " + groupByFileds;
         }
         /// <summary>
-        /// 将Request里的参数转成OracleParameter[]
+        /// 将Request里的参数转成SqlParameter[]
         /// </summary>
         /// <returns></returns>
-        public static void RequestParasToSqlParameters(OracleParameterCollection  oldParas)
+        internal static void RequestParasToSqlParameters(SqlParameterCollection oldParas)
         {
-            var oldParaList= oldParas.Cast<OracleParameter>().ToList();
-            var paraDictionarAll =SqlSugarTool.GetParameterDictionary();
+            var oldParaList = oldParas.Cast<SqlParameter>().ToList();
+            var paraDictionarAll = SqlSugarTool.GetParameterDictionary();
             if (paraDictionarAll != null && paraDictionarAll.Count() > 0)
             {
-            
+
                 foreach (KeyValuePair<string, string> it in paraDictionarAll)
                 {
-                 
-                    var par=new OracleParameter(":" + it.Key, it.Value);
-                    if (!oldParaList.Any(oldPara=>oldPara.ParameterName==(":"+it.Key)))
+
+                    var par = new SqlParameter("@" + it.Key, it.Value);
+                    if (!oldParaList.Any(oldPara => oldPara.ParameterName == ("@" + it.Key)))
                     {
                         oldParas.Add(par);
                     }
                 }
             }
         }
+        /// <summary>
+        /// 获取转释后的表名和列名
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public static string GetTranslationSqlName(this string tableName)
+        {
+            return SqlSugarTool.GetTranslationSqlName(tableName);
+        }
+        /// <summary>
+        /// 获取参数名
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal static string GetSqlParameterName(this string name)
+        {
+            return SqlSugarTool.GetSqlParameterName(name);
+        }
 
+        /// <summary>
+        ///获取没有符号的参数名称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal static string GetSqlParameterNameNoParSymbol(this string name)
+        {
+            return SqlSugarTool.GetSqlParameterNameNoParSymbol(name);
+        }
     }
 }
