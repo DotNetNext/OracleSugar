@@ -1283,7 +1283,8 @@ namespace OracleSugar
             string pkName = SqlSugarTool.GetPrimaryKeyByTableName(this, typeName);
             Check.ArgumentNullException(pkName, typeName+"没有找到主键。");
             string pkClassPropName = pkClassPropName = GetMappingColumnClassName(pkName);
-            var pkValue=type.GetProperty(pkClassPropName).GetValue(deleteObj,null);
+            pkClassPropName = type.GetProperties().Where(it => it.Name.ToLower() == pkClassPropName.ToLower()).Single().Name;
+            var pkValue = type.GetProperty(pkClassPropName).GetValue(deleteObj, null);
             Check.Exception(pkValue == DBNull.Value, typeName + "主键的值不能为DBNull.Value。");
             string sql = string.Format("DELETE FROM {0} WHERE {1}={2}", typeName.GetTranslationSqlName(),pkName.GetTranslationSqlName(), pkName.GetOracleParameterName());
             var par = new OracleParameter(pkName.GetOracleParameterName(), pkValue);

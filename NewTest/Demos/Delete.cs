@@ -37,7 +37,7 @@ namespace NewTest.Demos
                 db.Delete(new School() { id = 200 });
 
                 //根据字符串删除
-                db.Delete<School>("id=@id", new { id = 100 });
+                db.Delete<School>("id=:id", new { id = 100 });
 
                 //假删除
                 //db.FalseDelete<school>("is_del", 100);
