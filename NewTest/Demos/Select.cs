@@ -85,8 +85,8 @@ namespace NewTest.Demos
                 var like = db.Queryable<Student>().Where(c => c.name.Contains(conval)).ToList();
 
                 //支持字符串Where 让你解决，更复杂的查询
-                var student12 = db.Queryable<Student>().Where(c => "a" == "a").Where("id>@id", new { id = 1 }).ToList();
-                var student13 = db.Queryable<Student>().Where(c => "a" == "a").Where("id>100 and id in( select 1)").ToList();
+                var student12 = db.Queryable<Student>().Where(c => "a" == "a").Where("id>:id", new { id = 1 }).ToList();
+                var student13 = db.Queryable<Student>().Where(c => "a" == "a").Where("id>100 and id in( select 1 from dual )").ToList();
 
 
                 //存在记录反回true，则否返回false
@@ -187,7 +187,7 @@ namespace NewTest.Demos
 
 
                 //Join子查询语句加分页的写法
-                var childQuery = db.Queryable<Area>().Where("id=@id").Select(it => new { id = it.id }).ToSql();//创建子查询SQL
+                var childQuery = db.Queryable<Area>().Where("id=:id").Select(it => new { id = it.id }).ToSql();//创建子查询SQL
                 string childTableName =SqlSugarTool.PackagingSQL(childQuery.Key);//将SQL语句用()包成表
                 var queryable = db.Queryable<Student>()
                  .JoinTable<School>((s1, s2) => s1.sch_id == s2.id)  //LEFT JOIN School  s2 ON  ( s1.sch_id  = s2.id )  
@@ -330,7 +330,7 @@ namespace NewTest.Demos
                 //Select 外部参数用法
                 var f4 = db.Queryable<InsertTest>().Where("1=1", new { id = 100 }).Select<Student>(it => new Student()
                 {
-                    id = "@id".ObjToInt(), //取的是 100 的值
+                    id = ":id".ObjToInt(), //取的是 100 的值
                     name = "张三",//内部参数可以直接写
                     sex = it.txt,
                     sch_id = it.id
@@ -341,11 +341,11 @@ namespace NewTest.Demos
                .Where("1=1", new { id = 100, name = "张三", isOk = true }) //外部传参给@id
                .Select<InsertTest, Student>((i1, i2) => new Student()
                {
-                   name = "@name".ObjToString(), //多表查询例子
-                   id = "@id".ObjToInt(),
+                   name = ":name".ObjToString(), //多表查询例子
+                
                    sex = i2.txt,
                    sch_id = 1,
-                   isOk = "@isOk".ObjToBool()
+                   isOk = ":isOk".ObjToBool()
 
                }).ToList();
             }
@@ -415,7 +415,7 @@ namespace NewTest.Demos
                    .From("school", "s")
                    .Join("student", "st", "st.id", "s.id", JoinType.INNER)
                    .Join("student", "st2", "st2.id", "st.id", JoinType.LEFT)
-                   .Where("s.id>100 and s.id<@id")
+                   .Where("s.id>100 and s.id<:id")
                    .Where("1=1")//可以多个WHERE
                    .OrderBy("id")
                    .SelectToList<School/*新的Model我这里没有所以写的School*/>("st.*", new { id = 1 });
@@ -433,7 +433,7 @@ namespace NewTest.Demos
                     .From("school", "s")
                     .Join("student", "st", "st.id", "s.id", JoinType.INNER)
                     .Join("student", "st2", "st2.id", "st.id", JoinType.LEFT)
-                    .Where("s.id>100 and s.id<100 and s.id in (select 1 )" /*这里面写子查询都可以*/)
+                    .Where("s.id>100 and s.id<100 and s.id in (select 1  from dual )" /*这里面写子查询都可以*/)
                     .SelectToPageList<School>("st.*", "s.id", 1, 10);
 
 
@@ -457,11 +457,11 @@ namespace NewTest.Demos
                 int id = 1;
                 if (!string.IsNullOrEmpty(name))
                 {
-                    sable = sable.Where("s.name=@name");
+                    sable = sable.Where("s.name=:name");
                 }
                 if (!string.IsNullOrEmpty(name))
                 {
-                    sable = sable.Where("s.id=@id or s.id=100");
+                    sable = sable.Where("s.id=:id or s.id=100");
                 }
                 if (id > 0)
                 {

@@ -144,7 +144,7 @@ namespace OracleSugar
                     if (type == SqlSugarTool.DicArraySO)
                     {
                         var newObj = (Dictionary<string, object>)obj;
-                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter(":" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -155,7 +155,7 @@ namespace OracleSugar
                     {
 
                         var newObj = (Dictionary<string, string>)obj;
-                        var pars = newObj.Select(it => new OracleParameter("@" + it.Key, it.Value));
+                        var pars = newObj.Select(it => new OracleParameter(":" + it.Key, it.Value));
                         foreach (var par in pars)
                         {
                             SetParSize(par);
@@ -184,14 +184,18 @@ namespace OracleSugar
                         if (value == null) value = DBNull.Value;
                         if (r.Name.ToLower().Contains("hierarchyid"))
                         {
-                            var par = new OracleParameter("@" + r.Name, SqlDbType.Udt);
+                            var par = new OracleParameter(":" + r.Name, SqlDbType.Udt);
                             par.UdtTypeName = "HIERARCHYID";
                             par.Value = value;
                             listParams.Add(par);
                         }
                         else
                         {
-                            var par = new OracleParameter("@" + r.Name, value);
+                            var isBool = value.GetType() == SqlSugarTool.BoolType;
+                            if (isBool) {
+                                value = Convert.ToBoolean(value) ? 1 : 0;
+                            }
+                            var par = new OracleParameter(":" + r.Name, value);
                             SetParSize(par);
                             listParams.Add(par);
                         }

@@ -18,7 +18,7 @@ namespace NewTest.Dao
         {
             get
             {
-                string reval = "server=localhost/orcl;User ID=system;Password=JHL52771jhl;"; //这里可以动态根据cookies或session实现多库切换
+                string reval = "Data Source=localhost/orcl;User ID=system;Password=JHL52771jhl;"; //这里可以动态根据cookies或session实现多库切换
                 return reval;
             }
         }

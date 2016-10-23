@@ -134,7 +134,7 @@ namespace OracleSugar
             {
                 string sql = @"  				select cu.TABLE_NAME  ,cu.COLUMN_name KEYNAME  from user_cons_columns cu, user_constraints au 
    where cu.constraint_name = au.constraint_name
-    and au.constraint_type = 'P' and au.table_name = '" + tableName+ @"'";
+    and au.constraint_type = 'P' and au.table_name = '" + tableName.GetTranslationSqlName()+ @"'";
                 var dt = db.GetDataTable(sql);
                 primaryInfo = new List<KeyValue>();
                 if (dt != null && dt.Rows.Count > 0)
@@ -148,11 +148,11 @@ namespace OracleSugar
             }
 
             //反回主键
-            if (!primaryInfo.Any(it => it.Key == tableName))
+            if (!primaryInfo.Any(it => it.Key.ToLower() == tableName.ToLower()))
             {
                 return null;
             }
-            return primaryInfo.First(it => it.Key == tableName).Value;
+            return primaryInfo.First(it => it.Key.ToLower() == tableName.ToLower()).Value;
 
         }
 
@@ -384,7 +384,7 @@ namespace OracleSugar
         /// <summary>
         /// par的符号
         /// </summary>
-        public const char ParSymbol = '@';
+        public const char ParSymbol = ':';
 
         /// <summary>
         /// 获取转释后的表名和列名
@@ -394,24 +394,7 @@ namespace OracleSugar
         internal static string GetTranslationSqlName(string name)
         {
             Check.ArgumentNullException(name, "表名不能为空。");
-            var hasScheme = name.Contains(".");
-            if (name.Contains("[")) return name;
-            if (hasScheme)
-            {
-                var array = name.Split('.');
-                if (array.Length == 2)
-                {
-                    return string.Format("[{0}].[{1}]", array.First(), array.Last());
-                }
-                else
-                {
-                    return string.Join(".", array.Select(it => "[" + it + "]"));
-                }
-            }
-            else
-            {
-                return "[" + name + "]";
-            }
+            return name.ToUpper();
         }
         /// <summary>
         /// 获取参数名

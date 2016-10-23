@@ -21,7 +21,7 @@ namespace OracleSugar
         {
             if (isField)
             {
-                return string.Format("LEN({0})", value.GetTranslationSqlName());
+                return string.Format("length({0})", value.GetTranslationSqlName());
             }
             else
             {

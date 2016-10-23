@@ -208,6 +208,7 @@ namespace OracleSugar
         {
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
+            OracleCommand.BindByName = true;
             OracleCommand.CommandType = CommandType;
             if (_tran != null)
             {
@@ -249,6 +250,7 @@ namespace OracleSugar
         {
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
+            OracleCommand.BindByName = true;
             OracleCommand.CommandType = CommandType;
             OracleCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
@@ -289,6 +291,7 @@ namespace OracleSugar
         {
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
+            OracleCommand.BindByName = true;
             OracleCommand.CommandType = CommandType;
             OracleCommand.CommandTimeout = this.CommandTimeOut;
             if (_tran != null)
@@ -380,6 +383,7 @@ namespace OracleSugar
             ExecLogEvent(sql, pars, true);
             OracleDataAdapter _OracleDataAdapter = new OracleDataAdapter(sql, _OracleConnection);
             _OracleDataAdapter.SelectCommand.CommandType = CommandType;
+            _OracleDataAdapter.SelectCommand.BindByName = true;
             if (pars != null)
                 _OracleDataAdapter.SelectCommand.Parameters.AddRange(pars);
             if (IsGetPageParas)
@@ -428,6 +432,7 @@ namespace OracleSugar
             }
             _OracleDataAdapter.SelectCommand.CommandTimeout = this.CommandTimeOut;
             _OracleDataAdapter.SelectCommand.CommandType = CommandType;
+            _OracleDataAdapter.SelectCommand.BindByName = true;
             if (pars != null)
                 _OracleDataAdapter.SelectCommand.Parameters.AddRange(pars);
             DataSet ds = new DataSet();

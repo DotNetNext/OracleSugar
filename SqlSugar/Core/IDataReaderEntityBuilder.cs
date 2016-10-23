@@ -100,14 +100,18 @@ namespace OracleSugar
             for (int i = 0; i < dataRecord.FieldCount; i++)
             {
                 string dbFieldName = dataRecord.GetName(i);
-                if (cm.ContainsKey(cacheKey) && cm[cacheKey].Any(it => it.Value == dbFieldName))
+                if (cm.ContainsKey(cacheKey) && cm[cacheKey].Any(it => it.Value.ToLower() == dbFieldName.ToLower()))
                 {
-                    var classFieldName = cm[cacheKey].Single(it => it.Value == dbFieldName).Key;
-                    if (tFieldNames.Any(it => it == classFieldName))//T包含映射属性
+                    var classFieldName = cm[cacheKey].Single(it => it.Value.ToLower() == dbFieldName.ToLower()).Key;
+                    if (tFieldNames.Any(it => it.ToLower() == classFieldName.ToLower()))//T包含映射属性
                     {
                         dbFieldName = classFieldName;
                     }
                 }
+                else {
+                    dbFieldName = tFieldNames.Single(it => it.ToLower() == dbFieldName.ToLower());
+                }
+
                 PropertyInfo propertyInfo = type.GetProperty(dbFieldName);
                 Label endIfLabel = generator.DefineLabel();
                 if (propertyInfo != null && propertyInfo.GetSetMethod() != null)

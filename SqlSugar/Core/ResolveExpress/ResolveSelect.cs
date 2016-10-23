@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 
 namespace OracleSugar
 {
-
     /// <summary>
     /// ** 描述：解析Queryable.Select函数的参数
     /// ** 创始时间：2016-9-21
@@ -46,15 +45,29 @@ namespace OracleSugar
                 throw new SqlSugarException("Select 解析失败 ", new { selectString = reval.SelectValue });
             }
             reval.SelectValue = reval.SelectValue.Replace("\"", "'");
-            reval.SelectValue = reval.SelectValue.Replace("DateTime.Now", "GETDATE()");
+            reval.SelectValue = reval.SelectValue.Replace("DateTime.Now", "now()");
             reval.SelectValue = ConvertFuns(reval.SelectValue, false);
             if (reval.DB != null && reval.DB.IsEnableAttributeMapping && reval.DB._mappingColumns.IsValuable())
             {
                 foreach (var item in reval.DB._mappingColumns)
                 {
-                    reval.SelectValue = Regex.Replace(reval.SelectValue,@"\."+item.Key,"."+item.Value);
+                    reval.SelectValue = Regex.Replace(reval.SelectValue, @"\." + item.Key, "." + item.Value);
                 }
             }
+            reval.SelectValue = ConvertSelectValue(reval.SelectValue);
+        }
+        internal static string ConvertSelectValue(string selectValue)
+        {
+            if (selectValue.IsNullOrEmpty()) return "*";
+            var array = selectValue.Split(',');
+            selectValue = string.Join(",", array.Select(it =>
+            {
+                if (it.IsNullOrEmpty()) return it;
+                if (!it.Contains("=")) return it;
+                var innerArray = it.Split('=').OrderBy(a => a.Split('.').Length).ToArray();
+                return innerArray.Last().GetTranslationSqlName().Trim() + " AS " + innerArray.First().Trim().GetTranslationSqlName();
+            }));
+            return selectValue;
         }
 
         private static bool IsComplexAnalysis(string expStr)
@@ -64,17 +77,19 @@ namespace OracleSugar
             {
                 throw new SqlSugarException("Select中的拉姆达表达式,不支持外部传参数,目前支持的写法 Where(\"1=1\",new {id=1}).Select(it=>{ id=\"" + SqlSugarTool.ParSymbol + "id\".ObjToInt()}");
             }
-            if(expStr.IsValuable()&&Regex.IsMatch(expStr, @"\+|\-|\*|\/")){
+            if (expStr.IsValuable() && Regex.IsMatch(expStr, @"\+|\-|\*|\/"))
+            {
                 throw new SqlSugarException("Select中不支持变量的运算。");
             }
-            string reg= @"(\.[a-z,A-Z,_]\w*?\(.*?\))|\=\s*[a-z,A-Z,_]\w*?\(.*?\)|\=\s*[a-z,A-Z,_]\w*?\(.*?\)|\=[a-z,A-Z,_]\w*.[a-z,A-Z,_]\w*.[a-z,A-Z,_]\w*";
-            if (expStr.IsValuable() & Regex.IsMatch(expStr,reg))
+            string reg = @"(\.[a-z,A-Z,_]\w*?\(.*?\))|\=\s*[a-z,A-Z,_]\w*?\(.*?\)|\=\s*[a-z,A-Z,_]\w*?\(.*?\)|\=[a-z,A-Z,_]\w*.[a-z,A-Z,_]\w*.[a-z,A-Z,_]\w*";
+            if (expStr.IsValuable() & Regex.IsMatch(expStr, reg))
             {
                 var ms = Regex.Matches(expStr, reg);
                 var errorNum = 0;
-                foreach (Match item in ms.Cast<Match>().OrderBy(it=>it.Value.Split('.').Length))
+                foreach (Match item in ms.Cast<Match>().OrderBy(it => it.Value.Split('.').Length))
                 {
-                    if (item.Value == null) {
+                    if (item.Value == null)
+                    {
                         errorNum++;
                         break;
                     }
@@ -87,7 +102,7 @@ namespace OracleSugar
                 }
                 if (errorNum > 0)
                 {
-                    throw new SqlSugarException("Select中不支持函数"+errorFunName);
+                    throw new SqlSugarException("Select中不支持函数" + errorFunName);
                 }
             }
             return false;
@@ -122,7 +137,7 @@ namespace OracleSugar
                 throw new SqlSugarException("Select 解析失败 ", new { selectString = reval.SelectValue });
             }
             expStr = expStr.Replace("\"", "'");
-            expStr = expStr.Replace("DateTime.Now", "GETDATE()");
+            expStr = expStr.Replace("DateTime.Now", "now()");
             expStr = ConvertFuns(expStr);
             reval.SelectValue = expStr;
             if (reval.DB != null && reval.DB.IsEnableAttributeMapping && reval.DB._mappingColumns.IsValuable())
@@ -132,6 +147,7 @@ namespace OracleSugar
                     reval.SelectValue = Regex.Replace(reval.SelectValue, @"\=" + item.Key, "=" + item.Value);
                 }
             }
+            reval.SelectValue = ConvertSelectValue(reval.SelectValue);
         }
 
         /// <summary>

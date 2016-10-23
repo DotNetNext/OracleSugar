@@ -4,45 +4,233 @@
         <name>OracleSugar</name>
     </assembly>
     <members>
-        <member name="T:OracleSugar.SequenceModel">
+        <member name="T:OracleSugar.SqlSugarTool">
             <summary>
-            序列
+            ** 描述：SqlSugar工具类
+            ** 创始时间：2015-7-13
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：
+            </summary>
+            <summary>
+            SqlSugarTool局部类与Core有差异的部分(方便工具移植到.NetCore版本)
+            </summary>
+            <summary>
+            SqlSugarTool局部类存放具有拼接SQL的函数(方便工具移植到其它数据库版本)
             </summary>
         </member>
-        <member name="P:OracleSugar.SequenceModel.TableName">
+        <member name="F:OracleSugar.SqlSugarTool.ParSymbol">
             <summary>
-            表名
+            par的符号
             </summary>
         </member>
-        <member name="P:OracleSugar.SequenceModel.ColumnName">
+        <member name="M:OracleSugar.SqlSugarTool.DataReaderToList``1(System.Type,System.Data.IDataReader,System.String,System.Boolean,System.Boolean)">
             <summary>
-            列名
+             Reader转成T的集合
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <param name="dr"></param>
+            <param name="fields"></param>
+            <param name="isClose"></param>
+            <param name="isTry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.SetParSize(Oracle.ManagedDataAccess.Client.OracleParameter)">
+            <summary>
+            设置参数Size
+            </summary>
+            <param name="par"></param>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetParameters(System.Object,System.Reflection.PropertyInfo[])">
+            <summary>
+            将实体对象转换成OracleParameter[] 
+            </summary>
+            <param name="obj"></param>
+            <param name="pis"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetObjectToDictionary(System.Object)">
+            <summary>
+            将实体对象转换成 Dictionary《string, string》
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetGetPropertiesByCache(System.Type,System.String,OracleSugar.CacheManager{System.Reflection.PropertyInfo[]})">
+            <summary>
+            获取type属性cache
+            </summary>
+            <param name="type"></param>
+            <param name="cachePropertiesKey"></param>
+            <param name="cachePropertiesManager"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.IsPrimaryKey(OracleSugar.SqlSugarClient,System.String)">
+            <summary>
+            判段是否包含主键
+            </summary>
+            <param name="db"></param>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.SqlLikeWordEncode(System.String)">
+            <summary>
+            处理like条件的通配符
+            </summary>
+            <param name="word"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetPropertyValue(System.Object,System.String)">
+            <summary>
+            获取属性值
+            </summary>
+            <param name="obj"></param>
+            <param name="property"></param>
+            <returns></returns>
+        </member>
+        <member name="F:OracleSugar.SqlSugarTool.SpecialRequestForm">
+            <summary>
+            使用页面自动填充OracleParameter时 Request.Form出现特殊字符时可以重写Request.Form方法，使用时注意加锁并且用到将该值设为null
             </summary>
         </member>
-        <member name="P:OracleSugar.SequenceModel.Value">
+        <member name="M:OracleSugar.SqlSugarTool.GetUnderType(System.Reflection.PropertyInfo,System.Boolean@)">
             <summary>
-            序列的值
+            获取最底层类型
+            </summary>
+            <param name="propertyInfo"></param>
+            <param name="isNullable"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetParameterDictionary(System.Boolean)">
+            <summary>
+            获取参数到键值集合根据页面Request参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetParameterArray(System.Boolean)">
+            <summary>
+            获取参数到键值集合根据页面Request参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.PackagingSQL(System.String)">
+            <summary>
+            将参数sql转成 '('+sql+')'
+            </summary>
+            <param name="sql"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetLockString(System.Boolean)">
+            <summary>
+            获取 WITH(NOLOCK)
+            </summary>
+            <param name="isNoLock"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetPrimaryKeyByTableName(OracleSugar.SqlSugarClient,System.String)">
+            <summary>
+            根据表获取主键
+            </summary>
+            <param name="db"></param>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetIdentitiesKeyByTableName(OracleSugar.SqlSugarClient,System.String)">
+             <summary>
+            根据表名获取自添列 keyTableName Value columnName
+             </summary>
+             <param name="db"></param>
+             <param name="tableName"></param>
+             <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetColumnsByTableName(OracleSugar.SqlSugarClient,System.String)">
+            <summary>
+            根据表名获取列名
+            </summary>
+            <param name="db"></param>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetCreateClassSql(System.Nullable{System.Boolean})">
+             <summary>
+            tableOrView  null=u,v , true=u , false=v
+             </summary>
+             <param name="tableOrView"></param>
+             <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.ChangeDBTypeToCSharpType(System.String)">
+            <summary>
+            将SqlType转成C#Type
+            </summary>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetTranslationSqlName(System.String)">
+            <summary>
+            获取转释后的表名和列名
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetOracleParameterName(System.String)">
+            <summary>
+            获取参数名
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetOracleParameterNameNoParSymbol(System.String)">
+             <summary>
+            获取没有符号的参数名称
+             </summary>
+             <param name="name"></param>
+             <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarTool.GetSchemaList(OracleSugar.SqlSugarClient)">
+            <summary>
+            获取Schema和表名的集合
+            </summary>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.Sqlable">
+            <summary>
+            ** 描述：Queryable是多表查询基类，基于拥有大量查询扩展函数
+            ** 创始时间：2015-7-13
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：
             </summary>
         </member>
-        <member name="T:OracleSugar.OracleConfig">
+        <member name="F:OracleSugar.Sqlable.DB">
             <summary>
-            Oracle参数配置
+            数据接口
             </summary>
         </member>
-        <member name="F:OracleSugar.OracleConfig.OracleNumberTypeMapping">
+        <member name="F:OracleSugar.Sqlable.Where">
             <summary>
-            设置Number与实体的类型映射
-            默认:
-              {1,"bool"},
-              {3,"byte"},
-              {4,"short"},
-              {9,"int"},
-              {18,"long"}
+            Where临时数据
             </summary>
         </member>
-        <member name="F:OracleSugar.OracleConfig.SequenceMapping">
+        <member name="F:OracleSugar.Sqlable.Params">
             <summary>
-            设置序列
+            参数
+            </summary>
+        </member>
+        <member name="P:OracleSugar.Sqlable.Sql">
+            <summary>
+            sql临时数据
+            </summary>
+        </member>
+        <member name="P:OracleSugar.Sqlable.OrderBy">
+            <summary>
+            OrderBy临时数据
+            </summary>
+        </member>
+        <member name="P:OracleSugar.Sqlable.GroupBy">
+            <summary>
+            GroupBy临时数据
             </summary>
         </member>
         <member name="T:OracleSugar.PubModel">
@@ -517,6 +705,339 @@
             <typeparam name="T"></typeparam>
             <param name="dr"></param>
             <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.JsonConverter">
+            <summary>
+            ** 描述：Json转换类
+            ** 创始时间：2010-2-28
+            ** 修改时间：-
+            ** 作者：热心的dakang
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.DataTableToJson(System.Data.DataTable)">
+            <summary>
+            dataTable转成JSON
+            add sunkaixuan 
+            </summary>
+            <param name="table"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.DataTableToJson(System.Data.DataTable,System.String)">
+            <summary>
+            dataTable转成JSON
+             add sunkaixuan 
+            </summary>
+            <param name="table"></param>
+            <param name="dateFormat">设置序列化的时间格式</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.JsonClass(System.Object)">
+            <summary>
+            自定义查询对象转换动态类
+            add dukang by 2016-05-19
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.Serialize(System.Object,System.Boolean)">
+            <summary>
+            object动态类转换json包
+            add dukang by 2016-05-19
+            </summary>
+            <param name="obj">对象</param>
+            <param name="DateConvert">时间戳是否转换成日期类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.ConvertJson(System.String)">
+            <summary>
+            json转换object动态类
+            add duk by 2016-05-19
+            </summary>
+            <param name="json"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.IDataReader)">
+            <summary>   
+            DataReader转换为Json   
+            </summary>   
+            <param name="dataReader">DataReader对象</param>   
+            <returns>Json字符串</returns>   
+        </member>
+        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataSet)">
+            <summary>   
+            DataSet转换为Json   
+            add dukang by 2016-05-19
+            </summary>   
+            <param name="dataSet">DataSet对象</param>   
+            <returns>Json字符串</returns>   
+        </member>
+        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataTable,System.String)">
+            <summary>  
+            DataTable转成Json   
+            add dukang by 2016-05-19
+            </summary>  
+            <param name="jsonName"></param>  
+            <param name="dt"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataTable)">
+            <summary>   
+            Datatable转换为Json   
+            add dukang by 2016-05-19
+            </summary>   
+            <param name="dt">Datatable对象</param>   
+            <returns>Json字符串</returns>   
+        </member>
+        <member name="M:OracleSugar.JsonConverter.StringFormat(System.String,System.Type)">
+            <summary>  
+            格式化字符型、日期型、布尔型  
+            add dukang by 2016-05-19
+            </summary>  
+            <param name="str"></param>  
+            <param name="type"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:OracleSugar.JsonConverter.String2Json(System.String)">
+            <summary>  
+            过滤特殊字符  
+            add dukang by 2016-05-19
+            </summary>  
+            <param name="s"></param>  
+            <returns></returns>  
+        </member>
+        <member name="T:OracleSugar.DynamicJsonObject">
+            <summary>
+            动态JSON解析
+            add dukang by 2016-05-19
+            </summary>
+        </member>
+        <member name="M:OracleSugar.DynamicJsonObject.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            动态JSON解析
+            </summary>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:OracleSugar.DynamicJsonObject.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <summary>
+            TryGetMember
+            </summary>
+            <param name="binder"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.DynamicJsonConverter">
+            <summary>
+            动态JSON转换
+            add dukang by 2016-05-19
+            </summary>
+        </member>
+        <member name="M:OracleSugar.DynamicJsonConverter.Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type,System.Web.Script.Serialization.JavaScriptSerializer)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="dictionary"></param>
+            <param name="type"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.DynamicJsonConverter.Serialize(System.Object,System.Web.Script.Serialization.JavaScriptSerializer)">
+            <summary>
+            序列化
+            </summary>
+            <param name="obj"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OracleSugar.DynamicJsonConverter.SupportedTypes">
+            <summary>
+            支持的类型
+            </summary>
+        </member>
+        <member name="T:OracleSugar.IsWhatExtensions">
+            <summary>
+            ** 描述：逻辑判段是什么？
+            ** 创始时间：2015-5-29
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：http://www.cnblogs.com/sunkaixuan/p/4539654.html
+            </summary>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsInRange(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            值在的范围？
+            </summary>
+            <param name="thisValue"></param>
+            <param name="begin">大于等于begin</param>
+            <param name="end">小于等于end</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsInRange(System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            值在的范围？
+            </summary>
+            <param name="thisValue"></param>
+            <param name="begin">大于等于begin</param>
+            <param name="end">小于等于end</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsIn``1(``0,``0[])">
+            <summary>
+            在里面吗?
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="thisValue"></param>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsContainsIn(System.String,System.String[])">
+            <summary>
+            在里面吗?
+            </summary>
+            <param name="thisValue"></param>
+            <param name="inValues"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Object)">
+            <summary>
+            是null或""?
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Nullable{System.Guid})">
+            <summary>
+            是null或""?
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Guid)">
+            <summary>
+            是null或""?
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsValuable(System.Object)">
+            <summary>
+            有值?(与IsNullOrEmpty相反)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsValuable(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            有值?(与IsNullOrEmpty相反)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsZero(System.Object)">
+            <summary>
+            是零?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsInt(System.Object)">
+            <summary>
+            是INT?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsNoInt(System.Object)">
+            <summary>
+            不是INT?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsMoney(System.Object)">
+            <summary>
+            是金钱?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsGuid(System.Object)">
+            <summary>
+            是GUID?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsDate(System.Object)">
+            <summary>
+            是时间?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsEamil(System.Object)">
+            <summary>
+            是邮箱?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsMobile(System.Object)">
+            <summary>
+            是手机?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsTelephone(System.Object)">
+            <summary>
+            是座机?
+            </summary>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsIDcard(System.Object)">
+            <summary>
+            是身份证?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsFax(System.Object)">
+            <summary>
+            是传真?
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsMatch(System.Object,System.String)">
+            <summary>
+            是适合正则匹配?
+            </summary>
+            <param name="thisValue"></param>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsAnonymousType(System.Type)">
+            <summary>
+            是否是动态类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsCollectionsList(System.String)">
+            <summary>
+            是List类型
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsStringArray(System.String)">
+            <summary>
+            是string[]类型
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IsWhatExtensions.IsEnumerable(System.String)">
+            <summary>
+            是Enumerable
+            </summary>
+            <param name="thisValue"></param>
             <returns></returns>
         </member>
         <member name="T:OracleSugar.SqlSugarClient">
@@ -1110,6 +1631,97 @@
             设置禁止插入的列
             </summary>
         </member>
+        <member name="T:OracleSugar.PubConvert">
+            <summary>
+            ** 描述：公用转换函数
+            ** 创始时间：2015-6-9
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToInt(System.Object)">
+            <summary>
+            强转成int 如果失败返回 0
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToInt(System.Object,System.Int32)">
+            <summary>
+            强转成int 如果失败返回 errorValue
+            </summary>
+            <param name="thisValue"></param>
+            <param name="errorValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToMoney(System.Object)">
+            <summary>
+            强转成money 如果失败返回 0
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToMoney(System.Object,System.Double)">
+            <summary>
+            强转成double 如果失败返回 errorValue
+            </summary>
+            <param name="thisValue"></param>
+            <param name="errorValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToString(System.Object)">
+            <summary>
+            强转成string 如果失败返回 ""
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToString(System.Object,System.String)">
+            <summary>
+            强转成string 如果失败返回 str
+            </summary>
+            <param name="thisValue"></param>
+            <param name="errorValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToDecimal(System.Object)">
+            <summary>
+            强转成Decimal 如果失败返回 0
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToDecimal(System.Object,System.Decimal)">
+            <summary>
+            强转成Decimal 如果失败返回 errorValue
+            </summary>
+            <param name="thisValue"></param>
+            <param name="errorValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToDate(System.Object)">
+            <summary>
+            强转成DateTime 如果失败返回 DateTime.MinValue
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToDate(System.Object,System.DateTime)">
+            <summary>
+            强转成DateTime 如果失败返回 errorValue
+            </summary>
+            <param name="thisValue"></param>
+            <param name="errorValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.PubConvert.ObjToBool(System.Object)">
+            <summary>
+            强转成Bool 如果失败返回 false
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
         <member name="T:OracleSugar.ClassTemplate">
             <summary>
             生成实体格式模版
@@ -1248,213 +1860,359 @@
             <param name="tableName"></param>
             <returns></returns>
         </member>
-        <member name="T:OracleSugar.ResolveSelect">
+        <member name="T:OracleSugar.FileSugar">
             <summary>
-            ** 描述：解析Queryable.Select函数的参数
-            ** 创始时间：2016-9-21
+            ** 描述：文件公共类
+            ** 创始时间：2010-2-28
             ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** qq：610262374 
+            ** 修改人：sunkaixuan
             ** 使用说明：
             </summary>
         </member>
-        <member name="M:OracleSugar.ResolveSelect.GetResult``1(System.String,OracleSugar.Queryable{``0},System.Linq.Expressions.Expression)">
+        <member name="M:OracleSugar.FileSugar.GetFiePathAndCreateDirectoryByCode``1(System.String,``0,System.String)">
             <summary>
-            多表情况
-            </summary>
-            <typeparam name="TResult">实体类型</typeparam>
-            <param name="expStr">拉姆达字符串</param>
-            <param name="reval">查旬对象</param>
-            <param name="exp"></param>
-        </member>
-        <member name="M:OracleSugar.ResolveSelect.GetResult``1(OracleSugar.Queryable{``0},System.Linq.Expressions.Expression)">
-            <summary>
-            单表情况
-            </summary>
-            <typeparam name="TResult">实体类型</typeparam>
-            <param name="reval">查旬对象</param>
-            <param name="exp"></param>
-        </member>
-        <member name="M:OracleSugar.ResolveSelect.ConvertFuns(System.String,System.Boolean)">
-            <summary>
-            替换函数
-            </summary>
-            <param name="selectStr">拉姆达字符串</param>
-            <param name="isOneT">true为单表，false为多表</param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.JoinType">
-            <summary>
-            join类型
-            </summary>
-        </member>
-        <member name="F:OracleSugar.JoinType.INNER">
-            <summary>
-            等值连接
-            </summary>
-        </member>
-        <member name="F:OracleSugar.JoinType.LEFT">
-            <summary>
-            左外连
-            </summary>
-        </member>
-        <member name="F:OracleSugar.JoinType.RIGHT">
-            <summary>
-            右外连
-            </summary>
-        </member>
-        <member name="T:OracleSugar.ApplyType">
-            <summary>
-            Apply类型
-            </summary>
-        </member>
-        <member name="F:OracleSugar.ApplyType.CORSS">
-            <summary>
-            笛卡尔积
-            </summary>
-        </member>
-        <member name="F:OracleSugar.ApplyType.OUTRE">
-            <summary>
-            外连
-            </summary>
-        </member>
-        <member name="T:OracleSugar.OrderByType">
-            <summary>
-            排序类型
-            </summary>
-        </member>
-        <member name="F:OracleSugar.OrderByType.asc">
-            <summary>
-            升序
-            </summary>
-        </member>
-        <member name="F:OracleSugar.OrderByType.desc">
-            <summary>
-            降序
-            </summary>
-        </member>
-        <member name="T:OracleSugar.PageModel">
-            <summary>
-            分页类型
-            </summary>
-        </member>
-        <member name="F:OracleSugar.PageModel.RowNumber">
-            <summary>
-            05分页
-            </summary>
-        </member>
-        <member name="T:OracleSugar.ResolveExpressType">
-            <summary>
-            解析类型
-            </summary>
-        </member>
-        <member name="F:OracleSugar.ResolveExpressType.oneT">
-            <summary>
-            单个T
-            </summary>
-        </member>
-        <member name="F:OracleSugar.ResolveExpressType.nT">
-            <summary>
-            多个T
-            </summary>
-        </member>
-        <member name="T:OracleSugar.IDataReaderEntityBuilder`1">
-            <summary>
-            ** 描述：DataReader实体生成
-            ** 创始时间：2016-8-7
-            ** 修改时间：-
-            ** 作者：孙凯旋
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="F:OracleSugar.IDataReaderEntityBuilder`1.handler">
-            <summary>
-            声名事件，当执行CreateBuilder后，EMIT将动态创建最高性能的实体绑定对象
-            </summary>
-        </member>
-        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.Build(System.Data.IDataRecord)">
-            <summary>
-            将dataRecord的值绑定到T
-            </summary>
-            <param name="dataRecord"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.CreateBuilder(System.Type,System.Data.IDataRecord)">
-            <summary>
-            
-            </summary>
-            <param name="type"></param>
-            <param name="dataRecord"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.GeneratorCallMethod(System.Reflection.Emit.ILGenerator,System.Type,System.Boolean,System.Reflection.PropertyInfo,System.String,System.String)">
-            <summary>
-            动态获取IDataRecord里面的函数
-            </summary>
-            <param name="generator"></param>
-            <param name="type"></param>
-            <param name="isNullable"></param>
-            <param name="pro"></param>
-            <param name="dbTypeName"></param>
-            <param name="fieldName"></param>
-        </member>
-        <member name="T:OracleSugar.IDataReaderEntityBuilder`1.Load">
-            <summary>
-            声名委托类型
-            </summary>
-            <param name="dataRecord"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.KeyValue">
-            <summary>
-            自定义键值类 key is string, value is string
-            </summary>
-        </member>
-        <member name="P:OracleSugar.KeyValue.Key">
-            <summary>
-            键
-            </summary>
-        </member>
-        <member name="P:OracleSugar.KeyValue.Value">
-            <summary>
-            值
-            </summary>
-        </member>
-        <member name="T:OracleSugar.KeyValueObj">
-            <summary>
-            自定义键值类 key is string, value is object
-            </summary>
-        </member>
-        <member name="P:OracleSugar.KeyValueObj.Key">
-            <summary>
-            键
-            </summary>
-        </member>
-        <member name="P:OracleSugar.KeyValueObj.Value">
-            <summary>
-            值
-            </summary>
-        </member>
-        <member name="T:OracleSugar.SugarMappingAttribute">
-            <summary>
-            表名属性
-            </summary>
-        </member>
-        <member name="P:OracleSugar.SugarMappingAttribute.TableName">
-            <summary>
-            据库对应的表名
-            </summary>
-        </member>
-        <member name="P:OracleSugar.SugarMappingAttribute.ColumnName">
-            <summary>
-            数据库对应的列名
-            </summary>
-        </member>
-        <member name="M:OracleSugar.ReflectionSugarMapping.GetMappingInfo``1">
-            <summary>
-            通过反射取自定义属性
+            根据文件目录、编号、文件名生成文件路径，并且创建文件存放目录
+            格式为:/directory/code/filename
             </summary>
             <typeparam name="T"></typeparam>
+            <param name="directory"></param>
+            <param name="code"></param>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFiePathAndCreateDirectoryByDate``1(System.String,System.String)">
+            <summary>
+            根据文件目录、日期、文件名生成文件路径，并且创建文件存放目录
+            格式为:/directory/2015/01/01/filename
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="directory"></param>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetMapPath(System.String)">
+            <summary>
+            获得当前绝对路径
+            </summary>
+            <param name="strPath">指定的路径</param>
+            <returns>绝对路径</returns>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetMinPic(System.String,System.String,System.Int32)">
+            <summary>
+            获取缩略图片路径
+            </summary>
+            <param name="dir"></param>
+            <param name="filename"></param>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="F:OracleSugar.FileSugar.sync">
+            <summary>
+            同步标识
+            </summary>
+        </member>
+        <member name="M:OracleSugar.FileSugar.IsExistDirectory(System.String)">
+            <summary>
+            检测指定目录是否存在
+            </summary>
+            <param name="directoryPath">目录的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.IsExistFile(System.String)">
+            <summary>
+            检测指定文件是否存在,如果存在则返回true。
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.IsEmptyDirectory(System.String)">
+            <summary>
+            检测指定目录是否为空
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.Contains(System.String,System.String)">
+            <summary>
+            检测指定目录中是否存在指定的文件,若要搜索子目录请使用重载方法.
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.Contains(System.String,System.String,System.Boolean)">
+            <summary>
+            检测指定目录中是否存在指定的文件
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param> 
+            <param name="isSearchChild">是否搜索子目录</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CreateDirectory(System.String)">
+            <summary>
+            创建一个目录
+            </summary>
+            <param name="directoryPath">目录的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CreateFile(System.String)">
+            <summary>
+            创建一个文件
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.Byte[])">
+            <summary>
+            创建一个文件,并将字节流写入文件。
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="buffer">二进制流数据</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.String)">
+            <summary>
+            创建一个文件,并将字符串写入文件。
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="text">字符串数据</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            创建一个文件,并将字符串写入文件。
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="text">字符串数据</param>
+            <param name="encoding">字符编码</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.OpenDirectory(System.String)">
+            <summary>
+            打开目录
+            </summary>
+            <param name="directoryPath">目录的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.OpenFile(System.String)">
+            <summary>
+            打开文件
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetDirectoryFromFilePath(System.String)">
+            <summary>
+            从文件绝对路径中获取目录路径
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetLineCount(System.String)">
+            <summary>
+            获取文本文件的行数
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileSize(System.String)">
+            <summary>
+            获取一个文件的长度,单位为Byte
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileSizeByKB(System.String)">
+            <summary>
+            获取一个文件的长度,单位为KB
+            </summary>
+            <param name="filePath">文件的路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileSizeByMB(System.String)">
+            <summary>
+            获取一个文件的长度,单位为MB
+            </summary>
+            <param name="filePath">文件的路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileNames(System.String)">
+            <summary>
+            获取指定目录中所有文件列表
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileNames(System.String,System.String,System.Boolean)">
+            <summary>
+            获取指定目录及子目录中所有文件列表
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
+            <param name="isSearchChild">是否搜索子目录</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetDirectories(System.String)">
+            <summary>
+            获取指定目录中所有子目录列表,若要搜索嵌套的子目录列表,请使用重载方法.
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetDirectories(System.String,System.String,System.Boolean)">
+            <summary>
+            获取指定目录及子目录中所有子目录列表
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
+            <param name="isSearchChild">是否搜索子目录</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.WriteText(System.String,System.String)">
+            <summary>
+            向文本文件中写入内容
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="text">写入的内容</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.WriteText(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            向文本文件中写入内容
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="text">写入的内容</param>
+            <param name="encoding">编码</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.AppendText(System.String,System.String)">
+            <summary>
+            向文本文件的尾部追加内容
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="text">写入的内容</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.CopyTo(System.String,System.String)">
+            <summary>
+            将源文件的内容复制到目标文件中
+            </summary>
+            <param name="sourceFilePath">源文件的绝对路径</param>
+            <param name="destFilePath">目标文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.MoveToDirectory(System.String,System.String)">
+            <summary>
+            将文件移动到指定目录( 剪切 )
+            </summary>
+            <param name="sourceFilePath">需要移动的源文件的绝对路径</param>
+            <param name="descDirectoryPath">移动到的目录的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.Move(System.String,System.String)">
+            <summary>
+            将文件移动到指定目录，并指定新的文件名( 剪切并改名 )
+            </summary>
+            <param name="sourceFilePath">需要移动的源文件的绝对路径</param>
+            <param name="descFilePath">目标文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.StreamToBytes(System.IO.Stream)">
+            <summary>
+            将流读取到缓冲区中
+            </summary>
+            <param name="stream">原始流</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.FileToBytes(System.String)">
+            <summary>
+            将文件读取到缓冲区中
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.FileToString(System.String)">
+            <summary>
+            将文件读取到字符串中
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.FileToString(System.String,System.Text.Encoding)">
+            <summary>
+            将文件读取到字符串中
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+            <param name="encoding">字符编码</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileName(System.String)">
+            <summary>
+            从文件的绝对路径中获取文件名( 包含扩展名 )
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileNameNoExtension(System.String)">
+            <summary>
+            从文件的绝对路径中获取文件名( 不包含扩展名 )
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetExtension(System.String)">
+            <summary>
+            从文件的绝对路径中获取扩展名
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="M:OracleSugar.FileSugar.ClearDirectory(System.String)">
+            <summary>
+            清空指定目录下所有文件及子目录,但该目录依然保存.
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.ClearFile(System.String)">
+            <summary>
+            清空文件内容
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.DeleteFile(System.String)">
+            <summary>
+            删除指定文件
+            </summary>
+            <param name="filePath">文件的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.DeleteDirectory(System.String)">
+            <summary>
+            删除指定目录及其所有子目录
+            </summary>
+            <param name="directoryPath">指定目录的绝对路径</param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.WriteFile(System.String,System.String)">
+            <summary>
+            写文件
+            </summary>
+            <param name="strFilePath"></param>
+            <param name="strValue"></param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.WriteFile(System.String,System.String,System.String)">
+            <summary>
+            写文件
+            </summary>
+            <param name="strFilePath"></param>
+            <param name="strValue"></param>
+            <param name="charset"></param>
+        </member>
+        <member name="M:OracleSugar.FileSugar.ShowWord(System.String)">
+            <summary>
+            在网页中显示WORD文档
+            </summary>
+        </member>
+        <member name="M:OracleSugar.FileSugar.GetFileSream(System.String)">
+            <summary>
+            根据路径得到文件流
+            </summary>
+            <param name="Path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.Check">
+            <summary>
+            ** 描述：验证失败，则抛出异常
+            ** 创始时间：2015-7-19
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 修改人：sunkaixuan
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.Check.ArgumentNullException(System.Object,System.String)">
+            <summary>
+            使用导致此异常的参数的名称初始化 System.ArgumentNullException 类的新实例。
+            </summary>
+            <param name="checkObj"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:OracleSugar.Check.Exception(System.Boolean,System.String,System.String[])">
+            <summary>
+            使用指定的错误消息初始化 System.Exception 类的新实例。
+            </summary>
+            <param name="isException">true则引发异常</param>
+            <param name="message">错误信息</param>
+            <param name="args">参数</param>
         </member>
         <member name="T:OracleSugar.QueryableExtensions">
             <summary>
@@ -1963,6 +2721,445 @@
             <param name="type">Join的类型</param>
             <returns>Queryable</returns>
         </member>
+        <member name="T:OracleSugar.LanguageHelper">
+            <summary>
+            ** 描述：多语言视图帮助类
+            ** 创始时间：2016-8-7
+            ** 修改时间：-
+            ** 作者：孙凯旋
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="F:OracleSugar.LanguageHelper.PreSuffix">
+            <summary>
+            多语言视图的前缀
+            </summary>
+        </member>
+        <member name="M:OracleSugar.LanguageHelper.GetLanguageViewNameList(OracleSugar.SqlSugarClient)">
+            <summary>
+            获取所有需要生成多语言的视图名称
+            </summary>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.LanguageHelper.UpdateView(OracleSugar.PubModel.Language,OracleSugar.SqlSugarClient)">
+            <summary>
+            创建多语言视图，带有LanguageId=1的所有有视图1替换成languageValue 并且新创视图 名称为 原有视图名+_$_+suffix
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.ResolveSelect">
+            <summary>
+            ** 描述：解析Queryable.Select函数的参数
+            ** 创始时间：2016-9-21
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** qq：610262374 
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.ResolveSelect.GetResult``1(System.String,OracleSugar.Queryable{``0},System.Linq.Expressions.Expression)">
+            <summary>
+            多表情况
+            </summary>
+            <typeparam name="TResult">实体类型</typeparam>
+            <param name="expStr">拉姆达字符串</param>
+            <param name="reval">查旬对象</param>
+            <param name="exp"></param>
+        </member>
+        <member name="M:OracleSugar.ResolveSelect.GetResult``1(OracleSugar.Queryable{``0},System.Linq.Expressions.Expression)">
+            <summary>
+            单表情况
+            </summary>
+            <typeparam name="TResult">实体类型</typeparam>
+            <param name="reval">查旬对象</param>
+            <param name="exp"></param>
+        </member>
+        <member name="M:OracleSugar.ResolveSelect.ConvertFuns(System.String,System.Boolean)">
+            <summary>
+            替换函数
+            </summary>
+            <param name="selectStr">拉姆达字符串</param>
+            <param name="isOneT">true为单表，false为多表</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.CloudPubMethod.GetPageIndex(System.Int32,System.Double)">
+            <summary>
+            获取pageIndex
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="configCount"></param>
+        </member>
+        <member name="M:OracleSugar.CloudPubMethod.GetConnection(System.Collections.Generic.List{OracleSugar.CloudConnectionConfig})">
+            <summary>
+            根据rate获取随机Connection
+            </summary>
+            <param name="configList"></param>
+        </member>
+        <member name="M:OracleSugar.CloudPubMethod.TaskFactory``1(System.Func{System.Int32,``0},System.Threading.Tasks.Task{``0}[],System.Int32)">
+            <summary>
+            并行执行任务并且传入索引
+            </summary>
+            <param name="method">函数参数i</param>
+            <param name="tasks">task数组</param>
+            <param name="i">索引</param>
+        </member>
+        <member name="M:OracleSugar.CloudPubMethod.GetIsSmallPageIndex(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            分页索引是否很小
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="configCount"></param>
+            <param name="maxHandleNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.CloudPubMethod.GetIsSmallPageIndexByReverse(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            倒数分页索引是否很小
+            </summary>
+            <param name="totalPage"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="configCount"></param>
+            <param name="maxHandleNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.IEnumerableExtensions">
+            <summary>
+            ** 描述：IEnumerable扩展类
+            ** 创始时间：2015-6-9
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderBy``1(System.Collections.Generic.IEnumerable{``0},System.String,OracleSugar.OrderByType)">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="sortField"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenBy``1(System.Linq.IOrderedEnumerable{``0},System.String,OracleSugar.OrderByType)">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="sortField"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow``1(System.Collections.Generic.IEnumerable{``0},System.String,OracleSugar.OrderByType)">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="sortField"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRow``1(System.Linq.IOrderedEnumerable{``0},System.String,OracleSugar.OrderByType)">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="sortField"></param>
+            <param name="orderByType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderBy``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenBy``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow(System.Collections.Generic.IEnumerable{System.Data.DataRow},System.Collections.Generic.List{OracleSugar.OrderByDictionary},OracleSugar.OrderByDictionary)">
+            <summary>
+            排序
+            </summary>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <param name="orderByUnqueField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRow``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderByReverse``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenByReverse``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRowReverse``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRowReverse``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="orderByTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IEnumerableExtensions.ConvertField(System.Object)">
+            <summary>
+            解决GUID在SQL和C#中，排序方式不一致
+            </summary>
+            <param name="thisValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.SqlableExtensions">
+            <summary>
+            ** 描述：Sqlable扩展函数
+            ** 创始时间：2015-7-13
+            ** 修改时间：-
+            ** 作者：sunkaixuan
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.From(OracleSugar.Sqlable,System.String,System.String)">
+            <summary>
+            Form
+            </summary>
+            <param name="sqlable"></param>
+            <param name="tableName">表名</param>
+            <param name="shortName">表名简写</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.From``1(OracleSugar.Sqlable,System.String)">
+            <summary>
+            Form
+            </summary>
+            <param name="sqlable"></param>
+            <param name="shortName">表名简写</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.Join(OracleSugar.Sqlable,System.String,System.String,System.String,System.String,OracleSugar.JoinType)">
+            <summary>
+            Join
+            </summary>
+            <param name="sqlable"></param>
+            <param name="tableName">表名字符串</param>
+            <param name="shortName">表名简写</param>
+            <param name="leftFiled">join左边连接字段</param>
+            <param name="RightFiled">join右边连接字段</param>
+            <param name="type">join类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.Join``1(OracleSugar.Sqlable,System.String,System.String,System.String,OracleSugar.JoinType)">
+            <summary>
+            Join
+            </summary>
+            <param name="sqlable"></param>
+            <param name="shortName">表名简写</param>
+            <param name="leftFiled">join左边连接字段</param>
+            <param name="RightFiled">join右边连接字段</param>
+            <param name="type">join类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.Where(OracleSugar.Sqlable,System.String)">
+            <summary>
+            Where
+            </summary>
+            <param name="sqlable"></param>
+            <param name="where">查询条件、开头无需写 AND或者WHERE</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.OrderBy(OracleSugar.Sqlable,System.String)">
+            <summary>
+            OrderBy
+            </summary>
+            <param name="sqlable"></param>
+            <param name="orderBy">排序字段，可以多个</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.Apply(OracleSugar.Sqlable,System.String,System.String,OracleSugar.ApplyType)">
+            <summary>
+            Apply
+            </summary>
+            <param name="sqlable"></param>
+            <param name="applySql">apply主体内容</param>
+            <param name="shotName">apply简写</param>
+            <param name="type">Apply类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.GroupBy(OracleSugar.Sqlable,System.String)">
+            <summary>
+            GroupBy
+            </summary>
+            <param name="sqlable"></param>
+            <param name="groupBy">GroupBy字段，可以多个</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToList``1(OracleSugar.Sqlable,System.String,System.Object,System.String,System.String)">
+            <summary>
+            设置查询列执行查询，并且将结果集转成List《T》
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <param name="preSql">在这语句之前可插入自定义SQL</param>
+            <param name="nextSql">在这语句之后可以插自定义SQL</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.GetAllParas(OracleSugar.Sqlable,System.Object)">
+            <summary>
+            获取页面参数
+            </summary>
+            <param name="sqlable"></param>
+            <param name="whereObj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToDataTable(OracleSugar.Sqlable,System.String,System.Object)">
+            <summary>
+            设置查询列执行查询，并且将结果集转成DataTable
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToJson(OracleSugar.Sqlable,System.String,System.Object)">
+            <summary>
+            设置查询列执行查询，并且将结果集转成json
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToDynamic(OracleSugar.Sqlable,System.String,System.Object)">
+            <summary>
+            设置查询列执行查询，并且将结果集转成dynamic
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.ToClass(OracleSugar.Sqlable,System.String,System.Object)">
+            <summary>
+            生成查询结果对应的实体类字符串
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.Count(OracleSugar.Sqlable,System.Object,System.String,System.String)">
+            <summary>
+            反回记录数
+            </summary>
+            <param name="sqlable"></param>
+            <param name="whereObj">匿名参数 (例如：new{id=1,name="张三"})</param>
+            <param name="preSql">在这语句之前可插入自定义SQL</param>
+            <param name="nextSql">在这语句之后可以插自定义SQL</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToPageList``1(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置查询列和分页参数执行查询，并且将结果集转成List《T》
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="orderByFiled">Order By字段，可以多个</param>
+            <param name="pageIndex">页码</param>
+            <param name="pageSize">每页显示数量</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToPageTable(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置查询列和分页参数执行查询，并且将结果集转成DataTable
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="orderByFiled">Order By字段，可以多个</param>
+            <param name="pageIndex">页码</param>
+            <param name="pageSize">每页显示数量</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToPageJson(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置查询列和分页参数执行查询，并且将结果集转成json
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="orderByFiled">Order By字段，可以多个</param>
+            <param name="pageIndex">页码</param>
+            <param name="pageSize">每页显示数量</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlableExtensions.SelectToPageDynamic(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
+            <summary>
+            设置查询列和分页参数执行查询，并且将结果集转成dynamic
+            </summary>
+            <param name="sqlable"></param>
+            <param name="fileds">查询列</param>
+            <param name="orderByFiled">Order By字段，可以多个</param>
+            <param name="pageIndex">页码</param>
+            <param name="pageSize">每页显示数量</param>
+            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
+            <returns></returns>
+        </member>
         <member name="T:OracleSugar.Queryable`1">
             <summary>
             ** 描述：Queryable拉姆达查询对象
@@ -2186,1375 +3383,6 @@
             分组查询临时数据
             </summary>
         </member>
-        <member name="T:OracleSugar.Sqlable">
-            <summary>
-            ** 描述：Queryable是多表查询基类，基于拥有大量查询扩展函数
-            ** 创始时间：2015-7-13
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="F:OracleSugar.Sqlable.DB">
-            <summary>
-            数据接口
-            </summary>
-        </member>
-        <member name="F:OracleSugar.Sqlable.Where">
-            <summary>
-            Where临时数据
-            </summary>
-        </member>
-        <member name="F:OracleSugar.Sqlable.Params">
-            <summary>
-            参数
-            </summary>
-        </member>
-        <member name="P:OracleSugar.Sqlable.Sql">
-            <summary>
-            sql临时数据
-            </summary>
-        </member>
-        <member name="P:OracleSugar.Sqlable.OrderBy">
-            <summary>
-            OrderBy临时数据
-            </summary>
-        </member>
-        <member name="P:OracleSugar.Sqlable.GroupBy">
-            <summary>
-            GroupBy临时数据
-            </summary>
-        </member>
-        <member name="T:OracleSugar.SqlableExtensions">
-            <summary>
-            ** 描述：Sqlable扩展函数
-            ** 创始时间：2015-7-13
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.From(OracleSugar.Sqlable,System.String,System.String)">
-            <summary>
-            Form
-            </summary>
-            <param name="sqlable"></param>
-            <param name="tableName">表名</param>
-            <param name="shortName">表名简写</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.From``1(OracleSugar.Sqlable,System.String)">
-            <summary>
-            Form
-            </summary>
-            <param name="sqlable"></param>
-            <param name="shortName">表名简写</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.Join(OracleSugar.Sqlable,System.String,System.String,System.String,System.String,OracleSugar.JoinType)">
-            <summary>
-            Join
-            </summary>
-            <param name="sqlable"></param>
-            <param name="tableName">表名字符串</param>
-            <param name="shortName">表名简写</param>
-            <param name="leftFiled">join左边连接字段</param>
-            <param name="RightFiled">join右边连接字段</param>
-            <param name="type">join类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.Join``1(OracleSugar.Sqlable,System.String,System.String,System.String,OracleSugar.JoinType)">
-            <summary>
-            Join
-            </summary>
-            <param name="sqlable"></param>
-            <param name="shortName">表名简写</param>
-            <param name="leftFiled">join左边连接字段</param>
-            <param name="RightFiled">join右边连接字段</param>
-            <param name="type">join类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.Where(OracleSugar.Sqlable,System.String)">
-            <summary>
-            Where
-            </summary>
-            <param name="sqlable"></param>
-            <param name="where">查询条件、开头无需写 AND或者WHERE</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.OrderBy(OracleSugar.Sqlable,System.String)">
-            <summary>
-            OrderBy
-            </summary>
-            <param name="sqlable"></param>
-            <param name="orderBy">排序字段，可以多个</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.Apply(OracleSugar.Sqlable,System.String,System.String,OracleSugar.ApplyType)">
-            <summary>
-            Apply
-            </summary>
-            <param name="sqlable"></param>
-            <param name="applySql">apply主体内容</param>
-            <param name="shotName">apply简写</param>
-            <param name="type">Apply类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.GroupBy(OracleSugar.Sqlable,System.String)">
-            <summary>
-            GroupBy
-            </summary>
-            <param name="sqlable"></param>
-            <param name="groupBy">GroupBy字段，可以多个</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToList``1(OracleSugar.Sqlable,System.String,System.Object,System.String,System.String)">
-            <summary>
-            设置查询列执行查询，并且将结果集转成List《T》
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <param name="preSql">在这语句之前可插入自定义SQL</param>
-            <param name="nextSql">在这语句之后可以插自定义SQL</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.GetAllParas(OracleSugar.Sqlable,System.Object)">
-            <summary>
-            获取页面参数
-            </summary>
-            <param name="sqlable"></param>
-            <param name="whereObj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToDataTable(OracleSugar.Sqlable,System.String,System.Object)">
-            <summary>
-            设置查询列执行查询，并且将结果集转成DataTable
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToJson(OracleSugar.Sqlable,System.String,System.Object)">
-            <summary>
-            设置查询列执行查询，并且将结果集转成json
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToDynamic(OracleSugar.Sqlable,System.String,System.Object)">
-            <summary>
-            设置查询列执行查询，并且将结果集转成dynamic
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.ToClass(OracleSugar.Sqlable,System.String,System.Object)">
-            <summary>
-            生成查询结果对应的实体类字符串
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.Count(OracleSugar.Sqlable,System.Object,System.String,System.String)">
-            <summary>
-            反回记录数
-            </summary>
-            <param name="sqlable"></param>
-            <param name="whereObj">匿名参数 (例如：new{id=1,name="张三"})</param>
-            <param name="preSql">在这语句之前可插入自定义SQL</param>
-            <param name="nextSql">在这语句之后可以插自定义SQL</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToPageList``1(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
-            <summary>
-            设置查询列和分页参数执行查询，并且将结果集转成List《T》
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="orderByFiled">Order By字段，可以多个</param>
-            <param name="pageIndex">页码</param>
-            <param name="pageSize">每页显示数量</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToPageTable(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
-            <summary>
-            设置查询列和分页参数执行查询，并且将结果集转成DataTable
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="orderByFiled">Order By字段，可以多个</param>
-            <param name="pageIndex">页码</param>
-            <param name="pageSize">每页显示数量</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToPageJson(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
-            <summary>
-            设置查询列和分页参数执行查询，并且将结果集转成json
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="orderByFiled">Order By字段，可以多个</param>
-            <param name="pageIndex">页码</param>
-            <param name="pageSize">每页显示数量</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlableExtensions.SelectToPageDynamic(OracleSugar.Sqlable,System.String,System.String,System.Int32,System.Int32,System.Object)">
-            <summary>
-            设置查询列和分页参数执行查询，并且将结果集转成dynamic
-            </summary>
-            <param name="sqlable"></param>
-            <param name="fileds">查询列</param>
-            <param name="orderByFiled">Order By字段，可以多个</param>
-            <param name="pageIndex">页码</param>
-            <param name="pageSize">每页显示数量</param>
-            <param name="whereObj">SQL参数,例如:new{id=1,name="张三"}</param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.SqlSugarTool">
-            <summary>
-            ** 描述：SqlSugar工具类
-            ** 创始时间：2015-7-13
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：
-            </summary>
-            <summary>
-            SqlSugarTool局部类与Core有差异的部分(方便工具移植到.NetCore版本)
-            </summary>
-            <summary>
-            SqlSugarTool局部类存放具有拼接SQL的函数(方便工具移植到其它数据库版本)
-            </summary>
-        </member>
-        <member name="F:OracleSugar.SqlSugarTool.ParSymbol">
-            <summary>
-            par的符号
-            </summary>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.DataReaderToList``1(System.Type,System.Data.IDataReader,System.String,System.Boolean,System.Boolean)">
-            <summary>
-             Reader转成T的集合
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="type"></param>
-            <param name="dr"></param>
-            <param name="fields"></param>
-            <param name="isClose"></param>
-            <param name="isTry"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.SetParSize(Oracle.ManagedDataAccess.Client.OracleParameter)">
-            <summary>
-            设置参数Size
-            </summary>
-            <param name="par"></param>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetParameters(System.Object,System.Reflection.PropertyInfo[])">
-            <summary>
-            将实体对象转换成OracleParameter[] 
-            </summary>
-            <param name="obj"></param>
-            <param name="pis"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetObjectToDictionary(System.Object)">
-            <summary>
-            将实体对象转换成 Dictionary《string, string》
-            </summary>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetGetPropertiesByCache(System.Type,System.String,OracleSugar.CacheManager{System.Reflection.PropertyInfo[]})">
-            <summary>
-            获取type属性cache
-            </summary>
-            <param name="type"></param>
-            <param name="cachePropertiesKey"></param>
-            <param name="cachePropertiesManager"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.IsPrimaryKey(OracleSugar.SqlSugarClient,System.String)">
-            <summary>
-            判段是否包含主键
-            </summary>
-            <param name="db"></param>
-            <param name="tableName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.SqlLikeWordEncode(System.String)">
-            <summary>
-            处理like条件的通配符
-            </summary>
-            <param name="word"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetPropertyValue(System.Object,System.String)">
-            <summary>
-            获取属性值
-            </summary>
-            <param name="obj"></param>
-            <param name="property"></param>
-            <returns></returns>
-        </member>
-        <member name="F:OracleSugar.SqlSugarTool.SpecialRequestForm">
-            <summary>
-            使用页面自动填充OracleParameter时 Request.Form出现特殊字符时可以重写Request.Form方法，使用时注意加锁并且用到将该值设为null
-            </summary>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetUnderType(System.Reflection.PropertyInfo,System.Boolean@)">
-            <summary>
-            获取最底层类型
-            </summary>
-            <param name="propertyInfo"></param>
-            <param name="isNullable"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetParameterDictionary(System.Boolean)">
-            <summary>
-            获取参数到键值集合根据页面Request参数
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetParameterArray(System.Boolean)">
-            <summary>
-            获取参数到键值集合根据页面Request参数
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.PackagingSQL(System.String)">
-            <summary>
-            将参数sql转成 '('+sql+')'
-            </summary>
-            <param name="sql"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetLockString(System.Boolean)">
-            <summary>
-            获取 WITH(NOLOCK)
-            </summary>
-            <param name="isNoLock"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetPrimaryKeyByTableName(OracleSugar.SqlSugarClient,System.String)">
-            <summary>
-            根据表获取主键
-            </summary>
-            <param name="db"></param>
-            <param name="tableName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetIdentitiesKeyByTableName(OracleSugar.SqlSugarClient,System.String)">
-             <summary>
-            根据表名获取自添列 keyTableName Value columnName
-             </summary>
-             <param name="db"></param>
-             <param name="tableName"></param>
-             <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetColumnsByTableName(OracleSugar.SqlSugarClient,System.String)">
-            <summary>
-            根据表名获取列名
-            </summary>
-            <param name="db"></param>
-            <param name="tableName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetCreateClassSql(System.Nullable{System.Boolean})">
-             <summary>
-            tableOrView  null=u,v , true=u , false=v
-             </summary>
-             <param name="tableOrView"></param>
-             <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.ChangeDBTypeToCSharpType(System.String)">
-            <summary>
-            将SqlType转成C#Type
-            </summary>
-            <param name="typeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetTranslationSqlName(System.String)">
-            <summary>
-            获取转释后的表名和列名
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetOracleParameterName(System.String)">
-            <summary>
-            获取参数名
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetOracleParameterNameNoParSymbol(System.String)">
-             <summary>
-            获取没有符号的参数名称
-             </summary>
-             <param name="name"></param>
-             <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarTool.GetSchemaList(OracleSugar.SqlSugarClient)">
-            <summary>
-            获取Schema和表名的集合
-            </summary>
-            <param name="db"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.JsonConverter">
-            <summary>
-            ** 描述：Json转换类
-            ** 创始时间：2010-2-28
-            ** 修改时间：-
-            ** 作者：热心的dakang
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.DataTableToJson(System.Data.DataTable)">
-            <summary>
-            dataTable转成JSON
-            add sunkaixuan 
-            </summary>
-            <param name="table"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.DataTableToJson(System.Data.DataTable,System.String)">
-            <summary>
-            dataTable转成JSON
-             add sunkaixuan 
-            </summary>
-            <param name="table"></param>
-            <param name="dateFormat">设置序列化的时间格式</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.JsonClass(System.Object)">
-            <summary>
-            自定义查询对象转换动态类
-            add dukang by 2016-05-19
-            </summary>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.Serialize(System.Object,System.Boolean)">
-            <summary>
-            object动态类转换json包
-            add dukang by 2016-05-19
-            </summary>
-            <param name="obj">对象</param>
-            <param name="DateConvert">时间戳是否转换成日期类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.ConvertJson(System.String)">
-            <summary>
-            json转换object动态类
-            add duk by 2016-05-19
-            </summary>
-            <param name="json"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.IDataReader)">
-            <summary>   
-            DataReader转换为Json   
-            </summary>   
-            <param name="dataReader">DataReader对象</param>   
-            <returns>Json字符串</returns>   
-        </member>
-        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataSet)">
-            <summary>   
-            DataSet转换为Json   
-            add dukang by 2016-05-19
-            </summary>   
-            <param name="dataSet">DataSet对象</param>   
-            <returns>Json字符串</returns>   
-        </member>
-        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataTable,System.String)">
-            <summary>  
-            DataTable转成Json   
-            add dukang by 2016-05-19
-            </summary>  
-            <param name="jsonName"></param>  
-            <param name="dt"></param>  
-            <returns></returns>  
-        </member>
-        <member name="M:OracleSugar.JsonConverter.ToJson(System.Data.DataTable)">
-            <summary>   
-            Datatable转换为Json   
-            add dukang by 2016-05-19
-            </summary>   
-            <param name="dt">Datatable对象</param>   
-            <returns>Json字符串</returns>   
-        </member>
-        <member name="M:OracleSugar.JsonConverter.StringFormat(System.String,System.Type)">
-            <summary>  
-            格式化字符型、日期型、布尔型  
-            add dukang by 2016-05-19
-            </summary>  
-            <param name="str"></param>  
-            <param name="type"></param>  
-            <returns></returns>  
-        </member>
-        <member name="M:OracleSugar.JsonConverter.String2Json(System.String)">
-            <summary>  
-            过滤特殊字符  
-            add dukang by 2016-05-19
-            </summary>  
-            <param name="s"></param>  
-            <returns></returns>  
-        </member>
-        <member name="T:OracleSugar.DynamicJsonObject">
-            <summary>
-            动态JSON解析
-            add dukang by 2016-05-19
-            </summary>
-        </member>
-        <member name="M:OracleSugar.DynamicJsonObject.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            动态JSON解析
-            </summary>
-            <param name="dictionary"></param>
-        </member>
-        <member name="M:OracleSugar.DynamicJsonObject.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
-            <summary>
-            TryGetMember
-            </summary>
-            <param name="binder"></param>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.DynamicJsonConverter">
-            <summary>
-            动态JSON转换
-            add dukang by 2016-05-19
-            </summary>
-        </member>
-        <member name="M:OracleSugar.DynamicJsonConverter.Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type,System.Web.Script.Serialization.JavaScriptSerializer)">
-            <summary>
-            反序列化
-            </summary>
-            <param name="dictionary"></param>
-            <param name="type"></param>
-            <param name="serializer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.DynamicJsonConverter.Serialize(System.Object,System.Web.Script.Serialization.JavaScriptSerializer)">
-            <summary>
-            序列化
-            </summary>
-            <param name="obj"></param>
-            <param name="serializer"></param>
-            <returns></returns>
-        </member>
-        <member name="P:OracleSugar.DynamicJsonConverter.SupportedTypes">
-            <summary>
-            支持的类型
-            </summary>
-        </member>
-        <member name="T:OracleSugar.IsWhatExtensions">
-            <summary>
-            ** 描述：逻辑判段是什么？
-            ** 创始时间：2015-5-29
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：http://www.cnblogs.com/sunkaixuan/p/4539654.html
-            </summary>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsInRange(System.Int32,System.Int32,System.Int32)">
-            <summary>
-            值在的范围？
-            </summary>
-            <param name="thisValue"></param>
-            <param name="begin">大于等于begin</param>
-            <param name="end">小于等于end</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsInRange(System.DateTime,System.DateTime,System.DateTime)">
-            <summary>
-            值在的范围？
-            </summary>
-            <param name="thisValue"></param>
-            <param name="begin">大于等于begin</param>
-            <param name="end">小于等于end</param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsIn``1(``0,``0[])">
-            <summary>
-            在里面吗?
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="thisValue"></param>
-            <param name="values"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsContainsIn(System.String,System.String[])">
-            <summary>
-            在里面吗?
-            </summary>
-            <param name="thisValue"></param>
-            <param name="inValues"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Object)">
-            <summary>
-            是null或""?
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Nullable{System.Guid})">
-            <summary>
-            是null或""?
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsNullOrEmpty(System.Guid)">
-            <summary>
-            是null或""?
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsValuable(System.Object)">
-            <summary>
-            有值?(与IsNullOrEmpty相反)
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsValuable(System.Collections.Generic.IEnumerable{System.Object})">
-            <summary>
-            有值?(与IsNullOrEmpty相反)
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsZero(System.Object)">
-            <summary>
-            是零?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsInt(System.Object)">
-            <summary>
-            是INT?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsNoInt(System.Object)">
-            <summary>
-            不是INT?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsMoney(System.Object)">
-            <summary>
-            是金钱?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsGuid(System.Object)">
-            <summary>
-            是GUID?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsDate(System.Object)">
-            <summary>
-            是时间?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsEamil(System.Object)">
-            <summary>
-            是邮箱?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsMobile(System.Object)">
-            <summary>
-            是手机?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsTelephone(System.Object)">
-            <summary>
-            是座机?
-            </summary>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsIDcard(System.Object)">
-            <summary>
-            是身份证?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsFax(System.Object)">
-            <summary>
-            是传真?
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsMatch(System.Object,System.String)">
-            <summary>
-            是适合正则匹配?
-            </summary>
-            <param name="thisValue"></param>
-            <param name="pattern"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsAnonymousType(System.Type)">
-            <summary>
-            是否是动态类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsCollectionsList(System.String)">
-            <summary>
-            是List类型
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsStringArray(System.String)">
-            <summary>
-            是string[]类型
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IsWhatExtensions.IsEnumerable(System.String)">
-            <summary>
-            是Enumerable
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.PubConvert">
-            <summary>
-            ** 描述：公用转换函数
-            ** 创始时间：2015-6-9
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToInt(System.Object)">
-            <summary>
-            强转成int 如果失败返回 0
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToInt(System.Object,System.Int32)">
-            <summary>
-            强转成int 如果失败返回 errorValue
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToMoney(System.Object)">
-            <summary>
-            强转成money 如果失败返回 0
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToMoney(System.Object,System.Double)">
-            <summary>
-            强转成double 如果失败返回 errorValue
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToString(System.Object)">
-            <summary>
-            强转成string 如果失败返回 ""
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToString(System.Object,System.String)">
-            <summary>
-            强转成string 如果失败返回 str
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToDecimal(System.Object)">
-            <summary>
-            强转成Decimal 如果失败返回 0
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToDecimal(System.Object,System.Decimal)">
-            <summary>
-            强转成Decimal 如果失败返回 errorValue
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToDate(System.Object)">
-            <summary>
-            强转成DateTime 如果失败返回 DateTime.MinValue
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToDate(System.Object,System.DateTime)">
-            <summary>
-            强转成DateTime 如果失败返回 errorValue
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.PubConvert.ObjToBool(System.Object)">
-            <summary>
-            强转成Bool 如果失败返回 false
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.FileSugar">
-            <summary>
-            ** 描述：文件公共类
-            ** 创始时间：2010-2-28
-            ** 修改时间：-
-            ** 修改人：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFiePathAndCreateDirectoryByCode``1(System.String,``0,System.String)">
-            <summary>
-            根据文件目录、编号、文件名生成文件路径，并且创建文件存放目录
-            格式为:/directory/code/filename
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="directory"></param>
-            <param name="code"></param>
-            <param name="fileName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFiePathAndCreateDirectoryByDate``1(System.String,System.String)">
-            <summary>
-            根据文件目录、日期、文件名生成文件路径，并且创建文件存放目录
-            格式为:/directory/2015/01/01/filename
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="directory"></param>
-            <param name="fileName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetMapPath(System.String)">
-            <summary>
-            获得当前绝对路径
-            </summary>
-            <param name="strPath">指定的路径</param>
-            <returns>绝对路径</returns>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetMinPic(System.String,System.String,System.Int32)">
-            <summary>
-            获取缩略图片路径
-            </summary>
-            <param name="dir"></param>
-            <param name="filename"></param>
-            <param name="index"></param>
-            <returns></returns>
-        </member>
-        <member name="F:OracleSugar.FileSugar.sync">
-            <summary>
-            同步标识
-            </summary>
-        </member>
-        <member name="M:OracleSugar.FileSugar.IsExistDirectory(System.String)">
-            <summary>
-            检测指定目录是否存在
-            </summary>
-            <param name="directoryPath">目录的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.IsExistFile(System.String)">
-            <summary>
-            检测指定文件是否存在,如果存在则返回true。
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.IsEmptyDirectory(System.String)">
-            <summary>
-            检测指定目录是否为空
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.Contains(System.String,System.String)">
-            <summary>
-            检测指定目录中是否存在指定的文件,若要搜索子目录请使用重载方法.
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
-            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.Contains(System.String,System.String,System.Boolean)">
-            <summary>
-            检测指定目录中是否存在指定的文件
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
-            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param> 
-            <param name="isSearchChild">是否搜索子目录</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CreateDirectory(System.String)">
-            <summary>
-            创建一个目录
-            </summary>
-            <param name="directoryPath">目录的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CreateFile(System.String)">
-            <summary>
-            创建一个文件
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.Byte[])">
-            <summary>
-            创建一个文件,并将字节流写入文件。
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="buffer">二进制流数据</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.String)">
-            <summary>
-            创建一个文件,并将字符串写入文件。
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="text">字符串数据</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CreateFile(System.String,System.String,System.Text.Encoding)">
-            <summary>
-            创建一个文件,并将字符串写入文件。
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="text">字符串数据</param>
-            <param name="encoding">字符编码</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.OpenDirectory(System.String)">
-            <summary>
-            打开目录
-            </summary>
-            <param name="directoryPath">目录的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.OpenFile(System.String)">
-            <summary>
-            打开文件
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetDirectoryFromFilePath(System.String)">
-            <summary>
-            从文件绝对路径中获取目录路径
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetLineCount(System.String)">
-            <summary>
-            获取文本文件的行数
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileSize(System.String)">
-            <summary>
-            获取一个文件的长度,单位为Byte
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileSizeByKB(System.String)">
-            <summary>
-            获取一个文件的长度,单位为KB
-            </summary>
-            <param name="filePath">文件的路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileSizeByMB(System.String)">
-            <summary>
-            获取一个文件的长度,单位为MB
-            </summary>
-            <param name="filePath">文件的路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileNames(System.String)">
-            <summary>
-            获取指定目录中所有文件列表
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileNames(System.String,System.String,System.Boolean)">
-            <summary>
-            获取指定目录及子目录中所有文件列表
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
-            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
-            <param name="isSearchChild">是否搜索子目录</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetDirectories(System.String)">
-            <summary>
-            获取指定目录中所有子目录列表,若要搜索嵌套的子目录列表,请使用重载方法.
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetDirectories(System.String,System.String,System.Boolean)">
-            <summary>
-            获取指定目录及子目录中所有子目录列表
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-            <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
-            范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
-            <param name="isSearchChild">是否搜索子目录</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.WriteText(System.String,System.String)">
-            <summary>
-            向文本文件中写入内容
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="text">写入的内容</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.WriteText(System.String,System.String,System.Text.Encoding)">
-            <summary>
-            向文本文件中写入内容
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="text">写入的内容</param>
-            <param name="encoding">编码</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.AppendText(System.String,System.String)">
-            <summary>
-            向文本文件的尾部追加内容
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="text">写入的内容</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.CopyTo(System.String,System.String)">
-            <summary>
-            将源文件的内容复制到目标文件中
-            </summary>
-            <param name="sourceFilePath">源文件的绝对路径</param>
-            <param name="destFilePath">目标文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.MoveToDirectory(System.String,System.String)">
-            <summary>
-            将文件移动到指定目录( 剪切 )
-            </summary>
-            <param name="sourceFilePath">需要移动的源文件的绝对路径</param>
-            <param name="descDirectoryPath">移动到的目录的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.Move(System.String,System.String)">
-            <summary>
-            将文件移动到指定目录，并指定新的文件名( 剪切并改名 )
-            </summary>
-            <param name="sourceFilePath">需要移动的源文件的绝对路径</param>
-            <param name="descFilePath">目标文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.StreamToBytes(System.IO.Stream)">
-            <summary>
-            将流读取到缓冲区中
-            </summary>
-            <param name="stream">原始流</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.FileToBytes(System.String)">
-            <summary>
-            将文件读取到缓冲区中
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.FileToString(System.String)">
-            <summary>
-            将文件读取到字符串中
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.FileToString(System.String,System.Text.Encoding)">
-            <summary>
-            将文件读取到字符串中
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-            <param name="encoding">字符编码</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileName(System.String)">
-            <summary>
-            从文件的绝对路径中获取文件名( 包含扩展名 )
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileNameNoExtension(System.String)">
-            <summary>
-            从文件的绝对路径中获取文件名( 不包含扩展名 )
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetExtension(System.String)">
-            <summary>
-            从文件的绝对路径中获取扩展名
-            </summary>
-            <param name="filePath">文件的绝对路径</param>        
-        </member>
-        <member name="M:OracleSugar.FileSugar.ClearDirectory(System.String)">
-            <summary>
-            清空指定目录下所有文件及子目录,但该目录依然保存.
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.ClearFile(System.String)">
-            <summary>
-            清空文件内容
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.DeleteFile(System.String)">
-            <summary>
-            删除指定文件
-            </summary>
-            <param name="filePath">文件的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.DeleteDirectory(System.String)">
-            <summary>
-            删除指定目录及其所有子目录
-            </summary>
-            <param name="directoryPath">指定目录的绝对路径</param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.WriteFile(System.String,System.String)">
-            <summary>
-            写文件
-            </summary>
-            <param name="strFilePath"></param>
-            <param name="strValue"></param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.WriteFile(System.String,System.String,System.String)">
-            <summary>
-            写文件
-            </summary>
-            <param name="strFilePath"></param>
-            <param name="strValue"></param>
-            <param name="charset"></param>
-        </member>
-        <member name="M:OracleSugar.FileSugar.ShowWord(System.String)">
-            <summary>
-            在网页中显示WORD文档
-            </summary>
-        </member>
-        <member name="M:OracleSugar.FileSugar.GetFileSream(System.String)">
-            <summary>
-            根据路径得到文件流
-            </summary>
-            <param name="Path"></param>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.Check">
-            <summary>
-            ** 描述：验证失败，则抛出异常
-            ** 创始时间：2015-7-19
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 修改人：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.Check.ArgumentNullException(System.Object,System.String)">
-            <summary>
-            使用导致此异常的参数的名称初始化 System.ArgumentNullException 类的新实例。
-            </summary>
-            <param name="checkObj"></param>
-            <param name="message"></param>
-        </member>
-        <member name="M:OracleSugar.Check.Exception(System.Boolean,System.String,System.String[])">
-            <summary>
-            使用指定的错误消息初始化 System.Exception 类的新实例。
-            </summary>
-            <param name="isException">true则引发异常</param>
-            <param name="message">错误信息</param>
-            <param name="args">参数</param>
-        </member>
-        <member name="T:OracleSugar.LanguageHelper">
-            <summary>
-            ** 描述：多语言视图帮助类
-            ** 创始时间：2016-8-7
-            ** 修改时间：-
-            ** 作者：孙凯旋
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="F:OracleSugar.LanguageHelper.PreSuffix">
-            <summary>
-            多语言视图的前缀
-            </summary>
-        </member>
-        <member name="M:OracleSugar.LanguageHelper.GetLanguageViewNameList(OracleSugar.SqlSugarClient)">
-            <summary>
-            获取所有需要生成多语言的视图名称
-            </summary>
-            <param name="db"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.LanguageHelper.UpdateView(OracleSugar.PubModel.Language,OracleSugar.SqlSugarClient)">
-            <summary>
-            创建多语言视图，带有LanguageId=1的所有有视图1替换成languageValue 并且新创视图 名称为 原有视图名+_$_+suffix
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:OracleSugar.IEnumerableExtensions">
-            <summary>
-            ** 描述：IEnumerable扩展类
-            ** 创始时间：2015-6-9
-            ** 修改时间：-
-            ** 作者：sunkaixuan
-            ** 使用说明：
-            </summary>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderBy``1(System.Collections.Generic.IEnumerable{``0},System.String,OracleSugar.OrderByType)">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="sortField"></param>
-            <param name="orderByType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenBy``1(System.Linq.IOrderedEnumerable{``0},System.String,OracleSugar.OrderByType)">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="sortField"></param>
-            <param name="orderByType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow``1(System.Collections.Generic.IEnumerable{``0},System.String,OracleSugar.OrderByType)">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="sortField"></param>
-            <param name="orderByType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRow``1(System.Linq.IOrderedEnumerable{``0},System.String,OracleSugar.OrderByType)">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="sortField"></param>
-            <param name="orderByType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderBy``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenBy``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRow(System.Collections.Generic.IEnumerable{System.Data.DataRow},System.Collections.Generic.List{OracleSugar.OrderByDictionary},OracleSugar.OrderByDictionary)">
-            <summary>
-            排序
-            </summary>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <param name="orderByUnqueField"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRow``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderByReverse``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenByReverse``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.OrderByDataRowReverse``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ThenByDataRowReverse``1(System.Linq.IOrderedEnumerable{``0},System.Collections.Generic.List{OracleSugar.OrderByDictionary})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="orderByTypes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.IEnumerableExtensions.ConvertField(System.Object)">
-            <summary>
-            解决GUID在SQL和C#中，排序方式不一致
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
         <member name="T:OracleSugar.CacheManager`1">
             <summary>
             ** 描述：缓存操作类
@@ -3673,141 +3501,6 @@
             </summary>
             <param name="message">错误信息</param>
             <param name="pars">错误函数的参数</param>
-        </member>
-        <member name="T:OracleSugar.SqlSugarToolExtensions">
-            <summary>
-             ** 描述：SqlSugar扩展工具类
-             ** 创始时间：2015-7-19
-             ** 修改时间：-
-             ** 作者：sunkaixuan
-             ** 使用说明：
-             </summary>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.ToJoinSqlInVal``1(``0[])">
-            <summary>
-            将数组转换成Where In 需要的格式(例如:参数 new int{1,2,3} 反回 "'1','2','3'")
-            </summary>
-            <param name="array"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSqlValue(System.String)">
-            <summary>
-            将字符串转换成SQL参数所需要的格式(例如: 参数value返回'value')
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSqlFilter(System.String)">
-             <summary>
-            SQL注入过滤
-             </summary>
-             <param name="value"></param>
-             <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSuperSqlFilter(System.String)">
-            <summary>
-             指定数据类型，如果不在指定类当中则引发异常(只允许输入指定字母、数字、下划线、时间、GUID)
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetLockString(System.Boolean)">
-            <summary>
-            获取锁字符串
-            </summary>
-            <param name="isNoLock"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetSelectFiles(System.String)">
-            <summary>
-            获取Select需要的字段
-            </summary>
-            <param name="selectFileds"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetSelectFiles(System.String,System.String)">
-            <summary>
-            获取Select需要的字段
-            </summary>
-            <param name="selectFileds"></param>
-            <param name="typeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetGroupBy(System.String)">
-            <summary>
-            获取分组
-            </summary>
-            <param name="groupByFileds"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.RequestParasToOracleParameters(Oracle.ManagedDataAccess.Client.OracleParameterCollection)">
-            <summary>
-            将Request里的参数转成OracleParameter[]
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetTranslationSqlName(System.String)">
-            <summary>
-            获取转释后的表名和列名
-            </summary>
-            <param name="tableName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetOracleParameterName(System.String)">
-            <summary>
-            获取参数名
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.SqlSugarToolExtensions.GetOracleParameterNameNoParSymbol(System.String)">
-             <summary>
-            获取没有符号的参数名称
-             </summary>
-             <param name="name"></param>
-             <returns></returns>
-        </member>
-        <member name="M:OracleSugar.CloudPubMethod.GetPageIndex(System.Int32,System.Double)">
-            <summary>
-            获取pageIndex
-            </summary>
-            <param name="pageIndex"></param>
-            <param name="configCount"></param>
-        </member>
-        <member name="M:OracleSugar.CloudPubMethod.GetConnection(System.Collections.Generic.List{OracleSugar.CloudConnectionConfig})">
-            <summary>
-            根据rate获取随机Connection
-            </summary>
-            <param name="configList"></param>
-        </member>
-        <member name="M:OracleSugar.CloudPubMethod.TaskFactory``1(System.Func{System.Int32,``0},System.Threading.Tasks.Task{``0}[],System.Int32)">
-            <summary>
-            并行执行任务并且传入索引
-            </summary>
-            <param name="method">函数参数i</param>
-            <param name="tasks">task数组</param>
-            <param name="i">索引</param>
-        </member>
-        <member name="M:OracleSugar.CloudPubMethod.GetIsSmallPageIndex(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            分页索引是否很小
-            </summary>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <param name="configCount"></param>
-            <param name="maxHandleNumber"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OracleSugar.CloudPubMethod.GetIsSmallPageIndexByReverse(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            倒数分页索引是否很小
-            </summary>
-            <param name="totalPage"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <param name="configCount"></param>
-            <param name="maxHandleNumber"></param>
-            <returns></returns>
         </member>
         <member name="T:OracleSugar.TaskExtensions">
             <summary>
@@ -3928,6 +3621,99 @@
             <typeparam name="T"></typeparam>
             <param name="thisValue"></param>
             <returns></returns>
+        </member>
+        <member name="T:OracleSugar.SqlSugarToolExtensions">
+            <summary>
+             ** 描述：SqlSugar扩展工具类
+             ** 创始时间：2015-7-19
+             ** 修改时间：-
+             ** 作者：sunkaixuan
+             ** 使用说明：
+             </summary>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ToJoinSqlInVal``1(``0[])">
+            <summary>
+            将数组转换成Where In 需要的格式(例如:参数 new int{1,2,3} 反回 "'1','2','3'")
+            </summary>
+            <param name="array"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSqlValue(System.String)">
+            <summary>
+            将字符串转换成SQL参数所需要的格式(例如: 参数value返回'value')
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSqlFilter(System.String)">
+             <summary>
+            SQL注入过滤
+             </summary>
+             <param name="value"></param>
+             <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ToSuperSqlFilter(System.String)">
+            <summary>
+             指定数据类型，如果不在指定类当中则引发异常(只允许输入指定字母、数字、下划线、时间、GUID)
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetLockString(System.Boolean)">
+            <summary>
+            获取锁字符串
+            </summary>
+            <param name="isNoLock"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetSelectFiles(System.String)">
+            <summary>
+            获取Select需要的字段
+            </summary>
+            <param name="selectFileds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetSelectFiles(System.String,System.String)">
+            <summary>
+            获取Select需要的字段
+            </summary>
+            <param name="selectFileds"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetGroupBy(System.String)">
+            <summary>
+            获取分组
+            </summary>
+            <param name="groupByFileds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.RequestParasToOracleParameters(Oracle.ManagedDataAccess.Client.OracleParameterCollection)">
+            <summary>
+            将Request里的参数转成OracleParameter[]
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetTranslationSqlName(System.String)">
+            <summary>
+            获取转释后的表名和列名
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetOracleParameterName(System.String)">
+            <summary>
+            获取参数名
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetOracleParameterNameNoParSymbol(System.String)">
+             <summary>
+            获取没有符号的参数名称
+             </summary>
+             <param name="name"></param>
+             <returns></returns>
         </member>
         <member name="T:OracleSugar.CloudConnectionConfig">
             <summary>
@@ -4060,6 +3846,220 @@
             <summary>
             比较符反转
             </summary>
+        </member>
+        <member name="T:OracleSugar.SequenceModel">
+            <summary>
+            序列
+            </summary>
+        </member>
+        <member name="P:OracleSugar.SequenceModel.TableName">
+            <summary>
+            表名
+            </summary>
+        </member>
+        <member name="P:OracleSugar.SequenceModel.ColumnName">
+            <summary>
+            列名
+            </summary>
+        </member>
+        <member name="P:OracleSugar.SequenceModel.Value">
+            <summary>
+            序列的值
+            </summary>
+        </member>
+        <member name="T:OracleSugar.OracleConfig">
+            <summary>
+            Oracle参数配置
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OracleConfig.OracleNumberTypeMapping">
+            <summary>
+            设置Number与实体的类型映射
+            默认:
+              {1,"bool"},
+              {3,"byte"},
+              {4,"short"},
+              {9,"int"},
+              {18,"long"}
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OracleConfig.SequenceMapping">
+            <summary>
+            设置序列
+            </summary>
+        </member>
+        <member name="T:OracleSugar.JoinType">
+            <summary>
+            join类型
+            </summary>
+        </member>
+        <member name="F:OracleSugar.JoinType.INNER">
+            <summary>
+            等值连接
+            </summary>
+        </member>
+        <member name="F:OracleSugar.JoinType.LEFT">
+            <summary>
+            左外连
+            </summary>
+        </member>
+        <member name="F:OracleSugar.JoinType.RIGHT">
+            <summary>
+            右外连
+            </summary>
+        </member>
+        <member name="T:OracleSugar.ApplyType">
+            <summary>
+            Apply类型
+            </summary>
+        </member>
+        <member name="F:OracleSugar.ApplyType.CORSS">
+            <summary>
+            笛卡尔积
+            </summary>
+        </member>
+        <member name="F:OracleSugar.ApplyType.OUTRE">
+            <summary>
+            外连
+            </summary>
+        </member>
+        <member name="T:OracleSugar.OrderByType">
+            <summary>
+            排序类型
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OrderByType.asc">
+            <summary>
+            升序
+            </summary>
+        </member>
+        <member name="F:OracleSugar.OrderByType.desc">
+            <summary>
+            降序
+            </summary>
+        </member>
+        <member name="T:OracleSugar.PageModel">
+            <summary>
+            分页类型
+            </summary>
+        </member>
+        <member name="F:OracleSugar.PageModel.RowNumber">
+            <summary>
+            05分页
+            </summary>
+        </member>
+        <member name="T:OracleSugar.ResolveExpressType">
+            <summary>
+            解析类型
+            </summary>
+        </member>
+        <member name="F:OracleSugar.ResolveExpressType.oneT">
+            <summary>
+            单个T
+            </summary>
+        </member>
+        <member name="F:OracleSugar.ResolveExpressType.nT">
+            <summary>
+            多个T
+            </summary>
+        </member>
+        <member name="T:OracleSugar.IDataReaderEntityBuilder`1">
+            <summary>
+            ** 描述：DataReader实体生成
+            ** 创始时间：2016-8-7
+            ** 修改时间：-
+            ** 作者：孙凯旋
+            ** 使用说明：
+            </summary>
+        </member>
+        <member name="F:OracleSugar.IDataReaderEntityBuilder`1.handler">
+            <summary>
+            声名事件，当执行CreateBuilder后，EMIT将动态创建最高性能的实体绑定对象
+            </summary>
+        </member>
+        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.Build(System.Data.IDataRecord)">
+            <summary>
+            将dataRecord的值绑定到T
+            </summary>
+            <param name="dataRecord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.CreateBuilder(System.Type,System.Data.IDataRecord)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="dataRecord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.IDataReaderEntityBuilder`1.GeneratorCallMethod(System.Reflection.Emit.ILGenerator,System.Type,System.Boolean,System.Reflection.PropertyInfo,System.String,System.String)">
+            <summary>
+            动态获取IDataRecord里面的函数
+            </summary>
+            <param name="generator"></param>
+            <param name="type"></param>
+            <param name="isNullable"></param>
+            <param name="pro"></param>
+            <param name="dbTypeName"></param>
+            <param name="fieldName"></param>
+        </member>
+        <member name="T:OracleSugar.IDataReaderEntityBuilder`1.Load">
+            <summary>
+            声名委托类型
+            </summary>
+            <param name="dataRecord"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OracleSugar.KeyValue">
+            <summary>
+            自定义键值类 key is string, value is string
+            </summary>
+        </member>
+        <member name="P:OracleSugar.KeyValue.Key">
+            <summary>
+            键
+            </summary>
+        </member>
+        <member name="P:OracleSugar.KeyValue.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="T:OracleSugar.KeyValueObj">
+            <summary>
+            自定义键值类 key is string, value is object
+            </summary>
+        </member>
+        <member name="P:OracleSugar.KeyValueObj.Key">
+            <summary>
+            键
+            </summary>
+        </member>
+        <member name="P:OracleSugar.KeyValueObj.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="T:OracleSugar.SugarMappingAttribute">
+            <summary>
+            表名属性
+            </summary>
+        </member>
+        <member name="P:OracleSugar.SugarMappingAttribute.TableName">
+            <summary>
+            据库对应的表名
+            </summary>
+        </member>
+        <member name="P:OracleSugar.SugarMappingAttribute.ColumnName">
+            <summary>
+            数据库对应的列名
+            </summary>
+        </member>
+        <member name="M:OracleSugar.ReflectionSugarMapping.GetMappingInfo``1">
+            <summary>
+            通过反射取自定义属性
+            </summary>
+            <typeparam name="T"></typeparam>
         </member>
     </members>
 </doc>
