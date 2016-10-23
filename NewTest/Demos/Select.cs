@@ -342,7 +342,7 @@ namespace NewTest.Demos
                .Select<InsertTest, Student>((i1, i2) => new Student()
                {
                    name = ":name".ObjToString(), //多表查询例子
-                
+                   id=":id".ObjToInt(),
                    sex = i2.txt,
                    sch_id = 1,
                    isOk = ":isOk".ObjToBool()
@@ -361,41 +361,41 @@ namespace NewTest.Demos
                 //转成list
                 List<Student> list1 = db.SqlQuery<Student>("select * from Student");
                 //转成list带参
-                List<Student> list2 = db.SqlQuery<Student>("select * from Student where id=@id", new { id = 1 });
+                List<Student> list2 = db.SqlQuery<Student>("select * from Student where id=:id", new { id = 1 });
                 //转成dynamic
                 dynamic list3 = db.SqlQueryDynamic("select * from student");
                 //转成json
                 string list4 = db.SqlQueryJson("select * from student");
                 //返回int
-                var list5 = db.SqlQuery<int>("select top 1 id from Student").SingleOrDefault();
+                var list5 = db.SqlQuery<int>("select id from Student where rownum<=1").SingleOrDefault();
                 //反回键值
                 Dictionary<string, string> list6 = db.SqlQuery<KeyValuePair<string, string>>("select id,name from Student").ToDictionary(it => it.Key, it => it.Value);
                 //反回List<string[]>
-                var list7 = db.SqlQuery<string[]>("select top 1 id,name from Student").SingleOrDefault();
+                var list7 = db.SqlQuery<string[]>("select   id,name from Student where rownum<=1").SingleOrDefault();
                 //存储过程
-                var spResult = db.SqlQuery<School>("exec sp_school @p1,@p2", new { p1 = 1, p2 = 2 });
+               // var spResult = db.SqlQuery<School>("exec sp_school @p1,@p2", new { p1 = 1, p2 = 2 }); 现是SQL写i法请成ORACLE写法
 
                 //存储过程加Output 
-                var pars = SqlSugarTool.GetParameters(new { p1 = 1,p2=0 }); //将匿名对象转成SqlParameter
-                db.IsClearParameters = false;//禁止清除参数
-                pars[1].Direction = ParameterDirection.Output; //将p2设为 output
-                var spResult2 = db.SqlQuery<School>("exec sp_school @p1,@p2 output", pars);
-                db.IsClearParameters = true;//启用清除参数
-                var outPutValue = pars[1].Value;//获取output @p2的值
+                //var pars = SqlSugarTool.GetParameters(new { p1 = 1,p2=0 }); //将匿名对象转成SqlParameter
+                //db.IsClearParameters = false;//禁止清除参数
+                //pars[1].Direction = ParameterDirection.Output; //将p2设为 output
+                //var spResult2 = db.SqlQuery<School>("exec sp_school @p1,@p2 output", pars);现是SQL写i法请成ORACLE写法
+                //db.IsClearParameters = true;//启用清除参数
+                //var outPutValue = pars[1].Value;//获取output @p2的值
 
 
-                //存储过程优化操作
-                var pars2 = SqlSugarTool.GetParameters(new { p1 = 1, p2 = 0 }); //将匿名对象转成SqlParameter
-                db.CommandType = CommandType.StoredProcedure;//指定为存储过程可比上面少写EXEC和参数
-                var spResult3 = db.SqlQuery<School>("sp_school", pars2);
-                db.CommandType = CommandType.Text;//还原回默认
+                ////存储过程优化操作
+                //var pars2 = SqlSugarTool.GetParameters(new { p1 = 1, p2 = 0 }); //将匿名对象转成SqlParameter
+                //db.CommandType = CommandType.StoredProcedure;//指定为存储过程可比上面少写EXEC和参数
+                //var spResult3 = db.SqlQuery<School>("sp_school", pars2);现是SQL写i法请成ORACLE写法
+                //db.CommandType = CommandType.Text;//还原回默认
 
 
                 //获取第一行第一列的值
-                string v1 = db.GetString("select '张三' as name");
-                int v2 = db.GetInt("select 1 as name");
-                double v3 = db.GetDouble("select 1 as name");
-                decimal v4 = db.GetDecimal("select 1 as name");
+                string v1 = db.GetString("select '张三' as name from dual");
+                int v2 = db.GetInt("select 1 as name  from dual");
+                double v3 = db.GetDouble("select 1 as name  from dual");
+                decimal v4 = db.GetDecimal("select 1 as name  from dual");
                 //....
             }
         }
@@ -417,7 +417,7 @@ namespace NewTest.Demos
                    .Join("student", "st2", "st2.id", "st.id", JoinType.LEFT)
                    .Where("s.id>100 and s.id<:id")
                    .Where("1=1")//可以多个WHERE
-                   .OrderBy("id")
+                   .OrderBy("s.id")
                    .SelectToList<School/*新的Model我这里没有所以写的School*/>("st.*", new { id = 1 });
 
                 //多表分页
@@ -441,14 +441,14 @@ namespace NewTest.Demos
                 //--------转成List Dynmaic 或者 Json-----//
 
                 //不分页
-                var list1 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToDynamic("*", new { id = 1 });
-                var list2 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToJson("*", new { id = 1 });
-                var list3 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToDataTable("*", new { id = 1 });
+                var list1 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToDynamic("*", new { id = 1 });
+                var list2 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToJson("*", new { id = 1 });
+                var list3 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToDataTable("*", new { id = 1 });
 
                 //分页
-                var list4 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToPageDynamic("s.*", "l.id", 1, 10, new { id = 1 });
-                var list5 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToPageTable("s.*", "l.id", 1, 10, new { id = 1 });
-                var list6 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=@id", JoinType.INNER).SelectToPageDynamic("s.*", "l.id", 1, 10, new { id = 1 });
+                var list4 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToPageDynamic("s.*", "l.id", 1, 10, new { id = 1 });
+                var list5 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToPageTable("s.*", "l.id", 1, 10, new { id = 1 });
+                var list6 = db.Sqlable().From("student", "s").Join("school", "l", "s.sch_id", "l.id and l.id=:id", JoinType.INNER).SelectToPageDynamic("s.*", "l.id", 1, 10, new { id = 1 });
 
 
                 //--------拼接-----//
@@ -465,7 +465,7 @@ namespace NewTest.Demos
                 }
                 if (id > 0)
                 {
-                    sable = sable.Where("l.id in (select top 10 id from school)");//where加子查询
+                    sable = sable.Where("l.id in (select  id from school where rownum<10)");//where加子查询
                 }
                 var pars = new { id = id, name = name };
                 int pageCount = sable.Count(pars);

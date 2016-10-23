@@ -109,7 +109,13 @@ namespace OracleSugar
                     }
                 }
                 else {
-                    dbFieldName = tFieldNames.Single(it => it.ToLower() == dbFieldName.ToLower());
+                    if (tFieldNames.Any(it => it.ToLower() == dbFieldName.ToLower()))
+                    {
+                        dbFieldName = tFieldNames.Single(it => it.ToLower() == dbFieldName.ToLower());
+                    }
+                    else {
+                        continue;
+                    }
                 }
 
                 PropertyInfo propertyInfo = type.GetProperty(dbFieldName);
