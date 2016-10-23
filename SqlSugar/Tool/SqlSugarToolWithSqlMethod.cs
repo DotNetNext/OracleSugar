@@ -135,7 +135,10 @@ namespace OracleSugar
                 string sql = @"  				select cu.TABLE_NAME  ,cu.COLUMN_name KEYNAME  from user_cons_columns cu, user_constraints au 
    where cu.constraint_name = au.constraint_name
     and au.constraint_type = 'P' and au.table_name = '" + tableName.GetTranslationSqlName()+ @"'";
+                var isLog = db.IsEnableLogEvent;
+                db.IsEnableLogEvent = false;
                 var dt = db.GetDataTable(sql);
+                db.IsEnableLogEvent = isLog;
                 primaryInfo = new List<KeyValue>();
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -194,8 +197,11 @@ namespace OracleSugar
                             from user_tab_columns c  
                             where c.Table_Name='" + tableName + @"' 
                             order by c.column_name";
+                var isLog = db.IsEnableLogEvent;
+                db.IsEnableLogEvent = false;
                 var reval = db.SqlQuery<string>(sql);
                 cm.Add(key, reval, cm.Day);
+                db.IsEnableLogEvent = isLog;
                 return reval;
             }
         }
@@ -275,7 +281,7 @@ namespace OracleSugar
 
         internal static string GetSelectTopSql()
         {
-            return "select top 1 * from {0}";
+            return "select  * from {0} where rowum<=1";
         }
 
         /// <summary>
