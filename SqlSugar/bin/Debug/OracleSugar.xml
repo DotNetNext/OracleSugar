@@ -104,6 +104,16 @@
             是否是主键
             </summary>
         </member>
+        <member name="P:OracleSugar.PubModel.DataTableMap.DATA_SCALE">
+            <summary>
+            精度
+            </summary>
+        </member>
+        <member name="P:OracleSugar.PubModel.DataTableMap.DATA_PRECISION">
+            <summary>
+            长度
+            </summary>
+        </member>
         <member name="T:OracleSugar.PubModel.SerialNumber">
             <summary>
             流水号设置实体
@@ -1207,11 +1217,12 @@
             <param name="db"></param>
             <returns></returns>
         </member>
-        <member name="M:OracleSugar.ClassGenerating.ChangeType(System.Type)">
+        <member name="M:OracleSugar.ClassGenerating.ChangeType(System.Type,System.Collections.Generic.List{OracleSugar.PubModel.DataTableMap})">
             <summary>
             匹配类型
             </summary>
             <param name="type"></param>
+            <param name="list"></param>
             <returns></returns>
         </member>
         <member name="M:OracleSugar.ClassGenerating.GetTableColumns(OracleSugar.SqlSugarClient,System.String)">
@@ -1330,11 +1341,6 @@
         <member name="F:OracleSugar.PageModel.RowNumber">
             <summary>
             05分页
-            </summary>
-        </member>
-        <member name="F:OracleSugar.PageModel.Offset">
-            <summary>
-            12分页
             </summary>
         </member>
         <member name="T:OracleSugar.ResolveExpressType">
@@ -3719,9 +3725,17 @@
             <param name="selectFileds"></param>
             <returns></returns>
         </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.GetSelectFiles(System.String,System.String)">
+            <summary>
+            获取Select需要的字段
+            </summary>
+            <param name="selectFileds"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
         <member name="M:OracleSugar.SqlSugarToolExtensions.GetGroupBy(System.String)">
             <summary>
-            
+            获取分组
             </summary>
             <param name="groupByFileds"></param>
             <returns></returns>

@@ -59,11 +59,7 @@ namespace OracleSugar
         /// <summary>
         /// 05分页
         /// </summary>
-        RowNumber = 0,
-        /// <summary>
-        /// 12分页
-        /// </summary>
-        Offset = 1
+        RowNumber = 0
     }
     /// <summary>
     /// 解析类型

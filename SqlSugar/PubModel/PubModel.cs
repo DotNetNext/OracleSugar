@@ -55,6 +55,14 @@ namespace OracleSugar
             /// 是否是主键
             /// </summary>
             public object IS_PRIMARYKEY { get; set; }
+            /// <summary>
+            /// 精度
+            /// </summary>
+            public object DATA_SCALE { get; set; }
+            /// <summary>
+            /// 长度
+            /// </summary>
+            public object DATA_PRECISION { get; set; }
         }
 
         /// <summary>

@@ -93,7 +93,18 @@ namespace OracleSugar
             return selectFileds.IsNullOrEmpty() ? "*" : selectFileds;
         }
         /// <summary>
-        /// 
+        /// 获取Select需要的字段
+        /// </summary>
+        /// <param name="selectFileds"></param>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public static string GetSelectFiles(this string selectFileds, string typeName)
+        {
+            var reval = selectFileds.IsNullOrEmpty() ? "*" : selectFileds;
+            return reval == "*" ? string.Format("{0}.*", typeName) : selectFileds;
+        }
+        /// <summary>
+        /// 获取分组
         /// </summary>
         /// <param name="groupByFileds"></param>
         /// <returns></returns>

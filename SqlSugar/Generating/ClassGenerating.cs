@@ -48,7 +48,7 @@ namespace OracleSugar
                 if (!type.Namespace.Contains("System.Collections.Generic"))
                 {
                     propertiesValue.AppendLine();
-                    string typeName = ChangeType(type);
+                    string typeName = ChangeType(type, null);
                     propertiesValue.AppendFormat(ClassTemplate.ItemTemplate, typeName, r.Name, "{get;set;}", nullable);
                     propertiesValue.AppendLine();
                 }
@@ -81,7 +81,7 @@ namespace OracleSugar
             foreach (DataColumn r in dt.Columns)
             {
                 propertiesValue.AppendLine();
-                string typeName = ChangeType(r.DataType);
+                string typeName = ChangeType(r.DataType, dataTableMapList == null ? null : dataTableMapList.Where(it => it.COLUMN_NAME.ToString() == r.ColumnName).ToList());
                 bool isAny = false;
                 PubModel.DataTableMap columnInfo = new PubModel.DataTableMap();
                 if (dataTableMapList.IsValuable())
@@ -169,7 +169,7 @@ namespace OracleSugar
                     {
                         preAction(tableName);
                     }
-                    var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(), GetTableNameWithSchema(db,tableName).GetTranslationSqlName()));
+                    var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(), GetTableNameWithSchema(db, tableName).GetTranslationSqlName()));
                     if (callBack != null)
                     {
                         var tableColumns = GetTableColumns(db, tableName);
@@ -208,7 +208,7 @@ namespace OracleSugar
                 foreach (DataRow dr in tables.Rows)
                 {
                     string tableName = dr["name"].ToString();
-                    var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(),GetTableNameWithSchema(db,tableName).GetTranslationSqlName()));
+                    var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(), GetTableNameWithSchema(db, tableName).GetTranslationSqlName()));
                     string className = db.GetClassTypeByTableName(tableName);
                     callBack(tables, className, tableName);
                 }
@@ -237,7 +237,7 @@ namespace OracleSugar
                     string tableName = dr["name"].ToString().ToLower();
                     if (tableNames.Any(it => it.ToLower() == tableName))
                     {
-                        var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(), GetTableNameWithSchema(db,tableName).GetTranslationSqlName()));
+                        var currentTable = db.GetDataTable(string.Format(SqlSugarTool.GetSelectTopSql(), GetTableNameWithSchema(db, tableName).GetTranslationSqlName()));
                         var tableColumns = GetTableColumns(db, tableName);
                         string className = db.GetClassTypeByTableName(tableName);
                         var classCode = DataTableToClass(currentTable, className, nameSpace, tableColumns);
@@ -272,10 +272,35 @@ namespace OracleSugar
         /// 匹配类型
         /// </summary>
         /// <param name="type"></param>
+        /// <param name="list"></param>
         /// <returns></returns>
-        private string ChangeType(Type type)
+        public string ChangeType(Type type, List<PubModel.DataTableMap> list)
         {
+            var om = OracleConfig.OracleNumberTypeMapping;
             string typeName = type.Name;
+            if (list.IsValuable() && list.Single().DATA_TYPE.ToString().ToLower() == "number")
+            {
+                var map = list.Single();
+                switch (map.DATA_SCALE.ObjToInt())
+                {
+                    case 0:
+                        if (om.ContainsKey(map.DATA_PRECISION.ObjToInt()))
+                        {
+                            typeName = om[map.DATA_PRECISION.ObjToInt()];
+                        }
+                        else
+                        {
+                            typeName = "int";
+                        }
+                        break;
+                    case 2:
+                        typeName = "double";
+                        break;
+                    default:
+                        break;
+                }
+
+            }
             switch (typeName)
             {
                 case "Int32": typeName = "int"; break;
@@ -322,7 +347,7 @@ namespace OracleSugar
         /// <param name="action">string为表名</param>
         public void ForeachTables(SqlSugarClient db, Action<string> action)
         {
-            Check.ArgumentNullException(action,"ForeachTables.action不能为null。");
+            Check.ArgumentNullException(action, "ForeachTables.action不能为null。");
             string cacgeKey = "ClassGenerating.ForeachTables";
             var cm = CacheManager<List<string>>.GetInstance();
             List<string> tables = null;
@@ -350,12 +375,14 @@ namespace OracleSugar
         /// <param name="db"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public string GetTableNameWithSchema(SqlSugarClient db,string tableName) {
-          
-            var list=SqlSugarTool.GetSchemaList(db).Where(it => it.Value == tableName).ToList();
-            if (list.Any()) {
-                Check.Exception(list.Count != 1,tableName+"不能同时存在两个Schema,请重命名表名。");
-                return string.Format("{0}.{1}",list.Single().Key,list.Single().Value);
+        public string GetTableNameWithSchema(SqlSugarClient db, string tableName)
+        {
+
+            var list = SqlSugarTool.GetSchemaList(db).Where(it => it.Value == tableName).ToList();
+            if (list.Any())
+            {
+                Check.Exception(list.Count != 1, tableName + "不能同时存在两个Schema,请重命名表名。");
+                return string.Format("{0}.{1}", list.Single().Key, list.Single().Value);
             }
             return tableName;
         }
