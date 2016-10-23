@@ -1,0 +1,10 @@
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\NewTest.exe.config
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\NewTest.exe
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\NewTest.pdb
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\Oracle.ManagedDataAccess.dll
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\OracleSugar.dll
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\OracleSugar.pdb
+F:\MyOpenSource\OracleSugar\NewTest\bin\Debug\OracleSugar.xml
+F:\MyOpenSource\OracleSugar\NewTest\obj\x86\Debug\NewTest.csprojResolveAssemblyReference.cache
+F:\MyOpenSource\OracleSugar\NewTest\obj\x86\Debug\NewTest.exe
+F:\MyOpenSource\OracleSugar\NewTest\obj\x86\Debug\NewTest.pdb

@@ -18,7 +18,7 @@ namespace NewTest.Dao
         {
             get
             {
-                string reval = "server=.;uid=sa;pwd=sasa;database=SqlSugarTest"; //这里可以动态根据cookies或session实现多库切换
+                string reval = "server=localhost/orcl;User ID=system;Password=JHL52771jhl;"; //这里可以动态根据cookies或session实现多库切换
                 return reval;
             }
         }
