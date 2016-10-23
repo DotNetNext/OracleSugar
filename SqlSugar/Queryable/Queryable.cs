@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Linq.Expressions;
 
 namespace SqlSugar

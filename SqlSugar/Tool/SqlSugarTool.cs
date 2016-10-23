@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Reflection;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 

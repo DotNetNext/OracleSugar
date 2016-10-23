@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Web;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 
 namespace SqlSugar
 {

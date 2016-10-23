@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Data;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Collections;
 
 namespace SqlSugar

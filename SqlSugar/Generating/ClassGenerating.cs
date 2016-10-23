@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
