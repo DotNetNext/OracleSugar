@@ -87,50 +87,50 @@ namespace OracleSugar
         /// <returns></returns>
         public static IDataReaderEntityBuilder<T> CreateBuilder(Type type, IDataRecord dataRecord)
         {
-                IDataReaderEntityBuilder<T> dynamicBuilder = new IDataReaderEntityBuilder<T>();
-                DynamicMethod method = new DynamicMethod("DynamicCreateEntity", type,
-                        new Type[] { typeof(IDataRecord) }, type, true);
-                ILGenerator generator = method.GetILGenerator();
-                LocalBuilder result = generator.DeclareLocal(type);
-                generator.Emit(OpCodes.Newobj, type.GetConstructor(Type.EmptyTypes));
-                generator.Emit(OpCodes.Stloc, result);
-                string cacheKey = "SqlSugarClient.InitAttributes";
-                var cm = CacheManager<List<KeyValue>>.GetInstance();
-                var tFieldNames = typeof(T).GetProperties().Select(it => it.Name).ToList();
-                for (int i = 0; i < dataRecord.FieldCount; i++)
+            IDataReaderEntityBuilder<T> dynamicBuilder = new IDataReaderEntityBuilder<T>();
+            DynamicMethod method = new DynamicMethod("DynamicCreateEntity", type,
+                    new Type[] { typeof(IDataRecord) }, type, true);
+            ILGenerator generator = method.GetILGenerator();
+            LocalBuilder result = generator.DeclareLocal(type);
+            generator.Emit(OpCodes.Newobj, type.GetConstructor(Type.EmptyTypes));
+            generator.Emit(OpCodes.Stloc, result);
+            string cacheKey = "SqlSugarClient.InitAttributes";
+            var cm = CacheManager<List<KeyValue>>.GetInstance();
+            var tFieldNames = typeof(T).GetProperties().Select(it => it.Name).ToList();
+            for (int i = 0; i < dataRecord.FieldCount; i++)
+            {
+                string dbFieldName = dataRecord.GetName(i);
+                if (cm.ContainsKey(cacheKey) && cm[cacheKey].Any(it => it.Value == dbFieldName))
                 {
-                    string dbFieldName = dataRecord.GetName(i);
-                    if (cm.ContainsKey(cacheKey) && cm[cacheKey].Any(it => it.Value == dbFieldName))
+                    var classFieldName = cm[cacheKey].Single(it => it.Value == dbFieldName).Key;
+                    if (tFieldNames.Any(it => it == classFieldName))//T包含映射属性
                     {
-                        var classFieldName= cm[cacheKey].Single(it => it.Value == dbFieldName).Key;
-                        if (tFieldNames.Any(it => it == classFieldName))//T包含映射属性
-                        {
-                            dbFieldName = classFieldName;
-                        }
-                    }
-                    PropertyInfo propertyInfo = type.GetProperty(dbFieldName);
-                    Label endIfLabel = generator.DefineLabel();
-                    if (propertyInfo != null && propertyInfo.GetSetMethod() != null)
-                    {
-                        bool isNullable = false;
-                        var underType = SqlSugarTool.GetUnderType(propertyInfo, ref isNullable);
-
-                        generator.Emit(OpCodes.Ldarg_0);
-                        generator.Emit(OpCodes.Ldc_I4, i);
-                        generator.Emit(OpCodes.Callvirt, isDBNullMethod);
-                        generator.Emit(OpCodes.Brtrue, endIfLabel);
-                        generator.Emit(OpCodes.Ldloc, result);
-                        generator.Emit(OpCodes.Ldarg_0);
-                        generator.Emit(OpCodes.Ldc_I4, i);
-                        GeneratorCallMethod(generator, underType, isNullable, propertyInfo, dataRecord.GetDataTypeName(i), dbFieldName);
-                        generator.Emit(OpCodes.Callvirt, propertyInfo.GetSetMethod());
-                        generator.MarkLabel(endIfLabel);
+                        dbFieldName = classFieldName;
                     }
                 }
-                generator.Emit(OpCodes.Ldloc, result);
-                generator.Emit(OpCodes.Ret);
-                dynamicBuilder.handler = (Load)method.CreateDelegate(typeof(Load));
-                return dynamicBuilder;
+                PropertyInfo propertyInfo = type.GetProperty(dbFieldName);
+                Label endIfLabel = generator.DefineLabel();
+                if (propertyInfo != null && propertyInfo.GetSetMethod() != null)
+                {
+                    bool isNullable = false;
+                    var underType = SqlSugarTool.GetUnderType(propertyInfo, ref isNullable);
+
+                    generator.Emit(OpCodes.Ldarg_0);
+                    generator.Emit(OpCodes.Ldc_I4, i);
+                    generator.Emit(OpCodes.Callvirt, isDBNullMethod);
+                    generator.Emit(OpCodes.Brtrue, endIfLabel);
+                    generator.Emit(OpCodes.Ldloc, result);
+                    generator.Emit(OpCodes.Ldarg_0);
+                    generator.Emit(OpCodes.Ldc_I4, i);
+                    GeneratorCallMethod(generator, underType, isNullable, propertyInfo, dataRecord.GetDataTypeName(i), dbFieldName);
+                    generator.Emit(OpCodes.Callvirt, propertyInfo.GetSetMethod());
+                    generator.MarkLabel(endIfLabel);
+                }
+            }
+            generator.Emit(OpCodes.Ldloc, result);
+            generator.Emit(OpCodes.Ret);
+            dynamicBuilder.handler = (Load)method.CreateDelegate(typeof(Load));
+            return dynamicBuilder;
         }
 
 
@@ -156,7 +156,7 @@ namespace OracleSugar
         private static void GeneratorCallMethod(ILGenerator generator, Type type, bool isNullable, PropertyInfo pro, string dbTypeName, string fieldName)
         {
             List<string> guidThrow = new List<string>() { "int32", "datetime", "decimal", "double", "byte", "string" };//数据库为GUID有错的实体类形
-            List<string> intThrow = new List<string>() { "datetime", "byte" };//数据库为int有错的实体类形
+            List<string> intThrow = new List<string>() { "datetime" };//数据库为int有错的实体类形
             List<string> stringThrow = new List<string>() { "int32", "datetime", "decimal", "double", "byte", "guid" };//数据库为vachar有错的实体类形
             List<string> decimalThrow = new List<string>() { "datetime", "byte", "guid" };
             List<string> doubleThrow = new List<string>() { "datetime", "byte", "guid" };
@@ -177,6 +177,7 @@ namespace OracleSugar
                 generator.Emit(OpCodes.Unbox_Any, pro.PropertyType);//找不到类型才执行拆箱（类型转换）
                 return;
             }
+
             if (isNullable)
             {
                 switch (typeName)
@@ -188,13 +189,6 @@ namespace OracleSugar
                             method = getOtherNull.MakeGenericMethod(type);
                         else
                             method = getConvertInt32; break;
-                    case "long":
-                        CheckType(intThrow, objTypeName, typeName, fieldName);
-                        var isNotLong = objTypeName != "int64";
-                        if (isNotLong)
-                            method = getOtherNull.MakeGenericMethod(type);
-                        else
-                            method = getConvetInt64; break;
                     case "bool":
                         if (objTypeName != "bool" && objTypeName != "boolean")
                             method = getOtherNull.MakeGenericMethod(type);
@@ -223,12 +217,6 @@ namespace OracleSugar
                             method = getOtherNull.MakeGenericMethod(type);
                         else
                             method = getConvertDouble; break;
-                    case "float":
-                        CheckType(decimalThrow, objTypeName, typeName, fieldName);
-                        if (objTypeName != "float" && objTypeName != "single")
-                            method = getOtherNull.MakeGenericMethod(type);
-                        else
-                            method = getConvertFloat; break;
                     case "guid":
                         CheckType(guidThrow, objTypeName, typeName, fieldName);
                         if (objTypeName != "guid")
@@ -269,13 +257,6 @@ namespace OracleSugar
                             method = getOther.MakeGenericMethod(type);
                         else
                             method = getInt32; break;
-                    case "long":
-                        CheckType(intThrow, objTypeName, typeName, fieldName);
-                        var isNotLong = objTypeName != "int64";
-                        if (isNotLong)
-                            method = getOther.MakeGenericMethod(type);
-                        else
-                            method = getInt64; break;
                     case "bool":
                         if (objTypeName != "bool" && objTypeName != "boolean")
                             method = getOther.MakeGenericMethod(type);
@@ -304,12 +285,6 @@ namespace OracleSugar
                             method = getOther.MakeGenericMethod(type);
                         else
                             method = getDouble; break;
-                    case "float":
-                        CheckType(decimalThrow, objTypeName, typeName, fieldName);
-                        if (objTypeName != "float" && objTypeName != "single")
-                            method = getOther.MakeGenericMethod(type);
-                        else
-                            method = getFloat; break;
                     case "guid":
                         CheckType(guidThrow, objTypeName, typeName, fieldName);
                         if (objTypeName != "guid")
@@ -332,9 +307,7 @@ namespace OracleSugar
                         else
                             method = getInt16;
                         break;
-                    default:
-                        method = getOther.MakeGenericMethod(type);
-                        break; ;
+                    default: method = getOther.MakeGenericMethod(type); break; ;
 
                 }
 
@@ -348,6 +321,6 @@ namespace OracleSugar
 
 
         }
-  
+
     }
 }

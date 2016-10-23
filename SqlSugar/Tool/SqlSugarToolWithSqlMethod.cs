@@ -326,18 +326,22 @@ namespace OracleSugar
         /// </summary>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        internal static string ChangeDBTypeToCSharpType(string typeName)
+        public static string ChangeDBTypeToCSharpType(string typeName)
         {
             string reval = string.Empty;
             switch (typeName.ToLower())
             {
+                case "long":
+                    throw new Exception("不支持Oracle的Long类型，建议使用C_LOB代替。");
+                case "int16":
+                case "int32":
                 case "int":
                     reval = "int";
                     break;
                 case "text":
                     reval = "string";
                     break;
-                case "bigint":
+                case "int64":
                     reval = "long";
                     break;
                 case "binary":
@@ -350,13 +354,15 @@ namespace OracleSugar
                     reval = "string";
                     break;
                 case "datetime":
+                case "date":
                     reval = "dateTime";
                     break;
-                case "single":
                 case "decimal":
                     reval = "decimal";
                     break;
                 case "float":
+                case "binarydouble":
+                case "double":
                     reval = "double";
                     break;
                 case "image":
@@ -399,6 +405,10 @@ namespace OracleSugar
                     reval = "guid";
                     break;
                 case "varbinary":
+                case "blob":
+                case "long raw":
+                case "raw":
+                case "bfile":
                     reval = "byte[]";
                     break;
                 case "varchar":
