@@ -540,6 +540,8 @@ namespace OracleSugar
         /// <returns>默认返回Identity，如果没有Identity执行成功将返回true</returns>
         public object Insert<T>(T entity, bool isIdentity = true) where T : class
         {
+            var seqMap = OracleConfig.SequenceMapping;
+
             InitAttributes<T>();
             Type type = entity.GetType();
             string typeName = type.Name;
@@ -608,13 +610,8 @@ namespace OracleSugar
                             continue;
                         }
                     }
-
-                    //EntityState,@EntityKey
-                    if (!isIdentity || identities.Any(it => it.Value.ToLower() != propName.ToLower()))
-                    {
                         //4.将属性的名字加入到字符串中 
-                        sbInsertSql.Append(propName.GetTranslationSqlName() + ",");
-                    }
+                   sbInsertSql.Append(propName.GetTranslationSqlName() + ",");
                 }
                 //**去掉最后一个逗号 
                 sbInsertSql.Remove(sbInsertSql.Length - 1, 1);
@@ -671,24 +668,45 @@ namespace OracleSugar
                     {
                         val = (int)(val);
                     }
+                    var isNullabletrue=false;
+                    var underType = SqlSugarTool.GetUnderType(prop, ref isNullabletrue);
+                    if (underType==SqlSugarTool.BoolType)
+                   {
+                       if (isNullabletrue && val == DBNull.Value)
+                       {
+
+                       }
+                       else
+                       {
+                           val = Convert.ToBoolean(val) ? 1 : 0;
+                       }
+                    }
 
                     var par = new OracleParameter(SqlSugarTool.ParSymbol + propName, val);
                     SqlSugarTool.SetParSize(par);
                     pars.Add(par);
+                }
+                else {
+                    if (!cacheSqlManager.ContainsKey(cacheSqlKey))
+                    {
+                        var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower());
+                        if (seqList.Any())
+                        {
+                            var seqName = seqList.First().Value;
+                            sbInsertSql.Append(seqName + ".Nextval,");
+                        }
+                        else
+                        {
+                            sbInsertSql.Append("null,");
+                        }
+                    }
                 }
             }
             if (!isContainCacheSqlKey)
             {
                 //**去掉最后一个逗号 
                 sbInsertSql.Remove(sbInsertSql.Length - 1, 1);
-                if (isIdentity == false)
-                {
-                    sbInsertSql.Append(");select 'true';");
-                }
-                else
-                {
-                    sbInsertSql.Append(");select SCOPE_IDENTITY();");
-                }
+                sbInsertSql.Append(")");
                 cacheSqlManager.Add(cacheSqlKey, sbInsertSql, cacheSqlManager.Day);
             }
             var sql = sbInsertSql.ToString();
@@ -703,7 +721,21 @@ namespace OracleSugar
                         sql = sql.Replace(SqlSugarTool.ParSymbol + item.Key + ")", SqlSugarTool.ParSymbol + item.Value + ")");
                     }
                 }
-                var lastInsertRowId = GetScalar(sql, pars.ToArray());
+               var lastInsertRowId = ExecuteCommand(sql, pars.ToArray());
+                if (lastInsertRowId > 0)
+                {
+                    if (isIdentity)
+                    {
+                        var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
+                        var eqValue = GetInt("SELECT " + seqName + ".currval from dual");
+                        lastInsertRowId = eqValue;
+                    }
+                    else
+                    {
+                        lastInsertRowId = 1;
+                    }
+
+                }
                 return lastInsertRowId;
             }
             catch (Exception ex)
@@ -744,6 +776,7 @@ namespace OracleSugar
 
         private bool SqlBulkCopy<T>(IEnumerable<T> entities) where T : class
         {
+            var seqMap = OracleConfig.SequenceMapping;
             InitAttributes<T>();
             if (entities == null) { return false; };
 
@@ -799,9 +832,17 @@ namespace OracleSugar
             sbSql.AppendFormat("({0})", string.Join(",", columnNames.Select(it => it.GetTranslationSqlName())));
 
 
+            var updateCount = entities.Count();
+            int sqBegin=0;
+            if(isIdentity){
+                 ExecuteCommand("alter sequence SEQ increment by " + updateCount);
+                 sqBegin = GetInt("select  SEQ.Nextval  from dual")-updateCount;
+                 ExecuteCommand("alter sequence SEQ increment by " + 1);
+            }
+
             foreach (var entity in entities)
             {
-
+                sqBegin++;
                 sbSql.AppendLine("SELECT ");
                 foreach (var name in columnNames)
                 {
@@ -818,7 +859,12 @@ namespace OracleSugar
                     var objValue = prop.GetValue(entity, null);
                     bool isNullable = false;
                     var underType = SqlSugarTool.GetUnderType(prop, ref isNullable);
-                    if (objValue == null)
+                    var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower());
+                    if (seqList.Any())
+                    {
+                        objValue = sqBegin;
+   
+                    }else if (objValue == null)
                     {
                         objValue = "NULL";
                     }
@@ -840,7 +886,7 @@ namespace OracleSugar
                         objValue = "'" + objValue.ToString() + "'";
                     }
 
-                    sbSql.Append(objValue + (isLastName ? "" : ","));
+                    sbSql.Append(objValue + (isLastName ? " from dual   " : "  , "));
                 }
                 var isLastEntity = entities.Last() == entity;
                 if (!isLastEntity)

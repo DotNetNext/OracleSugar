@@ -430,3 +430,7 @@ USE [master]
 GO
 ALTER DATABASE [SqlSugarTest] SET  READ_WRITE 
 GO
+
+
+CREATE SEQUENCE emp_sequence
+alter sequence SEQ increment by 1000

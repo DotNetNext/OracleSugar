@@ -27,7 +27,13 @@ namespace NewTest.Demos
             using (var db = SugarFactory.GetInstance())
             {
                 var list = db.Queryable<V_Student>().ToList();//查询的是 select * from student 而我的实体名称为V_Student
+
+
+                db.SetMappingTables(null);//清空
+                db.AddMappingTable(new KeyValue() { Key="", Value="" });
             }
+            
+           
         }
 
 

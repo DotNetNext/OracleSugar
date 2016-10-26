@@ -14,6 +14,11 @@ namespace NewTest.Demos
 
         public void Init()
         {
+            OracleConfig.SequenceMapping = new List<SequenceModel>()
+            {
+                  new SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ"} 
+            };
+
             Console.WriteLine("启动Inset.Init");
             using (var db = SugarDao.GetInstance())
             {
