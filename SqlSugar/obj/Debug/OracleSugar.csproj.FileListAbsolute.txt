@@ -5,8 +5,8 @@ G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\obj\Debug\OracleSugar.dll
 G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\obj\Debug\OracleSugar.pdb
 G:\OneDrive\Asp.net\Project\OracleSugar\SqlSugar\bin\Debug\OracleSugar.xml
 F:\MyOpenSource\OracleSugar\SqlSugar\obj\Debug\OracleSugar.pdb
-F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\OracleSugar.xml
 F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\OracleSugar.dll
 F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\OracleSugar.pdb
 F:\MyOpenSource\OracleSugar\SqlSugar\obj\Debug\OracleSugar.dll
 F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\Oracle.ManagedDataAccess.dll
+F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\OracleSugar.xml

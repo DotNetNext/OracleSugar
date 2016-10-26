@@ -31,6 +31,7 @@ namespace NewTest.Demos
                 TestStudent s = new TestStudent();
                 s.className = "属性名";
                 s.classSchoolId = 1;
+                s.classId = new Random().Next(2000, 111111111);
                 var id = db.Insert(s);
                 s.classId = id.ObjToInt();
 

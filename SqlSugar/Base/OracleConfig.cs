@@ -56,22 +56,26 @@ namespace OracleSugar
         //}
         internal static void SetParType(string typeName, bool isBinary, string name, OracleParameter par, SqlSugarClient db)
         {
-                var colInfo = db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == name.GetOracleParameterNameNoParSymbol().ToLower()).Single();
-                if (colInfo.DATA_TYPE.ObjToString() == "BFILE")
+                var colInfos = db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == name.GetOracleParameterNameNoParSymbol().ToLower()).ToList();
+                if (colInfos.IsValuable())
                 {
-                    par.OracleDbType = OracleDbType.BFile;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
-                {
-                    par.OracleDbType = OracleDbType.Blob;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
-                {
-                    par.OracleDbType = OracleDbType.Raw;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
-                {
-                    par.OracleDbType = OracleDbType.LongRaw;
+                    var  colInfo = colInfos.Single();
+                    if (colInfo.DATA_TYPE.ObjToString() == "BFILE")
+                    {
+                        par.OracleDbType = OracleDbType.BFile;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
+                    {
+                        par.OracleDbType = OracleDbType.Blob;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
+                    {
+                        par.OracleDbType = OracleDbType.Raw;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
+                    {
+                        par.OracleDbType = OracleDbType.LongRaw;
+                    }
                 }
         }
         internal static void SetParType(string typeName, PropertyInfo prop, OracleParameter par,SqlSugarClient db)
@@ -79,22 +83,26 @@ namespace OracleSugar
             var isBinary = prop.PropertyType == SqlSugarTool.ByteArrayType;
             if (isBinary)
             {
-                var colInfo =db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == prop.Name.ToLower()).Single();
-                if (colInfo.DATA_TYPE.ObjToString()== "BFILE")
+                var colInfos =db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == prop.Name.ToLower()).ToList();
+                if (colInfos.IsValuable())
                 {
-                    par.OracleDbType = OracleDbType.BFile;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
-                {
-                    par.OracleDbType = OracleDbType.Blob;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
-                {
-                    par.OracleDbType = OracleDbType.Raw;
-                }
-                else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
-                {
-                    par.OracleDbType = OracleDbType.LongRaw;
+                    var colInfo = colInfos.Single();
+                    if (colInfo.DATA_TYPE.ObjToString() == "BFILE")
+                    {
+                        par.OracleDbType = OracleDbType.BFile;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
+                    {
+                        par.OracleDbType = OracleDbType.Blob;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
+                    {
+                        par.OracleDbType = OracleDbType.Raw;
+                    }
+                    else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
+                    {
+                        par.OracleDbType = OracleDbType.LongRaw;
+                    }
                 }
             }
         }
