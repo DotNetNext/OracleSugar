@@ -17,6 +17,14 @@ namespace NewTest.Demos
         public Student2 _p = new Student2() { id = 3, name = "张表", isOk = true };
         public void Init()
         {
+            OracleConfig.SequenceMapping = new List<SequenceModel>()
+            {
+                  new SequenceModel(){ ColumnName="ID", TableName="STUDENT", Value="SEQ"} ,
+                  new SequenceModel(){ ColumnName="ID", TableName="AREA", Value="SEQ2"} ,
+                  new SequenceModel(){ ColumnName="ID", TableName="SCHOOL", Value="SEQ3"} ,
+                  new SequenceModel(){ ColumnName="ID", TableName="SUBJECT", Value="SEQ4"} 
+            };
+
             Student2 p = new Student2() { id = 2, name = "张表", isOk = true };
             Console.WriteLine("启动Test.Init");
             using (var db = SugarDao.GetInstance())
@@ -37,7 +45,7 @@ namespace NewTest.Demos
                 Update(p, db);
 
                 //删除测试
-                Delete(p,db);
+                //Delete(p,db);
 
             }
         }
@@ -103,13 +111,48 @@ namespace NewTest.Demos
         #region 初始化数据
         private void InitData(SqlSugarClient db)
         {
+            try
+            {
+                db.ExecuteCommand(" DROP  sequence SEQ");
+            }
+            catch (Exception)
+            {
+            }
+            try
+            {
+                db.ExecuteCommand(" DROP  sequence SEQ2");
+            }
+            catch (Exception)
+            {
+                
+            }
+            try
+            {
+                db.ExecuteCommand(" DROP  sequence SEQ3");
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                db.ExecuteCommand(" DROP  sequence SEQ4");
+            }
+            catch (Exception)
+            {
+
+            }
+            db.ExecuteCommand("  create  sequence SEQ");
+            db.ExecuteCommand("  create  sequence SEQ2");
+            db.ExecuteCommand("  create  sequence SEQ3");
+            db.ExecuteCommand("  create  sequence SEQ4");
             db.ExecuteCommand("truncate table Subject");
             db.ExecuteCommand("truncate table student");
             db.ExecuteCommand("truncate table school");
             db.ExecuteCommand("truncate table area");
 
-            db.SqlBulkCopy(SchoolList);
             db.SqlBulkCopy(StudentList);
+            db.SqlBulkCopy(SchoolList);
             db.SqlBulkCopy(SubjectList);
             db.InsertRange(AreaList);
         }
@@ -298,7 +341,7 @@ namespace NewTest.Demos
             //Select 外部参数用法
             var f4 = db.Queryable<InsertTest>().Where("1=1", new { id = 100 }).Select<Student>(it => new Student()
             {
-                id = "@id".ObjToInt(), //取的是 100 的值
+                id = ":id".ObjToInt(), //取的是 100 的值
                 name = "张三",//内部参数可以直接写
                 sex = it.txt,
                 sch_id = it.id
@@ -309,11 +352,11 @@ namespace NewTest.Demos
            .Where("1=1", new { id = 100, name = "张三", isOk = true }) //外部传参给@id
            .Select<InsertTest, Student>((i1, i2) => new Student()
            {
-               name = "@name".ObjToString(), //多表查询例子
-               id = "@id".ObjToInt(),
+               name = ":name".ObjToString(), //多表查询例子
+               id = ":id".ObjToInt(),
                sex = i2.txt,
                sch_id = 1,
-               isOk = "@isOk".ObjToBool()
+               isOk = ":isOk".ObjToBool()
 
            }).ToList();
 

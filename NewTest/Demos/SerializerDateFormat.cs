@@ -20,8 +20,8 @@ namespace NewTest.Demos
             {
                 db.SerializerDateFormat = "yyyy-mm/dd";
                 var jsonStr = db.Queryable<InsertTest>().OrderBy("id").Take(1).ToJson();
-                var jsonStr2 = db.Sqlable().From<InsertTest>("t").SelectToJson(" top 1 *");
-                var jsonStr3 = db.SqlQueryJson("select top 1 * from InsertTest");
+                var jsonStr2 = db.Sqlable().From<InsertTest>("t").Where("rownum<=1").SelectToJson("*");
+                var jsonStr3 = db.SqlQueryJson("select  * from InsertTest where rownum<=1");
             }
         }
     }

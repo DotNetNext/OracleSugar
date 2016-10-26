@@ -835,9 +835,10 @@ namespace OracleSugar
             var updateCount = entities.Count();
             int sqBegin=0;
             if(isIdentity){
-                 ExecuteCommand("alter sequence SEQ increment by " + updateCount);
-                 sqBegin = GetInt("select  SEQ.Nextval  from dual")-updateCount;
-                 ExecuteCommand("alter sequence SEQ increment by " + 1);
+                 var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
+                 ExecuteCommand("alter sequence " + seqName + " increment by " + updateCount);
+                 sqBegin = GetInt("select  " + seqName + ".Nextval  from dual") - updateCount;
+                 ExecuteCommand("alter sequence " + seqName + " increment by " + 1);
             }
 
             foreach (var entity in entities)
