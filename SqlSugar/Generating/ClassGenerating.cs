@@ -90,19 +90,19 @@ namespace OracleSugar
                     if (isAny)
                     {
                         columnInfo = dataTableMapList.First(it => it.COLUMN_NAME.ToString() == r.ColumnName);
-                        if (columnInfo.IS_PRIMARYKEY.ToString() == "1")
+                        if (columnInfo.IS_PRIMARYKEY.ObjToString()== "1")
                         {
                             _primaryKeyName.Add(r.ColumnName);
                         }
                         propertiesValue.AppendFormat(ClassTemplate.ClassFieldSummaryTemplate,
                         columnInfo.COLUMN_DESCRIPTION.IsValuable() ? columnInfo.COLUMN_DESCRIPTION.ToString() : "-", //{0}
                         columnInfo.COLUMN_DEFAULT.IsValuable() ? columnInfo.COLUMN_DEFAULT.ToString() : "-", //{1}
-                        Convert.ToBoolean(columnInfo.IS_NULLABLE));//{2}
+                        Convert.ToBoolean(columnInfo.IS_NULLABLE.ObjToString()=="Y"));//{2}
                     }
                 }
                 propertiesValue.AppendFormat(
                     ClassTemplate.ItemTemplate,
-                    isAny ? ChangeNullable(typeName, Convert.ToBoolean(columnInfo.IS_NULLABLE)) : typeName,
+                    isAny ? ChangeNullable(typeName, Convert.ToBoolean(columnInfo.IS_NULLABLE.ObjToString() == "Y")) : typeName,
                     r.ColumnName, "{get;set;}",
                     "");
                 propertiesValue.AppendLine();
