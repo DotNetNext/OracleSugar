@@ -63,6 +63,9 @@ namespace NewTest.Demos
                 //批量更新  数据量大时建议使用
                 var updateResult2 = db.SqlBulkReplace(GetUpdateList2());
 
+
+                //bob类型测试
+                db.Update(new Models.Test { Id = 10, NAME = "afa", C_BOB = new byte[] { 1, 2 } });
             }
         }
 

@@ -336,8 +336,23 @@ namespace OracleSugar
         /// <returns></returns>
         public List<PubModel.DataTableMap> GetTableColumns(SqlSugarClient db, string tableName)
         {
-            string sql = SqlSugarTool.GetTtableColumnsInfo(tableName);
-            return db.SqlQuery<PubModel.DataTableMap>(sql);
+            var isLog = db.IsEnableLogEvent;
+            db.IsEnableLogEvent = false;
+            string cacheKey = "GlassGenerating.GetTableColumns"+tableName;
+            var cm = CacheManager<List<PubModel.DataTableMap>>.GetInstance();
+            if (cm.ContainsKey(cacheKey))
+            {
+                db.IsEnableLogEvent = isLog;
+                return cm[cacheKey];
+            }
+            else
+            {
+                string sql = SqlSugarTool.GetTtableColumnsInfo(tableName);
+                var reval = db.SqlQuery<PubModel.DataTableMap>(sql);
+                db.IsEnableLogEvent = isLog;
+                cm.Add(cacheKey, reval, cm.Day);
+                return reval;
+            }
         }
 
         /// <summary>

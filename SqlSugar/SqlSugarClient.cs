@@ -684,6 +684,7 @@ namespace OracleSugar
 
                     var par = new OracleParameter(SqlSugarTool.ParSymbol + propName, val);
                     SqlSugarTool.SetParSize(par);
+                    OracleConfig.SetParType(typeName, prop, par, this);
                     pars.Add(par);
                 }
                 else {
@@ -1134,6 +1135,7 @@ namespace OracleSugar
                         par.Value = DBNull.Value;
                     }
                     par.ParameterName = name;
+                    OracleConfig.SetParType(typeName,par.DbType==DbType.Binary, name, par, this);
                     return par;
 
                 }).ToArray();

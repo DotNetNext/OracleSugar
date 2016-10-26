@@ -41,6 +41,8 @@ namespace NewTest.Demos
             using (var db = SugarDao.GetInstance())
             {
 
+                //bob类型测试
+                var test = db.Queryable<Models.Test>().Where(it => it.C_BOB != null).ToList();
 
                 //查询所有
                 var student = db.Queryable<Student>().ToList();

@@ -169,7 +169,7 @@ namespace OracleSugar
         {
             if (OracleConfig.SequenceMapping.IsValuable())
             {
-                return OracleConfig.SequenceMapping.Select(it => new KeyValue() { Key = it.TableName, Value = it.ColumnName }).ToList();
+                return OracleConfig.SequenceMapping.Where(it=>it.TableName.ToLower()==tableName.ToLower()).Select(it => new KeyValue() { Key = it.TableName, Value = it.ColumnName }).ToList();
             }
             else
             {

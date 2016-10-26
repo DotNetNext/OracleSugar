@@ -50,6 +50,9 @@ namespace NewTest.Demos
 
                 //SqlBulkCopy同样支持不挺入列设置
                 db.SqlBulkCopy(GetInsertList());
+
+                //bob类型测试
+                db.Insert(new Models.Test { Id = new Random().Next(100, 1111111111), NAME="afa", C_BOB = new byte[] { 1, 2 } });
             }
         }
 

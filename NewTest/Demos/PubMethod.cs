@@ -39,7 +39,7 @@ namespace NewTest.Demos
 
 
                 //GetParameterArray 获取页面参数所有参数的键和值
-                var pars = SqlSugarTool.GetParameterArray();
+                //var pars = SqlSugarTool.GetParameterArray(); //web中使用
 
 
                 //将匿名对象转成SqlParameter
