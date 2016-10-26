@@ -191,9 +191,13 @@ namespace OracleSugar
                         }
                         else
                         {
-                            var isBool = value.GetType() == SqlSugarTool.BoolType;
+                            var valueType=value.GetType() ;
+                            var isBool = valueType== SqlSugarTool.BoolType;
                             if (isBool) {
                                 value = Convert.ToBoolean(value) ? 1 : 0;
+                            }
+                            else if (valueType == SqlSugarTool.GuidType) {
+                                value = value.ToString();
                             }
                             var par = new OracleParameter(":" + r.Name, value);
                             SetParSize(par);

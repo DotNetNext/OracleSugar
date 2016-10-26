@@ -75,12 +75,12 @@ namespace NewTest.Demos
                      new Student()
                 {
                     id=1001,
-                     name="1张1001"+new Random().Next(1,int.MaxValue)
+                     name="1张10011"+new Random().Next(1,int.MaxValue)
                 },
                  new Student()
                 {
                     id=1002,
-                    name="1张1002"+new Random().Next(1,int.MaxValue)
+                    name="1张10021"+new Random().Next(1,int.MaxValue)
                 }
                 };
             return list;
@@ -91,7 +91,7 @@ namespace NewTest.Demos
                 {
                      new Student()
                 {
-                    id=1010,
+                    id=57,
                     name="小妹"+new Random().Next(1,int.MaxValue),
                     isOk=false,
                     sch_id=2,
@@ -99,7 +99,7 @@ namespace NewTest.Demos
                 },
                  new Student()
                 {
-                    id=1011,
+                    id=60,
                     name="小子"+new Random().Next(1,int.MaxValue),
                     isOk=true,
                     sch_id=3,
