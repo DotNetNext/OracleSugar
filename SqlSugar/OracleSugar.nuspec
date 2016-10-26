@@ -16,6 +16,6 @@
 
   </metadata>
     <files>
-     <file src="e:\OracleSugar.XML"  target=""></file>
+     <file src="F:\MyOpenSource\OracleSugar\SqlSugar\bin\Debug\OracleSugar.xml"  target=""></file>
     </files>
 </package>
