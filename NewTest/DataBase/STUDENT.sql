@@ -1,0 +1,147 @@
+/*
+Navicat Oracle Data Transfer
+Oracle Client Version : 11.2.0.4.0
+
+Source Server         : oracle
+Source Server Version : 110200
+Source Host           : localhost:1521
+Source Schema         : SYSTEM
+
+Target Server Type    : ORACLE
+Target Server Version : 110200
+File Encoding         : 65001
+
+Date: 2016-10-27 04:21:44
+*/
+
+
+-- ----------------------------
+-- Table structure for STUDENT
+-- ----------------------------
+DROP TABLE "SYSTEM"."STUDENT";
+CREATE TABLE "SYSTEM"."STUDENT" (
+"ID" NUMBER(9) NOT NULL ,
+"NAME" VARCHAR2(255 BYTE) NULL ,
+"SCH_ID" NUMBER(9) NULL ,
+"ISOK" NUMBER(1) NULL ,
+"SEX" VARCHAR2(255 BYTE) NULL 
+)
+LOGGING
+NOCOMPRESS
+NOCACHE
+
+;
+
+-- ----------------------------
+-- Records of STUDENT
+-- ----------------------------
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('1', '小杰', '1', '1', 'boy');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('2', '小明', '2', '0', 'grid');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('3', '张三', '3', '1', 'boy');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('4', '李四', '2', '0', 'grid');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('5', '王五', '3', '1', 'boy');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('6', '小姐', '1', '0', 'grid');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('7', '小捷', '3', '1', 'grid');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('8', '小J', '1', '1', 'grid');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('9', '张1259179525', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('10', '张1910219845', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('11', '张1910219845', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('12', '张181892235', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('13', '张181892235', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('14', '张1790732237', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('15', '张832932555', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('16', '张832932555', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('17', '张218439509', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('18', '张1288635866', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('19', '张1288635866', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('20', '张682208075', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('21', '张682208075', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('22', '张1520520149', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('23', '张562720467', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('24', '张562720467', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('25', '张1597095746', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('26', '张1896764175', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('27', '张1896764175', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('28', '张168436565', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('29', '张168436565', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('30', '张751692739', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('31', '张1170848776', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('32', '张1170848776', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('33', '张131992610', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('34', '张1553560858', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('35', '张1553560858', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('36', '张1972716895', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('37', '张1972716895', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('38', '张1434073250', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('39', '张827645459', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('40', '张827645459', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('41', '张1730013006', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('42', '张2029681435', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('43', '张2029681435', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('44', '张301353825', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('45', '张301353825', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('46', '张884609999', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('47', '张1303766036', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('48', '张1303766036', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('49', '张1821927872', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('50', '张325484545', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('51', '张325484545', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('52', '张1515168510', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('53', '张1515168510', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('54', '张205996937', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('55', '张1395680902', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('56', '张1395680902', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('57', '小妹1386613097', '2', '0', 'gril');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('58', '张1997341155', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('59', '张1997341155', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('60', '小子1386613097', '3', '1', 'boy');
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('61', '张2065125301', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('62', '张1877853547', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('63', '张920053865', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('64', '张920053865', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('65', '张624853314', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('66', '张259467670', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('67', '张259467670', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('68', '张1800523526', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('69', '张1800523526', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('70', '张1261879881', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('71', '张1681035918', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('72', '张1681035918', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('73', '张847114170', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('74', '张1910387707', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('75', '张1910387707', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('76', '张952588025', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('77', '张952588025', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('78', '张413944380', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('79', '张833100417', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('80', '张833100417', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('81', '张21154107', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('82', '张1442722355', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('83', '张1442722355', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('84', '张1861878392', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('85', '张1861878392', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('86', '张1674606638', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('87', '张716806956', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('88', '张716806956', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('89', '张2143413923', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('90', '张1417498524', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('91', '张1417498524', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('92', '张1836654561', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('93', '张1836654561', '2', '0', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('94', '张1649382807', null, null, null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('95', '张691583125', '1', '1', null);
+INSERT INTO "SYSTEM"."STUDENT" VALUES ('96', '张691583125', '2', '0', null);
+
+-- ----------------------------
+-- Indexes structure for table STUDENT
+-- ----------------------------
+
+-- ----------------------------
+-- Checks structure for table STUDENT
+-- ----------------------------
+ALTER TABLE "SYSTEM"."STUDENT" ADD CHECK ("ID" IS NOT NULL);
+
+-- ----------------------------
+-- Primary Key structure for table STUDENT
+-- ----------------------------
+ALTER TABLE "SYSTEM"."STUDENT" ADD PRIMARY KEY ("ID");

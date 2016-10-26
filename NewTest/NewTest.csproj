@@ -94,7 +94,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataBase\TestDB.sql" />
+    <Content Include="DataBase\AREA.sql" />
+    <Content Include="DataBase\INSERTTEST.sql" />
+    <Content Include="DataBase\SCHOOL.sql" />
+    <Content Include="DataBase\SEQ.sql" />
+    <Content Include="DataBase\STUDENT.sql" />
+    <Content Include="DataBase\SUBJECT.sql" />
+    <Content Include="DataBase\TEST.sql" />
+    <Content Include="DataBase\TESTUPDATECOLUMNS.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
