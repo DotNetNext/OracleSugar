@@ -1,6 +1,6 @@
  OracleSugar一款高性能ORM框架
  
- ### 1. 设置生成实体的数值类型
+  ### 1. 设置生成实体的数值类型
   | number长度  |  实体类型 |
   | ------------ | ------------ |
   |   1|bool   |
@@ -22,7 +22,7 @@ OracleConfig.OracleNumberTypeMapping =new Dictionary<int, string>()
 ```
 
 
- ### 2. 数据连接设置
+  ### 2. 数据连接设置
  ```csharp
 using(var db = new SqlSugarClient(ConnectionString)){
 
@@ -31,7 +31,7 @@ using(var db = new SqlSugarClient(ConnectionString)){
 
 }
 ```
- ### 3.设置序列（相当于SQL里面的自增列）
+  ### 3.设置序列（相当于SQL里面的自增列）
  ```csharp
   OracleConfig.SequenceMapping = new List<SequenceModel>()
             {
@@ -39,7 +39,7 @@ using(var db = new SqlSugarClient(ConnectionString)){
             };
 ```
 
- ### 4.查询
+  ### 4.查询
   #### 4.1 拉姆达查询
 ```csharp
 var test = db.Queryable<Models.Test>().Where(it => it.C_BOB != null).ToList();
