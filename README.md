@@ -26,7 +26,10 @@ ASP.NET 4.0+ ORACLE  https://github.com/sunkaixuan/OracleSugar
 
 ASP.NET CORE ORACLE  https://github.com/sunkaixuan/ASP_NET_CORE_ORM_OracleSugar
 
-<p> OracleSugar一款高性能ORM框架</p>
+
+
+# OracleSugar一款高性能ORM框架
+
 <h3 id="h3-1-"><a name="1. 设置生成实体的数值类型" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1. 设置生成实体的数值类型</h3><table>
 <thead>
 <tr>
