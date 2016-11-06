@@ -491,7 +491,7 @@ db.Delete&lt;School&gt;("id=@id", new { id = 100 });
 </code></pre>
 "
 
-# 5.Tran
+### 8.Tran
 ```csharp
 using (SqlSugarClient db = SugarDao.GetInstance())
 {
@@ -512,7 +512,7 @@ using (SqlSugarClient db = SugarDao.GetInstance())
 }
 ```
 
-# 6.Rename tables
+### 9.Rename tables
 ```csharp
 public class MappingTable : IDemos
 {
@@ -582,7 +582,7 @@ public class MappingTable : IDemos
 }
 ```
 
-# 7.Rename Columns
+### 10.Rename Columns
 ```csharp
 //别名列的功能
 public class MappingColumns : IDemos
@@ -651,7 +651,7 @@ public class MappingColumns : IDemos
 }
 ```
 
-#8.Ignore error columns
+### 11.Ignore error columns
 ```csharp
 using (var db = SugarDao.GetInstance())
 {
@@ -659,7 +659,7 @@ using (var db = SugarDao.GetInstance())
 }
 ```
 
-#9.Create class files
+### 12.Create class files
 ```csharp
 db.ClassGenerating.CreateClassFiles(db, ("e:/TestModels"), "Models");
 ```
