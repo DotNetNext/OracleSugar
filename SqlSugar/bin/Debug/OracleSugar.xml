@@ -1328,6 +1328,18 @@
             忽略非数据库列 （默认为:false）
             </summary>
         </member>
+        <member name="M:OracleSugar.SqlSugarClient.AddDisableUpdateColumns(System.String[])">
+            <summary>
+            添加禁止更新列
+            </summary>
+            <param name="columns"></param>
+        </member>
+        <member name="M:OracleSugar.SqlSugarClient.AddDisableInsertColumns(System.String[])">
+            <summary>
+            添加禁止插入列
+            </summary>
+            <param name="columns"></param>
+        </member>
         <member name="F:OracleSugar.SqlSugarClient.SerializerDateFormat">
              <summary>
             设置Queryable或者Sqlable转换成JSON字符串时的日期格式
@@ -1348,13 +1360,13 @@
             当前滤器名称
             </summary>
         </member>
-        <member name="M:OracleSugar.SqlSugarClient.SetFilterFilterParas(System.Collections.Generic.Dictionary{System.String,System.Func{OracleSugar.KeyValueObj}})">
+        <member name="M:OracleSugar.SqlSugarClient.SetFilterItems(System.Collections.Generic.Dictionary{System.String,System.Func{OracleSugar.KeyValueObj}})">
             <summary>
             设置过滤器（用户权限过滤）
             </summary>
             <param name="filterRows">参数Dictionary string 为过滤器的名称 , Dictionary Func&lt;KeyValueObj&gt; 为过滤函数 (KeyValueObj 中的 Key为Sql条件,Value为Sql参数)</param>
         </member>
-        <member name="M:OracleSugar.SqlSugarClient.SetFilterFilterParas(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
+        <member name="M:OracleSugar.SqlSugarClient.SetFilterItems(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}})">
             <summary>
             设置过滤器（用户权限过滤）
             </summary>
@@ -1378,17 +1390,22 @@
             </summary>
             <param name="mappingColumns"></param>
         </member>
-        <member name="M:OracleSugar.SqlSugarClient.AddMappingColum(OracleSugar.KeyValue)">
+        <member name="M:OracleSugar.SqlSugarClient.AddMappingColumn(OracleSugar.KeyValue)">
             <summary>
             添加实体字段与数据库字段的映射，Key为实体字段 Value为表字段名称 （注意：不区分表，设置后所有表通用）
             </summary>
-            <param name="mappingColumns"></param>
+            <param name="mappingColumn"></param>
         </member>
         <member name="M:OracleSugar.SqlSugarClient.SetSerialNumber(System.Collections.Generic.List{OracleSugar.PubModel.SerialNumber})">
             <summary>
             设置流水号 
             </summary>
             <param name="serNum">设置流水号所需要的参数集合</param>
+        </member>
+        <member name="F:OracleSugar.SqlSugarClient.TempData">
+            <summary>
+            在同一个会话中可以存储一些临时数据
+            </summary>
         </member>
         <member name="M:OracleSugar.SqlSugarClient.Sqlable">
             <summary>
@@ -3715,6 +3732,30 @@
              <param name="name"></param>
              <returns></returns>
         </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ArrayWhere(System.String[],System.Func{System.String,System.Boolean})">
+            <summary>
+            数组条件筛选
+            </summary>
+            <param name="thisValue"></param>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ArrayAdd(System.String[],System.String[])">
+            <summary>
+            数组添加元素
+            </summary>
+            <param name="thisValue"></param>
+            <param name="items"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OracleSugar.SqlSugarToolExtensions.ArrayRemove(System.String[],System.String)">
+            <summary>
+            数组移除
+            </summary>
+            <param name="thisValue"></param>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
         <member name="T:OracleSugar.CloudConnectionConfig">
             <summary>
             云计算连接配置
@@ -3893,17 +3934,17 @@
             join类型
             </summary>
         </member>
-        <member name="F:OracleSugar.JoinType.INNER">
+        <member name="F:OracleSugar.JoinType.Inner">
             <summary>
             等值连接
             </summary>
         </member>
-        <member name="F:OracleSugar.JoinType.LEFT">
+        <member name="F:OracleSugar.JoinType.Left">
             <summary>
             左外连
             </summary>
         </member>
-        <member name="F:OracleSugar.JoinType.RIGHT">
+        <member name="F:OracleSugar.JoinType.Right">
             <summary>
             右外连
             </summary>
@@ -3913,12 +3954,12 @@
             Apply类型
             </summary>
         </member>
-        <member name="F:OracleSugar.ApplyType.CORSS">
+        <member name="F:OracleSugar.ApplyType.Cross">
             <summary>
             笛卡尔积
             </summary>
         </member>
-        <member name="F:OracleSugar.ApplyType.OUTRE">
+        <member name="F:OracleSugar.ApplyType.Outer">
             <summary>
             外连
             </summary>
@@ -3928,12 +3969,12 @@
             排序类型
             </summary>
         </member>
-        <member name="F:OracleSugar.OrderByType.asc">
+        <member name="F:OracleSugar.OrderByType.Asc">
             <summary>
             升序
             </summary>
         </member>
-        <member name="F:OracleSugar.OrderByType.desc">
+        <member name="F:OracleSugar.OrderByType.Desc">
             <summary>
             降序
             </summary>
@@ -3953,12 +3994,12 @@
             解析类型
             </summary>
         </member>
-        <member name="F:OracleSugar.ResolveExpressType.oneT">
+        <member name="F:OracleSugar.ResolveExpressType.OneT">
             <summary>
             单个T
             </summary>
         </member>
-        <member name="F:OracleSugar.ResolveExpressType.nT">
+        <member name="F:OracleSugar.ResolveExpressType.NT">
             <summary>
             多个T
             </summary>

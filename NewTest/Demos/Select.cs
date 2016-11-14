@@ -276,8 +276,8 @@ namespace NewTest.Demos
                  .Select<School, V_Student>((s1, s2) => new V_Student() { id = s1.id, name = s1.name, AreaName = "默认地区", SchoolName = s2.name, SubjectName = "NET" });//select new 目前只支持这种写法
 
                 var list2 = queryable2.ToList();
-                var json2 = queryable2.ToJson();
-                var dynamic2 = queryable2.ToDynamic();
+                //var json2 = queryable2.ToJson();
+                //var dynamic2 = queryable2.ToDynamic();
 
 
                 //select字符串 转换成V_Student
