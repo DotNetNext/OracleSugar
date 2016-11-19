@@ -826,25 +826,27 @@ namespace OracleSugar
             string pkName = SqlSugarTool.GetPrimaryKeyByTableName(this, typeName);
             var identityNames = SqlSugarTool.GetIdentitiesKeyByTableName(this, typeName);
             var isIdentity = identityNames != null && identityNames.Count > 0;
-            var columnNames =props.Select(it=>it.Name).ToList();
+            var columnNames = props.Select(it => it.Name).ToList();
             if (DisableInsertColumns.IsValuable())
             {//去除禁止插入列
-                columnNames.RemoveAll(it=>DisableInsertColumns.Any(dc=>dc.ToLower().Contains(it.ToLower())));
+                columnNames.RemoveAll(it => DisableInsertColumns.Any(dc => dc.ToLower().Contains(it.ToLower())));
             }
             //启用别名列
-            if (this.IsEnableAttributeMapping = true && _mappingColumns.IsValuable()) {
+            if (this.IsEnableAttributeMapping = true && _mappingColumns.IsValuable())
+            {
                 //将别名列转换成数据列
                 columnNames = columnNames.Select(it =>
                 {
-                    var cmInfo=_mappingColumns.Where(mc => mc.Key == it).ToList();
-                    return cmInfo.IsValuable()?cmInfo.Single().Value:it;
+                    var cmInfo = _mappingColumns.Where(mc => mc.Key == it).ToList();
+                    return cmInfo.IsValuable() ? cmInfo.Single().Value : it;
                 }).ToList();
             }
             if (this.IsIgnoreErrorColumns)
             {//去除非数据库列
-               var tableColumns=SqlSugarTool.GetColumnsByTableName(this, typeName);
-               columnNames = columnNames.Where(it => tableColumns.Any(tc => tc.ToLower() == it.ToLower())).ToList();
+                var tableColumns = SqlSugarTool.GetColumnsByTableName(this, typeName);
+                columnNames = columnNames.Where(it => tableColumns.Any(tc => tc.ToLower() == it.ToLower())).ToList();
             }
+
             Check.Exception(columnNames == null || columnNames.Count == 0, "没有可插入的列，请查看实体和插入配置。");
 
             StringBuilder sbSql = new StringBuilder("INSERT INTO ");
@@ -853,12 +855,13 @@ namespace OracleSugar
 
 
             var updateCount = entities.Count();
-            int sqBegin=0;
-            if(isIdentity){
-                 var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
-                 ExecuteCommand("alter sequence " + seqName + " increment by " + updateCount);
-                 sqBegin = GetInt("select  " + seqName + ".Nextval  from dual") - updateCount;
-                 ExecuteCommand("alter sequence " + seqName + " increment by " + 1);
+            int sqBegin = 0;
+            if (isIdentity)
+            {
+                var seqName = seqMap.First(it => it.TableName.ToLower() == typeName.ToLower()).Value;
+                ExecuteCommand("alter sequence " + seqName + " increment by " + updateCount);
+                sqBegin = GetInt("select  " + seqName + ".Nextval  from dual") - updateCount;
+                ExecuteCommand("alter sequence " + seqName + " increment by " + 1);
             }
 
             foreach (var entity in entities)
@@ -868,10 +871,13 @@ namespace OracleSugar
                 foreach (var name in columnNames)
                 {
                     var className = name;
-                      //启用别名列
-                    if (this.IsEnableAttributeMapping = true && _mappingColumns.IsValuable()) {
+                    var dbName = GetMappingColumnDbName(className);
+                    //启用别名列
+                    if (this.IsEnableAttributeMapping = true && _mappingColumns.IsValuable())
+                    {
                         var mappInfo = _mappingColumns.Where(mc => mc.Value.ToLower() == name.ToLower()).ToList();
-                        if (mappInfo.IsValuable()) {
+                        if (mappInfo.IsValuable())
+                        {
                             className = mappInfo.Single().Key;
                         }
                     }
@@ -880,18 +886,19 @@ namespace OracleSugar
                     var objValue = prop.GetValue(entity, null);
                     bool isNullable = false;
                     var underType = SqlSugarTool.GetUnderType(prop, ref isNullable);
-                    var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower());
+                    var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == dbName.ToLower());
                     if (seqList.Any())
                     {
                         objValue = sqBegin;
-   
-                    }else if (objValue == null)
+
+                    }
+                    else if (objValue == null)
                     {
                         objValue = "NULL";
                     }
                     else if (underType == SqlSugarTool.DateType)
                     {
-                        objValue = "'" + objValue.ObjToDate().ToString("yyyy-MM-dd HH:mm:ss")  + "'";
+                        objValue = "'" + objValue.ObjToDate().ToString("yyyy-MM-dd HH:mm:ss") + "'";
                     }
                     else if (underType == SqlSugarTool.BoolType)
                     {
