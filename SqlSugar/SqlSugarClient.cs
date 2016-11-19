@@ -845,11 +845,6 @@ namespace OracleSugar
                var tableColumns=SqlSugarTool.GetColumnsByTableName(this, typeName);
                columnNames = columnNames.Where(it => tableColumns.Any(tc => tc.ToLower() == it.ToLower())).ToList();
             }
-            if (isIdentity)
-            {
-                columnNames = columnNames.Where(c => !identityNames.Any(it => it.Value == c)).ToList();//去掉自添列
-            
-            }
             Check.Exception(columnNames == null || columnNames.Count == 0, "没有可插入的列，请查看实体和插入配置。");
 
             StringBuilder sbSql = new StringBuilder("INSERT INTO ");
