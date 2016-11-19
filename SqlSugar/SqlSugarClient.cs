@@ -714,7 +714,7 @@ namespace OracleSugar
                 else {
                     if (!cacheSqlManager.ContainsKey(cacheSqlKey))
                     {
-                        var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == prop.Name.ToLower());
+                        var seqList = seqMap.Where(it => it.TableName.ToLower() == typeName.ToLower() && it.ColumnName.ToLower() == propName.ToLower());
                         if (seqList.Any())
                         {
                             var seqName = seqList.First().Value;

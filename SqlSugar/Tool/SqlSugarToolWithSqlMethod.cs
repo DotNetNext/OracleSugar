@@ -195,7 +195,7 @@ namespace OracleSugar
             {
                 string sql = @" select  COLUMN_name 
                             from user_tab_columns c  
-                            where c.Table_Name='" + tableName + @"' 
+                            where c.Table_Name='" + tableName.ToUpper() + @"' 
                             order by c.column_name";
                 var isLog = db.IsEnableLogEvent;
                 db.IsEnableLogEvent = false;
