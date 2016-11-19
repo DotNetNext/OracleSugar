@@ -35,7 +35,7 @@ namespace NewTest.Demos
                 var id = db.Insert(s);
                 s.classId = id.ObjToInt();
 
-
+                s.classId = new Random().Next(2000, 111111111); ;
                 db.SqlBulkCopy(new List<TestStudent>() { s });
 
 

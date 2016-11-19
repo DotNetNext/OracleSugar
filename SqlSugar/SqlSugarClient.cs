@@ -114,9 +114,9 @@ namespace OracleSugar
         {
             if (this.IsEnableAttributeMapping && _mappingColumns.IsValuable())
             {
-                if (_mappingColumns.Any(it => it.Key == name))
+                if (_mappingColumns.Any(it => it.Key.ToLower() == name.ToLower()))
                 {
-                    name = this._mappingColumns.Single(it => it.Key == name).Value;
+                    name = this._mappingColumns.Single(it => it.Key.ToLower() == name.ToLower()).Value;
                 }
             }
             return name;
@@ -125,9 +125,9 @@ namespace OracleSugar
         {
             if (this.IsEnableAttributeMapping && _mappingColumns.IsValuable())
             {
-                if (_mappingColumns.Any(it => it.Value == name))
+                if (_mappingColumns.Any(it => it.Value.ToLower() == name.ToLower()))
                 {
-                    name = _mappingColumns.Single(it => it.Value == name).Key;
+                    name = _mappingColumns.Single(it => it.Value.ToLower() == name.ToLower()).Key;
                 }
             }
             return name;
