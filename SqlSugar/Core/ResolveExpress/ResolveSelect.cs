@@ -26,6 +26,8 @@ namespace OracleSugar
         internal static void GetResult<TResult>(string expStr, Queryable<TResult> reval, Expression exp)
         {
             var isComplexAnalysis = IsComplexAnalysis(expStr);
+            expStr = expStr.Replace("= \"@", "= \":");
+            expStr = expStr.Replace("Convert(\"@", "Convert(\":");
             reval.SelectValue = Regex.Match(expStr, @"(?<=\{).*?(?=\})").Value;
             if (reval.SelectValue.IsNullOrEmpty())
             {
@@ -117,6 +119,8 @@ namespace OracleSugar
         {
             string expStr = reval.SelectValue;
             var isComplexAnalysis = IsComplexAnalysis(expStr);
+            expStr = expStr.Replace("= \"@", "= \":");
+            expStr = expStr.Replace("Convert(\"@", "Convert(\":");
             expStr = Regex.Match(expStr, @"(?<=\{).*?(?=\})").Value;
             if (expStr.IsNullOrEmpty())
             {
