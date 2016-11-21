@@ -48,39 +48,21 @@ namespace OracleSugar
                 sbSql.AppendFormat("SELECT " + queryable.SelectValue.GetSelectFiles(tableName) + " {1} FROM {0} {5} {2} WHERE 1=1 {3} {4} {6} ", tableName, row, withNoLock, string.Join("", queryable.WhereValue), queryable.GroupByValue.GetGroupBy(), joinInfo, orderBy);
                 if (queryable.Skip == null && queryable.Take != null)
                 {
-                    if (joinInfo.IsValuable())
-                    {
-                        sbSql.Insert(0, "SELECT * FROM ( ");
-                    }
-                    else
-                    {
-                        sbSql.Insert(0, "SELECT " + queryable.SelectValue.GetSelectFiles() + " FROM ( ");
-                    }
-                    sbSql.Append(") t WHERE t.row_index<=" + queryable.Take);
+
+                    sbSql.Insert(0, "SELECT * FROM ( ");
+                    sbSql.Append("t)  WHERE row_index<=" + queryable.Take);
                 }
                 else if (queryable.Skip != null && queryable.Take == null)
                 {
-                    if (joinInfo.IsValuable())
-                    {
-                        sbSql.Insert(0, "SELECT * FROM ( ");
-                    }
-                    else
-                    {
-                        sbSql.Insert(0, "SELECT " + queryable.SelectValue.GetSelectFiles() + " FROM ( ");
-                    }
-                    sbSql.Append(") t WHERE t.row_index>" + (queryable.Skip));
+
+                    sbSql.Insert(0, "SELECT * FROM ( ");
+                    sbSql.Append("t) WHERE row_index>" + (queryable.Skip));
                 }
                 else if (queryable.Skip != null && queryable.Take != null)
                 {
-                    if (joinInfo.IsValuable())
-                    {
-                        sbSql.Insert(0, "SELECT * FROM ( ");
-                    }
-                    else
-                    {
-                        sbSql.Insert(0, "SELECT " + queryable.SelectValue.GetSelectFiles() + " FROM ( ");
-                    }
-                    sbSql.Append(") t WHERE t.row_index BETWEEN " + (queryable.Skip + 1) + " AND " + (queryable.Skip + queryable.Take));
+
+                    sbSql.Insert(0, "SELECT * FROM ( ");
+                    sbSql.Append("t)  WHERE row_index BETWEEN " + (queryable.Skip + 1) + " AND " + (queryable.Skip + queryable.Take));
                 }
                 #endregion
             }
@@ -134,7 +116,7 @@ namespace OracleSugar
             {
                 string sql = @"  				select cu.TABLE_NAME  ,cu.COLUMN_name KEYNAME  from user_cons_columns cu, user_constraints au 
    where cu.constraint_name = au.constraint_name
-    and au.constraint_type = 'P' and au.table_name = '" + tableName.GetTranslationSqlName()+ @"'";
+    and au.constraint_type = 'P' and au.table_name = '" + tableName.GetTranslationSqlName() + @"'";
                 var isLog = db.IsEnableLogEvent;
                 db.IsEnableLogEvent = false;
                 var dt = db.GetDataTable(sql);
@@ -169,7 +151,7 @@ namespace OracleSugar
         {
             if (OracleConfig.SequenceMapping.IsValuable())
             {
-                return OracleConfig.SequenceMapping.Where(it=>it.TableName.ToLower()==tableName.ToLower()).Select(it => new KeyValue() { Key = it.TableName, Value = it.ColumnName }).ToList();
+                return OracleConfig.SequenceMapping.Where(it => it.TableName.ToLower() == tableName.ToLower()).Select(it => new KeyValue() { Key = it.TableName, Value = it.ColumnName }).ToList();
             }
             else
             {
