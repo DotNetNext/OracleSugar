@@ -85,7 +85,7 @@ namespace OracleSugar
         {
             _tran = _OracleConnection.BeginTransaction(iso);
         }
-    
+
         /// <summary>
         /// 回滚事务
         /// </summary>
@@ -206,6 +206,8 @@ namespace OracleSugar
         /// <returns></returns>
         public object GetScalar(string sql, params OracleParameter[] pars)
         {
+            OracleConfig.SetParsName(pars);
+            sql = OracleConfig.GetOracleSql(sql);
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
             OracleCommand.BindByName = true;
@@ -248,6 +250,8 @@ namespace OracleSugar
         /// <returns></returns>
         public int ExecuteCommand(string sql, params OracleParameter[] pars)
         {
+            OracleConfig.SetParsName(pars);
+            sql = OracleConfig.GetOracleSql(sql);
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
             OracleCommand.BindByName = true;
@@ -289,6 +293,8 @@ namespace OracleSugar
         /// <returns></returns>
         public OracleDataReader GetReader(string sql, params OracleParameter[] pars)
         {
+            OracleConfig.SetParsName(pars);
+            sql = OracleConfig.GetOracleSql(sql);
             ExecLogEvent(sql, pars, true);
             OracleCommand OracleCommand = new OracleCommand(sql, _OracleConnection);
             OracleCommand.BindByName = true;
@@ -380,6 +386,8 @@ namespace OracleSugar
         /// <returns></returns>
         public DataTable GetDataTable(string sql, params OracleParameter[] pars)
         {
+            OracleConfig.SetParsName(pars);
+            sql = OracleConfig.GetOracleSql(sql);
             ExecLogEvent(sql, pars, true);
             OracleDataAdapter _OracleDataAdapter = new OracleDataAdapter(sql, _OracleConnection);
             _OracleDataAdapter.SelectCommand.CommandType = CommandType;
@@ -420,6 +428,8 @@ namespace OracleSugar
         /// <returns></returns>
         public DataSet GetDataSetAll(string sql, params OracleParameter[] pars)
         {
+            OracleConfig.SetParsName(pars);
+            sql = OracleConfig.GetOracleSql(sql);
             ExecLogEvent(sql, pars, true);
             OracleDataAdapter _OracleDataAdapter = new OracleDataAdapter(sql, _OracleConnection);
             if (_tran != null)

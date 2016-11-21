@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Oracle.ManagedDataAccess.Client;
+using System.Text.RegularExpressions;
 
 namespace OracleSugar
 {
@@ -56,34 +57,34 @@ namespace OracleSugar
         //}
         internal static void SetParType(string typeName, bool isBinary, string name, OracleParameter par, SqlSugarClient db)
         {
-                var colInfos = db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == name.GetOracleParameterNameNoParSymbol().ToLower()).ToList();
-                if (colInfos.IsValuable())
+            var colInfos = db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == name.GetOracleParameterNameNoParSymbol().ToLower()).ToList();
+            if (colInfos.IsValuable())
+            {
+                var colInfo = colInfos.Single();
+                if (colInfo.DATA_TYPE.ObjToString() == "BFILE")
                 {
-                    var  colInfo = colInfos.Single();
-                    if (colInfo.DATA_TYPE.ObjToString() == "BFILE")
-                    {
-                        par.OracleDbType = OracleDbType.BFile;
-                    }
-                    else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
-                    {
-                        par.OracleDbType = OracleDbType.Blob;
-                    }
-                    else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
-                    {
-                        par.OracleDbType = OracleDbType.Raw;
-                    }
-                    else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
-                    {
-                        par.OracleDbType = OracleDbType.LongRaw;
-                    }
+                    par.OracleDbType = OracleDbType.BFile;
                 }
+                else if (colInfo.DATA_TYPE.ObjToString() == "BLOB")
+                {
+                    par.OracleDbType = OracleDbType.Blob;
+                }
+                else if (colInfo.DATA_TYPE.ObjToString() == "RAW")
+                {
+                    par.OracleDbType = OracleDbType.Raw;
+                }
+                else if (colInfo.DATA_TYPE.ObjToString() == "LONGRAW")
+                {
+                    par.OracleDbType = OracleDbType.LongRaw;
+                }
+            }
         }
-        internal static void SetParType(string typeName, PropertyInfo prop, OracleParameter par,SqlSugarClient db)
+        internal static void SetParType(string typeName, PropertyInfo prop, OracleParameter par, SqlSugarClient db)
         {
             var isBinary = prop.PropertyType == SqlSugarTool.ByteArrayType;
             if (isBinary)
             {
-                var colInfos =db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == prop.Name.ToLower()).ToList();
+                var colInfos = db.ClassGenerating.GetTableColumns(db, typeName.ToUpper()).Where(it => it.COLUMN_NAME.ObjToString().ToLower() == prop.Name.ToLower()).ToList();
                 if (colInfos.IsValuable())
                 {
                     var colInfo = colInfos.Single();
@@ -133,5 +134,32 @@ namespace OracleSugar
         /// </summary>
         public static List<SequenceModel> SequenceMapping = new List<SequenceModel>();
 
+
+        internal static string GetOracleSql(string sql)
+        {
+            if (sql == null) return null;
+            if (sql.Contains("@"))
+            {
+                sql = Regex.Replace(sql, @" \@", " :");
+                sql = Regex.Replace(sql, @"\>\@", ">:");
+                sql = Regex.Replace(sql, @"\<\@", "<:");
+                sql = Regex.Replace(sql, @"\=\@", "=:");
+            }
+            return sql;
+        }
+
+        internal static void SetParsName(params OracleParameter[] pars)
+        {
+            if (pars != null && pars.Length > 0)
+            {
+                foreach (var item in pars)
+                {
+                    if (item.ParameterName.StartsWith("@"))
+                    {
+                        item.ParameterName = ":" + item.ParameterName.TrimStart('@');
+                    }
+                }
+            }
+        }
     }
 }
