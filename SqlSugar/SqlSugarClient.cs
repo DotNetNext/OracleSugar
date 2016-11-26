@@ -1263,16 +1263,27 @@ namespace OracleSugar
             if (deleteObj == null) { throw new ArgumentNullException("SqlSugarClient.Delete.deleteObj"); }
             string typeName = type.Name;
             typeName = GetTableNameByClassType(typeName);
-            string pkName = SqlSugarTool.GetPrimaryKeyByTableName(this, typeName);
-            Check.ArgumentNullException(pkName, typeName+"没有找到主键。");
-            string pkClassPropName = pkClassPropName = GetMappingColumnClassName(pkName);
-            pkClassPropName = type.GetProperties().Where(it => it.Name.ToLower() == pkClassPropName.ToLower()).Single().Name;
-            var pkValue = type.GetProperty(pkClassPropName).GetValue(deleteObj, null);
-            Check.Exception(pkValue == DBNull.Value, typeName + "主键的值不能为DBNull.Value。");
-            string sql = string.Format("DELETE FROM {0} WHERE {1}={2}", typeName.GetTranslationSqlName(),pkName.GetTranslationSqlName(), pkName.GetOracleParameterName());
-            var par = new OracleParameter(pkName.GetOracleParameterName(), pkValue);
-            SqlSugarTool.SetParSize(par);
-            bool isSuccess = ExecuteCommand(sql,par) > 0;
+            var pkNames = SqlSugarTool.GetPrimaryKeyByTableNames(this, typeName);
+            Check.ArgumentNullException(pkNames == null || pkNames.Count == 0, typeName + "没有找到主键。");
+            string whereString = "";
+            var pars = new List<OracleParameter>();
+            foreach (var pkName in pkNames)
+            {
+                string pkClassPropName = pkClassPropName = GetMappingColumnClassName(pkName);
+                pkClassPropName = type.GetProperties().Where(it => it.Name.ToLower() == pkClassPropName.ToLower()).First().Name;
+                var pkValue = type.GetProperty(pkClassPropName).GetValue(deleteObj, null);
+                if (pkValue.GetType().IsEnum)
+                {
+                    pkValue = pkValue.ObjToInt();
+                }
+                Check.Exception(pkValue == DBNull.Value, typeName + "主键的值不能为DBNull.Value。");
+                whereString += string.Format(" AND {0}={1} ", pkName.GetTranslationSqlName(), pkName.GetOracleParameterName());
+                OracleParameter par = new OracleParameter(pkName.GetOracleParameterName(), pkValue);
+                pars.Add(par);
+                SqlSugarTool.SetParSize(par);
+            }
+            string sql = string.Format("DELETE FROM {0} WHERE 1=1 {1}", typeName.GetTranslationSqlName(), whereString);
+            bool isSuccess = base.ExecuteCommand(sql, pars.ToArray()) > 0;
             return isSuccess;
         }
 

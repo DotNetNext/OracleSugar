@@ -111,6 +111,19 @@ namespace OracleSugar
         /// <returns></returns>
         internal static string GetPrimaryKeyByTableName(SqlSugarClient db, string tableName)
         {
+            var reval = GetPrimaryKeyByTableNames(db, tableName);
+            if (reval.IsValuable()) return reval.First();
+            return null;
+        }
+
+        /// <summary>
+        /// 根据表获取主键
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        internal static List<string> GetPrimaryKeyByTableNames(SqlSugarClient db, string tableName)
+        {
             string key = "GetPrimaryKeyByTableName" + tableName;
             var cm = CacheManager<List<KeyValue>>.GetInstance();
             List<KeyValue> primaryInfo = null;
@@ -143,7 +156,7 @@ namespace OracleSugar
             {
                 return null;
             }
-            return primaryInfo.First(it => it.Key.ToLower() == tableName.ToLower()).Value;
+            return primaryInfo.Where(it => it.Key.ToLower() == tableName.ToLower()).Select(it=>it.Value).ToList();
 
         }
 
