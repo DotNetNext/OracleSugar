@@ -43,7 +43,7 @@ namespace NewTest.Demos
 
                 //bob类型测试
                 var test = db.Queryable<Models.Test>().Where(it => it.C_BOB != null).ToList();
-
+                var ls = db.Queryable<Student>().Select(it => it.name).ToList();
                 //查询所有
                 var student = db.Queryable<Student>().ToList();
                 var studentDynamic = db.Queryable<Student>().ToDynamic();
