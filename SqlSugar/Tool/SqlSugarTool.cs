@@ -179,7 +179,7 @@ namespace OracleSugar
                         var value = r.GetValue(obj, null);
                         if (r.PropertyType.IsEnum)
                         {
-                            value = (int)value;
+                            value = Convert.ToInt64(value);
                         }
                         if (value == null) value = DBNull.Value;
                         if (r.Name.ToLower().Contains("hierarchyid"))
@@ -246,7 +246,7 @@ namespace OracleSugar
                     var val = r.GetValue(obj, null);
                     if (r.PropertyType.IsEnum)
                     {
-                        val = (int)val;
+                        val =Convert.ToInt64(val);
                     }
                     reval.Add(r.Name, val == null ? DBNull.Value : val);
                 }
